@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    qtsfmlbox2dwidget.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    qtsfmlbox2dwidget.h
 
 FORMS += \
         mainwindow.ui
@@ -45,7 +47,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 unix:!macx: LIBS += -L$$PWD/../libs/Box2D/Build/bin/x86_64/Debug/ -lBox2D
 
-INCLUDEPATH += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug
+INCLUDEPATH += $$PWD/../libs/Box2D
 DEPENDPATH += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug/libBox2D.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/release/ -lsfml-graphics
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/debug/ -lsfml-graphics
+else:unix: LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/ -lsfml-graphics
+
+INCLUDEPATH += $$PWD/../libs/SFML-2.5.1/include
+DEPENDPATH += $$PWD/../libs/SFML-2.5.1/include
