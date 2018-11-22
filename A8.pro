@@ -27,11 +27,11 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    qtsfmlbox2dwidget.cpp
+    sfmlbox2darea.cpp
 
 HEADERS += \
         mainwindow.h \
-    qtsfmlbox2dwidget.h
+    sfmlbox2darea.h
 
 FORMS += \
         mainwindow.ui
