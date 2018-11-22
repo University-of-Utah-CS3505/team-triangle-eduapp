@@ -1,6 +1,6 @@
 #include "sfmlbox2darea.h"
-
-sfmlBox2DArea::sfmlBox2DArea()
+#include <Box2D/Box2D.h>
+sfmlbox2darea::sfmlbox2darea(b2Vec2 gravity) : b2world(gravity)
 {
 
 }

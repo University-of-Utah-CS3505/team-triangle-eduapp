@@ -1,11 +1,15 @@
 #ifndef SFMLBOX2DAREA_H
 #define SFMLBOX2DAREA_H
+#include "SFML/Graphics.hpp"
+#include <QWidget>
+#include <Box2D/Box2D.h>
 
 
-class sfmlBox2DArea
+class sfmlbox2darea : public sf::RenderWindow, public b2World
 {
 public:
-    sfmlBox2DArea();
+    sfmlbox2darea(b2Vec2);
+
 };
 
 #endif // SFMLBOX2DAREA_H
