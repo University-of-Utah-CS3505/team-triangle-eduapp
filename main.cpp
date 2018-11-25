@@ -1,11 +1,16 @@
+#include "game_state.h"
+#include "main_menu.h"
 #include "pre_game_options.h"
 #include <QApplication>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include <fstream>
+#include <chrono>
 #include <functional>
-#include <iostream>
+#include <memory>
+#include <thread>
 #include <vector>
+
+typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 
 std::optional<launch_options> launch_dialog(int argc, char** argv) {
     // take that qt
@@ -44,10 +49,12 @@ int main(int argc, char** argv) {
                 }
             });
 
+    auto state =
+            std::unique_ptr<game_state>(std::make_unique<main_menu>(window));
     while (window.isOpen()) {
-        // Process events
+        auto frame_start = std::chrono::high_resolution_clock::now();
         auto event = sf::Event();
-        while (window.pollEvent(event)) {
+        while (window.pollEvent((event))) {
             for (auto& f : event_handlers[event.type]) {
                 if (f(event)) {
                     break;
@@ -55,10 +62,10 @@ int main(int argc, char** argv) {
             }
         }
 
-        // Clear screen
-        window.clear(sf::Color::Cyan);
+        state->update(state);
 
-        window.display();
+        using std::chrono_literals::operator""s;
+        std::this_thread::sleep_until(frame_start + frame_duration(1));
     }
     return EXIT_SUCCESS;
 }

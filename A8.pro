@@ -26,10 +26,13 @@ CONFIG += c++1z
 
 SOURCES += \
         main.cpp \
-    pre_game_options.cpp
+    pre_game_options.cpp \
+    main_menu.cpp
 
 HEADERS += \
-    pre_game_options.h
+    pre_game_options.h \
+    game_state.h \
+    main_menu.h
 
 FORMS += \
     pre_game_options.ui
