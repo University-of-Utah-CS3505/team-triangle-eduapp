@@ -26,13 +26,13 @@ CONFIG += c++1z
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+    pre_game_options.cpp
 
 HEADERS += \
-        mainwindow.h
+    pre_game_options.h
 
 FORMS += \
-        mainwindow.ui
+    pre_game_options.ui
 #INCLUDEPATH += ../libs/Box2D
 #LIBS += -L"../Box2D/Build/bin/x86_64/Debug/libBox2D.a
 #LIBS += -lBox2D
@@ -50,9 +50,7 @@ DEPENDPATH += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug/libBox2D.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/release/ -lsfml-graphics
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/debug/ -lsfml-graphics
-else:unix: LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/ -lsfml-graphics
+LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/ -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system
 
 INCLUDEPATH += $$PWD/../libs/SFML-2.5.1/include
 DEPENDPATH += $$PWD/../libs/SFML-2.5.1/include
