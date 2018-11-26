@@ -27,7 +27,8 @@ CONFIG += c++1z
 SOURCES += \
         main.cpp \
     pre_game_options.cpp \
-    main_menu.cpp
+    main_menu.cpp \
+    boost_test.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -57,3 +58,13 @@ LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/ -lsfml-graphics -lsfml-window -lsfml-aud
 
 INCLUDEPATH += $$PWD/../libs/SFML-2.5.1/include
 DEPENDPATH += $$PWD/../libs/SFML-2.5.1/include
+
+unix|win32: LIBS += -L$$PWD/../libs/boost_1_67_0/stage/lib/ -lboost_python27 #-lpython2.7
+
+INCLUDEPATH += $$PWD/../libs/boost_1_67_0/stage
+#INCLUDEPATH += /usr/include/boost/python
+#INCLUDEPATH += /usr/include/python2.7
+DEPENDPATH += $$PWD/../libs/boost_1_67_0/stage
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../libs/boost_1_67_0/stage/lib/boost_python27.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../libs/boost_1_67_0/stage/lib/libboost_python27.a
