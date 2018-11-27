@@ -23,6 +23,7 @@ std::optional<launch_options> launch_dialog(int argc, char** argv) {
 
 int main(int argc, char** argv) {
     const auto options = launch_dialog(argc, argv);
+    // do we set a global config here?
     if (!options) {
         return 0;
     }
