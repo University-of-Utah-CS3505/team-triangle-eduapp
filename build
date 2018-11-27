@@ -26,8 +26,13 @@ BOXCLONE="https://github.com/erincatto/Box2D.git"
 #      Setup      #
 ###################
 
+if [ "$EUID" -ne 0 ]; then
+    echo "build must be run as root; did you forget \`sudo\`?"
+    exit -1
+fi
+
 # Install necessary packages
-sudo apt install libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev libboost-python-dev
+apt install python3.7 python3.7-dev libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev libboost-python-dev
 
 
 # Create libs directory
@@ -91,7 +96,7 @@ cd ..
 ###################
 
 if [ -d "SFML-2.5.1" ]; then
-    sudo rm -rfv SFML-2.5.1
+    rm -rfv SFML-2.5.1
 fi
 
 tar -xf $SFMLTAR
@@ -102,14 +107,14 @@ tar -xf $SFMLTAR
 ###################
 
 if [ -d "boost_1_67_0" ]; then
-    sudo rm -rfv boost_1_67_0
+    rm -rfv boost_1_67_0
 fi
 
 tar -xf $BOOSTTAR
 
 cd "boost_1_67_0"
 
-./bootstrap.sh --with-libraries=python --with-python-version=3.6
+./bootstrap.sh --with-libraries=python --with-python-version=3.7
 ./b2 --with-python
 
 cd ..

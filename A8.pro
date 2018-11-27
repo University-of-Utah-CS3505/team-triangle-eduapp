@@ -59,11 +59,11 @@ LIBS += -L$$PWD/libs/SFML-2.5.1/lib/ -lsfml-graphics -lsfml-window -lsfml-audio 
 INCLUDEPATH += $$PWD/libs/SFML-2.5.1/include
 DEPENDPATH += $$PWD/libs/SFML-2.5.1/include
 
-unix|win32: LIBS += -L$$PWD/libs/boost_1_67_0/stage/lib/ -lboost_python36 -lpython3.6m
+unix|win32: LIBS += -L$$PWD/libs/boost_1_67_0/stage/lib/ -lboost_python37 -lpython3.7m
 
 INCLUDEPATH += $$PWD/libs/boost_1_67_0/stage
-INCLUDEPATH += /usr/include/python3.6m
+INCLUDEPATH += /usr/include/python3.7m
 DEPENDPATH += $$PWD/libs/boost_1_67_0/stage
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/boost_python36.lib
-else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/libboost_python36.a
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/boost_python37.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/libboost_python37.a
