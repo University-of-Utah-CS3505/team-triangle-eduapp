@@ -1,1 +1,13 @@
+# Qt
 *.pro.user
+
+# Libraries
+libs
+
+# Archives
+*.tar*
+*.zip
+
+# Emacs temporary files
+*~
+\#*.*#

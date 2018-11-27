@@ -47,24 +47,23 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix:!macx: LIBS += -L$$PWD/../libs/Box2D/Build/bin/x86_64/Debug/ -lBox2D
+unix:!macx: LIBS += -L$$PWD/libs/Box2D/Build/bin/x86_64/Debug/ -lBox2D
 
-INCLUDEPATH += $$PWD/../libs/Box2D
-DEPENDPATH += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug
+INCLUDEPATH += $$PWD/libs/Box2D
+DEPENDPATH += $$PWD/libs/Box2D/Build/bin/x86_64/Debug
 
-unix:!macx: PRE_TARGETDEPS += $$PWD/../libs/Box2D/Build/bin/x86_64/Debug/libBox2D.a
+unix:!macx: PRE_TARGETDEPS += $$PWD/libs/Box2D/Build/bin/x86_64/Debug/libBox2D.a
 
-LIBS += -L$$PWD/../libs/SFML-2.5.1/lib/ -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system
+LIBS += -L$$PWD/libs/SFML-2.5.1/lib/ -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system
 
-INCLUDEPATH += $$PWD/../libs/SFML-2.5.1/include
-DEPENDPATH += $$PWD/../libs/SFML-2.5.1/include
+INCLUDEPATH += $$PWD/libs/SFML-2.5.1/include
+DEPENDPATH += $$PWD/libs/SFML-2.5.1/include
 
-unix|win32: LIBS += -L$$PWD/../libs/boost_1_67_0/stage/lib/ -lboost_python27 -lpython2.7
+unix|win32: LIBS += -L$$PWD/libs/boost_1_67_0/stage/lib/ -lboost_python36 -lpython3.6m
 
-INCLUDEPATH += $$PWD/../libs/boost_1_67_0/stage
-#INCLUDEPATH += /usr/include/boost/python
-INCLUDEPATH += /usr/include/python2.7
-DEPENDPATH += $$PWD/../libs/boost_1_67_0/stage
+INCLUDEPATH += $$PWD/libs/boost_1_67_0/stage
+INCLUDEPATH += /usr/include/python3.6m
+DEPENDPATH += $$PWD/libs/boost_1_67_0/stage
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../libs/boost_1_67_0/stage/lib/boost_python27.lib
-else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../libs/boost_1_67_0/stage/lib/libboost_python27.a
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/boost_python36.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/libboost_python36.a

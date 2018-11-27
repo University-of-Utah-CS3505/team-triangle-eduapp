@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+###################
+#    Variables    #
+###################
+
+# Directory
+PROJECT="./"
+LIBS="./libs"
+
+# Tars
+SFMLTAR="SFML-2.5.1-linux-gcc-64-bit.tar.gz"
+BOOSTTAR="boost_1_67_0.tar.gz"
+PREMAKE5TAR="premake-5.0.0-alpha13-linux.tar.gz"
+
+# Download paths
+SFMLDOWN="https://www.sfml-dev.org/files/SFML-2.5.1-linux-gcc-64-bit.tar.gz"
+BOOSTDOWN="https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz"
+PREMAKE5="https://github.com/premake/premake-core/releases/download/v5.0.0-alpha13/premake-5.0.0-alpha13-linux.tar.gz"
+
+# Git clone paths
+BOXCLONE="https://github.com/erincatto/Box2D.git"
+
+
+###################
+#      Setup      #
+###################
+
+# Install necessary packages
+sudo apt install libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev libboost-python-dev
+
+
+# Create libs directory
+if [ ! -d $LIBS ]; then
+    echo "Creating libs directory."
+    mkdir $LIBS
+fi
+
+echo "Changing to libs directory."
+cd $LIBS
+
+# Check for SFML tar.gz
+if [ -e $SFMLTAR ]; then
+    echo "SFML tar exists."
+else
+    wget $SFMLDOWN
+fi
+
+# Check for Boost tar.gz
+if [ -e $BOOSTTAR ]; then
+    echo "Boost tar exists."
+else
+    wget $BOOSTDOWN
+fi
+
+# Check for Box2D
+if [ -d "Box2D" ]; then
+    echo "Box2D exists."
+else
+    git clone $BOXCLONE
+fi
+
+# Check for Premake5
+if [ -d $PREMAKE5TAR ]; then
+    echo "Premake5 tar exists."
+else
+    wget $PREMAKE5
+fi
+
+
+###################
+#   Build Box2D   #
+###################
+
+cd Box2D
+
+if [ ! -f "premake5" ]; then
+    tar -xf ../$PREMAKE5TAR
+fi
+
+./premake5 gmake
+make -C Build
+
+echo "Box2D built."
+
+cd ..
+
+
+###################
+#   Build SFML    #
+###################
+
+if [ -d "SFML-2.5.1" ]; then
+    sudo rm -rfv SFML-2.5.1
+fi
+
+tar -xf $SFMLTAR
+
+
+###################
+#   Build Boost   #
+###################
+
+if [ -d "boost_1_67_0" ]; then
+    sudo rm -rfv boost_1_67_0
+fi
+
+tar -xf $BOOSTTAR
+
+cd "boost_1_67_0"
+
+./bootstrap.sh --with-libraries=python --with-python-version=3.6
+./b2 --with-python
+
+cd ..
