@@ -9,6 +9,7 @@ public:
     textedit(int font_size, int w, int h);
 
     void insert_char(char c);
+    void backspace();
 
     void set_text(const std::string& text);
     std::string get_text() const;

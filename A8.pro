@@ -30,14 +30,16 @@ SOURCES += \
     main_menu.cpp \
     boost_test.cpp \
     gameplay.cpp \
-    textedit.cpp
+    textedit.cpp \
+    engine.cpp
 
 HEADERS += \
     pre_game_options.h \
     game_state.h \
     main_menu.h \
     gameplay.h \
-    textedit.h
+    textedit.h \
+    engine.h
 
 FORMS += \
     pre_game_options.ui
