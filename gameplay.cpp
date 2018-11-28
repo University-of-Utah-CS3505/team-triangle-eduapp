@@ -1,8 +1,12 @@
 #include "gameplay.h"
 #include "tile.h"
 #include <vector>
+<<<<<<< HEAD
 gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window},
                                                _tank(_texture,sf::IntRect(432,48,42,46)){
+=======
+gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window}{
+>>>>>>> ff510c32e8fe34d77acf326abdc7ef2e9624d6de
     _texture.loadFromFile("../team-triangle-eduapp/assets/Tanks/Spritesheet/allSprites_default.png");
 
     _tiles.emplace_back(new tile(0, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass1.png", "grass"));
