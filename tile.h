@@ -17,7 +17,7 @@ public:
 private:
     int _index;
     std::string _img;
-    std::string _type;
+    std::string _type;  
     sf::Texture _texture;
     sf::Sprite _sprite;
 };

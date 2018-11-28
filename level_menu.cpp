@@ -2,7 +2,7 @@
 
 const auto deg_radian_conv_factor = 0.017453292519943295769236907;
 
-const auto scale = 100.0;
+const auto scale = 75.0;
 
 level_menu::level_menu(sf::RenderWindow& window)
     :_window(window), _world(b2Vec2(0.f, -1.f))

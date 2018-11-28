@@ -1,5 +1,6 @@
 #include "game_state.h"
 #include "gameplay.h"
+#include "level_menu.h"
 #include "main_menu.h"
 #include "pre_game_options.h"
 #include <QApplication>
@@ -11,7 +12,7 @@
 #include <thread>
 #include <vector>
 
-typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
+typedef std::chrono::duration<int, std::ratio<1, 10>> frame_duration;
 
 std::optional<launch_options> launch_dialog(int argc, char** argv) {
     // take that qt
@@ -52,7 +53,7 @@ int main(int argc, char** argv) {
             });
 
     auto state =
-            std::unique_ptr<game_state>(std::make_unique<main_menu>(window));
+            std::unique_ptr<game_state>(std::make_unique<gameplay>(window));
     while (window.isOpen()) {
         auto frame_start = std::chrono::high_resolution_clock::now();
         auto event = sf::Event();

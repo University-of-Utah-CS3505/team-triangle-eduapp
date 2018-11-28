@@ -3,6 +3,7 @@
 
 #include "game_state.h"
 #include "textedit.h"
+#include "tile.h"
 #include <SFML/Graphics.hpp>
 
 class gameplay : public game_state {
@@ -16,6 +17,8 @@ private:
     textedit _editor;
     sf::RenderWindow& _window;
     sf::Texture _texture;
+    std::vector<tile *> _tiles;
+    sf::Sprite _tank;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)
