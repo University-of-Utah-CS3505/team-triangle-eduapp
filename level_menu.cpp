@@ -8,7 +8,7 @@ namespace pt = boost::property_tree;
 
 const auto deg_radian_conv_factor = 0.017453292519943295769236907;
 
-const auto scale = 100.0;
+const auto scale = 75.0;
 
 level_menu::menu_item::menu_item(b2World& world,
                                 const std::string& tex_path,
