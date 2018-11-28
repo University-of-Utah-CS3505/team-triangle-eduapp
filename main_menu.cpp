@@ -28,7 +28,8 @@ main_menu::menu_item::menu_item(b2World& world,
     fix_def.friction = 0.5;
     body_def.type = b2_dynamicBody;
     auto s = texture->getSize();
-    shape.SetAsBox(s.x / scale / 2, s.y / scale / 2);
+    shape.SetAsBox(s.x / scale / 2 - shape.m_radius,
+                   s.y / scale / 2 - shape.m_radius);
     fix_def.shape = &shape;
     body = world.CreateBody(&body_def);
     body->CreateFixture(&fix_def);
@@ -38,7 +39,10 @@ main_menu::menu_item::menu_item(b2World& world,
 
 main_menu::main_menu(sf::RenderWindow& window)
     : _window(window), _world(b2Vec2(0.f, 10.f)) {
-    if (_window.getSize().x <= 1280) { scale = 82.0; }
+    // TODO this is a bad global
+    if (_window.getSize().x <= 1280) {
+        scale = 82.0;
+    }
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/play_button.png",
                         []() { return false; },

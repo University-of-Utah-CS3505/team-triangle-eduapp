@@ -1,6 +1,6 @@
 #include "game_state.h"
-#include "main_menu.h"
 #include "gameplay.h"
+#include "main_menu.h"
 #include "pre_game_options.h"
 #include <QApplication>
 #include <SFML/Audio.hpp>
@@ -51,9 +51,8 @@ int main(int argc, char** argv) {
                 }
             });
 
-
     auto state =
-            std::unique_ptr<game_state>(std::make_unique<gameplay>(window));
+            std::unique_ptr<game_state>(std::make_unique<main_menu>(window));
     while (window.isOpen()) {
         auto frame_start = std::chrono::high_resolution_clock::now();
         auto event = sf::Event();
@@ -64,11 +63,9 @@ int main(int argc, char** argv) {
                 }
             }
         }
-
         state->update(state);
 
-        using std::chrono_literals::operator""s;
-        //std::this_thread::sleep_until(frame_start + frame_duration(1));
+        std::this_thread::sleep_until(frame_start + frame_duration(1));
     }
     return EXIT_SUCCESS;
 }
