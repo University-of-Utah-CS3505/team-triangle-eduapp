@@ -1,7 +1,7 @@
 #include "gameplay.h"
 #include "tile.h"
 #include <vector>
-gameplay::gameplay(sf::RenderWindow& window) : _editor{0, 0, 0}, _window{window}{
+gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window}{
     _texture.loadFromFile("../team-triangle-eduapp/assets/Tanks/Spritesheet/allSprites_default.png");
 }
 

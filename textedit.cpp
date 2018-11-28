@@ -12,12 +12,12 @@ void textedit::backspace() {
 }
 
 void textedit::move_cursor(int x, int y) {
-
+// I think we need to create another cpp for cursor to draw?
 }
 
 void textedit::draw(sf::RenderTarget& target, sf::RenderStates states) const {
    sf::Text text;
-   //text.setFont(_font);
+   text.setFont(_font);
    text.setString(_text);
    text.setCharacterSize(_font_size);
    target.draw(text, states);
