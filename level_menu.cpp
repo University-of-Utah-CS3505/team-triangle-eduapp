@@ -1,20 +1,86 @@
 #include "level_menu.h"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <QDebug>
+#include <iostream>
+
+namespace pt = boost::property_tree;
 
 const auto deg_radian_conv_factor = 0.017453292519943295769236907;
 
 const auto scale = 100.0;
 
+level_menu::menu_item::menu_item(b2World& world,
+                                const std::string& tex_path,
+                                std::function<bool()> f,
+                                float x,
+                                float y,
+                                float r)
+    : on_press(f), texture(std::make_unique<sf::Texture>()) {
+    texture->loadFromFile(tex_path);
+    sprite.setTexture(*texture);
+    sprite.setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
+    auto body_def = b2BodyDef();
+    auto shape = b2PolygonShape();
+    auto fix_def = b2FixtureDef();
+    fix_def.density = 1;
+    fix_def.friction = 0.5;
+    body_def.type = b2_dynamicBody;
+    auto s = texture->getSize();
+    shape.SetAsBox(s.x / scale / 2 - shape.m_radius,
+                   s.y / scale / 2 - shape.m_radius);
+    fix_def.shape = &shape;
+    body = world.CreateBody(&body_def);
+    body->CreateFixture(&fix_def);
+    body->ApplyLinearImpulse(b2Vec2(0, 0), body_def.position, true);
+    body->SetTransform(b2Vec2(x, y), r);
+}
+
 level_menu::level_menu(sf::RenderWindow& window)
-    :_window(window), _world(b2Vec2(0.f, -1.f))
+    :_window(window), _world(b2Vec2(0.f, 1.f))
 {
+    pt::ptree root;
+    pt::read_json("../team-triangle-eduapp/levels/levels.json", root);
+
+    for(pt::ptree::value_type &v : root.get_child("levels")){
+            std::string s = v.second.data();
+            _items.emplace_back(_world, "../team-triangle-eduapp/assets/level.png",
+                                [](){return false;},
+                                  2,2,1);
+
+    }
+
+    auto floor_def = b2BodyDef();
+    auto floor_shape = b2PolygonShape();
+    auto floor_fix_def = b2FixtureDef();
+    floor_shape.SetAsBox(_window.getSize().x / scale, 0);
+    floor_fix_def.shape = &floor_shape;
+    floor_fix_def.friction = 0.5;
+    floor_def.position.Set(0, _window.getSize().y / scale - 0.5);
+    _world.CreateBody(&floor_def)->CreateFixture(&floor_fix_def);
+
+    auto wall_def = b2BodyDef();
+    auto wall_shape = b2PolygonShape();
+    auto wall_fix_def = b2FixtureDef();
+    wall_shape.SetAsBox(_window.getSize().x / scale, 0);
+    wall_fix_def.shape = &wall_shape;
+    wall_fix_def.friction = 0.5;
+    wall_def.position.Set(_window.getSize().x / scale - 0.5, 0);
+    _world.CreateBody(&wall_def)->CreateFixture(&wall_fix_def);
 
 }
 
 level_menu::~level_menu(){}
 
 void level_menu::update(std::unique_ptr<game_state>&){
-    _window.clear(sf::Color::Cyan);
+    _window.clear(sf::Color::Black);
     _world.Step(1/60.0f,1,1);
-    for(auto& item:_items){}
+    for(auto& item:_items){
+        auto pos = item.body->GetPosition();
+        item.sprite.setPosition(pos.x * scale, pos.y * scale);
+        item.sprite.setRotation(item.body->GetAngle() * deg_radian_conv_factor);
+        _window.draw(item.sprite);
+    }
     _window.display();
 }
+

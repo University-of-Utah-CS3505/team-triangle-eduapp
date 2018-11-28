@@ -1,0 +1,28 @@
+{
+    "name": "Going right",
+    "tiles": [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 0]],
+    "objects": [
+        {
+            "type": "spawn",
+            "pos": [0, 2]
+        },
+        {
+            "type": "solid",
+            "pos": [0, 2],
+            "img": "tree.png"
+        }],
+    "tiledefs": [
+        {
+            "img": "water_0.png",
+            "type": "water"
+        },
+        {
+            "img": "path_0.png",
+            "type": "traversable"
+        }
+    ]
+}
