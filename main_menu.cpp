@@ -15,7 +15,8 @@ main_menu::main_menu(sf::RenderWindow& window)
     : _window(window), _world(b2Vec2(0.f, -1.f)) {
 
     auto& play_button = _items.emplace_back();
-    play_button.texture.loadFromFile("assets/play_button.png");
+    play_button.texture.loadFromFile("../team-triangle-eduapp/assets/play_button.png");
+    play_button.sprite.setTexture(play_button.texture);
 
     auto play_button_def = b2BodyDef();
     auto play_button_shape = b2PolygonShape();
