@@ -5,10 +5,11 @@
 #include <game_state.h>
 #include <iostream>
 #include <memory>
+#include <pre_game_options.h>
 
 const auto deg_radian_conv_factor = 57.2957795130823208767981548;
 
-const auto scale = 100.0;
+auto scale = 100.0;
 
 main_menu::menu_item::menu_item(b2World& world,
                                 const std::string& tex_path,
@@ -37,7 +38,7 @@ main_menu::menu_item::menu_item(b2World& world,
 
 main_menu::main_menu(sf::RenderWindow& window)
     : _window(window), _world(b2Vec2(0.f, 10.f)) {
-
+    if (_window.getSize().x <= 1280) { scale = 82.0; }
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/play_button.png",
                         []() { return false; },
@@ -66,6 +67,15 @@ main_menu::main_menu(sf::RenderWindow& window)
     floor_fix_def.friction = 0.5;
     floor_def.position.Set(0, _window.getSize().y / scale - 0.5);
     _world.CreateBody(&floor_def)->CreateFixture(&floor_fix_def);
+
+    auto wall_def = b2BodyDef();
+    auto wall_shape = b2PolygonShape();
+    auto wall_fix_def = b2FixtureDef();
+    wall_shape.SetAsBox(_window.getSize().x / scale, 0);
+    wall_fix_def.shape = &wall_shape;
+    wall_fix_def.friction = 0.5;
+    wall_def.position.Set(_window.getSize().x / scale - 0.5, 0);
+    _world.CreateBody(&wall_def)->CreateFixture(&wall_fix_def);
 }
 
 main_menu::~main_menu() {}
