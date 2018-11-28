@@ -3,15 +3,19 @@
 
 #include "game_state.h"
 #include "textedit.h"
+#include <SFML/Graphics.hpp>
 
 class gameplay : public game_state {
 public:
-    gameplay();
+    gameplay(sf::RenderWindow& window);
+
 
     void update(std::unique_ptr<game_state>&) override;
 
 private:
     textedit _editor;
+    sf::RenderWindow& _window;
+    sf::Texture _texture;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)
