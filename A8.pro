@@ -31,7 +31,8 @@ SOURCES += \
     boost_test.cpp \
     gameplay.cpp \
     textedit.cpp \
-    engine.cpp
+    engine.cpp \
+    level_menu.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -39,7 +40,8 @@ HEADERS += \
     main_menu.h \
     gameplay.h \
     textedit.h \
-    engine.h
+    engine.h \
+    level_menu.h
 
 FORMS += \
     pre_game_options.ui
