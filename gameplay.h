@@ -10,7 +10,7 @@ class gameplay : public game_state {
 public:
     gameplay(sf::RenderWindow& window);
 
-
+    int move_tank(char dir, int current_move);
     void update(std::unique_ptr<game_state>&) override;
 
 private:
@@ -19,6 +19,7 @@ private:
     sf::Texture _texture;
     std::vector<tile *> _tiles;
     sf::Sprite _tank;
+    int _current_move;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)

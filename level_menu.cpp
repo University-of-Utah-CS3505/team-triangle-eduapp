@@ -7,7 +7,6 @@ const auto scale = 75.0;
 level_menu::level_menu(sf::RenderWindow& window)
     :_window(window), _world(b2Vec2(0.f, -1.f))
 {
-
 }
 
 level_menu::~level_menu(){}

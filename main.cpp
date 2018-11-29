@@ -12,7 +12,7 @@
 #include <thread>
 #include <vector>
 
-typedef std::chrono::duration<int, std::ratio<1, 10>> frame_duration;
+typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 
 std::optional<launch_options> launch_dialog(int argc, char** argv) {
     // take that qt
@@ -48,6 +48,7 @@ int main(int argc, char** argv) {
                     window.close();
                     return true;
                 } else {
+
                     return false;
                 }
             });

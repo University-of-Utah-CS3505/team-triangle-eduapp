@@ -1,13 +1,14 @@
 #include "gameplay.h"
 #include "tile.h"
 #include <vector>
-<<<<<<< HEAD
+#include <QDebug>
+#include <stdlib.h>
 gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window},
-                                               _tank(_texture,sf::IntRect(432,48,42,46)){
-=======
-gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window}{
->>>>>>> ff510c32e8fe34d77acf326abdc7ef2e9624d6de
+                                               _tank(_texture,sf::IntRect(432,48,42,46)),
+                                               _current_move{0}{
     _texture.loadFromFile("../team-triangle-eduapp/assets/Tanks/Spritesheet/allSprites_default.png");
+    _tank.setOrigin(21,23);
+    _tank.setPosition(32,32);
 
     _tiles.emplace_back(new tile(0, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass1.png", "grass"));
     _tiles.emplace_back(new tile(1, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadNorth.png", "road"));
@@ -19,8 +20,73 @@ gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window
 
 }
 
-void gameplay::update(std::unique_ptr<game_state>&) {
+int gameplay::move_tank(char dir, int current_move)
+{
+    int delta_x = 0;
+    int delta_y = 0;
+    int delta_r = 0;
+    int current_rotation = _tank.getRotation();
+    if (current_rotation >= 360){
+        current_rotation = current_rotation%360;
+        _tank.setRotation(current_rotation);
+    }
+    switch(dir){
+        case 'u':
+        case 'U':
+            if(current_rotation == 180){
+                delta_y = -1;
+            }else{
+                if(current_rotation < 180){
+                    delta_r = 2;
+                }else{
+                    delta_r = -2;
+                }
+            }
+            break;
+        case 'd':
+        case 'D':
+            if(current_rotation == 0){
+                delta_y = 1;
+            }else{
+                if(current_rotation < 0){
+                    delta_r = 2;
+                }else{
+                    delta_r = -2;
+                }
+            }
+            break;
+        case 'l':
+        case 'L':
+            if(current_rotation == 90){
+                delta_x = -1;
+            }else{
+                if(current_rotation%90 > 180){
+                    delta_r = 2;
+                }else{
+                    delta_r = -2;
+                }
+            }
+            break;
+        case 'r':
+        case 'R':
+            if(current_rotation == 270){
+                delta_x = 1;
+            }else{
+                if(current_rotation%270 > 180){
+                    delta_r = 2;
+                }else{
+                    delta_r = -2;
+                }
+            }
+            break;
+    }
 
+    _tank.setRotation(current_rotation+delta_r);
+    _tank.setPosition((_tank.getPosition().x)+delta_x, (_tank.getPosition().y)+delta_y);
+    return current_move+ abs(delta_x)+ abs(delta_y);
+}
+
+void gameplay::update(std::unique_ptr<game_state>&) {
 
     int tile_height = 5;
     int tile_width = 5;
@@ -38,8 +104,18 @@ void gameplay::update(std::unique_ptr<game_state>&) {
         }
     }
 
-    //tank.setPosition(sf::Mouse::getPosition(_window).x, sf::Mouse::getPosition(_window).y);
-    _tank.setPosition((_tank.getPosition().x), (_tank.getPosition().y)+5);
+    if(_current_move < 128){
+        _current_move = move_tank('d', _current_move);
+    }else{
+        if(_current_move < 192){
+            _current_move = move_tank('r', _current_move);
+        }else{
+            if(_current_move < 256){
+                _current_move = move_tank('u', _current_move);
+            }
+        }
+    }
+
     _window.draw(_tank);
     _window.display();
 }
