@@ -37,7 +37,7 @@ level_menu::menu_item::menu_item(b2World& world,
 }
 
 level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)) {
-    pt::ptree root;
+   auto root = pt::ptree();
     pt::read_json("../team-triangle-eduapp/levels/levels.json", root);
 
     int x = 2;

@@ -79,7 +79,7 @@ main_menu::main_menu(engine& eng)
     floor_fix_def.friction = 0.7;
     floor_def.position.Set(0, _engine.window().getSize().y / scale - 0.5);
     _world.CreateBody(&floor_def)->CreateFixture(&floor_fix_def);
-
+    std::cout<< _engine.window().getSize().y;
     auto wall_def = b2BodyDef();
     auto wall_shape = b2PolygonShape();
     auto wall_fix_def = b2FixtureDef();
