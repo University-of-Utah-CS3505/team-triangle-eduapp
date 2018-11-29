@@ -50,7 +50,7 @@ main_menu::main_menu(engine& eng)
 
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/play_button.png",
-                        [this]() {},
+                        [this]() { _to_state = std::make_unique<gameplay>(_engine.window()); },
                         -2,
                         2,
                         0.5);
@@ -58,14 +58,14 @@ main_menu::main_menu(engine& eng)
     _items.emplace_back(
             _world,
             "../team-triangle-eduapp/assets/levels_button.png",
-            [this]() { _to_state = std::make_unique<gameplay>(_engine.window()); },
+            [this]() { _to_state = std::make_unique<level_menu>(_engine.window()); },
             -4,
             5,
             1);
 
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/quit_button.png",
-                        [this]() {},
+                        [this]() { _engine.window().close(); },
                         -2,
                         8,
                         5.15);
@@ -75,7 +75,7 @@ main_menu::main_menu(engine& eng)
     auto floor_fix_def = b2FixtureDef();
     floor_shape.SetAsBox(_engine.window().getSize().x / scale, 0);
     floor_fix_def.shape = &floor_shape;
-    floor_fix_def.friction = 0.5;
+    floor_fix_def.friction = 0.7;
     floor_def.position.Set(0, _engine.window().getSize().y / scale - 0.5);
     _world.CreateBody(&floor_def)->CreateFixture(&floor_fix_def);
 
