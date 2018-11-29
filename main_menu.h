@@ -1,9 +1,9 @@
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
+#include "engine.h"
 #include "game_state.h"
 #include <Box2D/Box2D.h>
-#include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -11,10 +11,10 @@
 
 class main_menu : public game_state {
 public:
-    main_menu(sf::RenderWindow& window);
+    main_menu(engine&);
     ~main_menu() override;
 
-    void update(std::unique_ptr<game_state>&) override;
+    std::unique_ptr<game_state> update() override;
 
 private:
     struct menu_item {
@@ -32,7 +32,7 @@ private:
     };
 
     std::vector<menu_item> _items;
-    sf::RenderWindow& _window;
+    engine& _engine;
     b2World _world;
 };
 

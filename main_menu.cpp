@@ -37,18 +37,19 @@ main_menu::menu_item::menu_item(b2World& world,
     body->SetTransform(b2Vec2(x, y), r);
 }
 
-main_menu::main_menu(sf::RenderWindow& window)
-    : _window(window), _world(b2Vec2(0.f, 10.f)) {
+main_menu::main_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)) {
     // TODO this is a bad global
-    if (_window.getSize().x <= 1280) {
+    if (_engine.window().getSize().x <= 1280) {
         scale = 82.0;
     }
+
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/play_button.png",
                         []() { return false; },
                         -2,
                         2,
                         0.5);
+
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/levels_button.png",
                         []() { return false; },
@@ -66,32 +67,31 @@ main_menu::main_menu(sf::RenderWindow& window)
     auto floor_def = b2BodyDef();
     auto floor_shape = b2PolygonShape();
     auto floor_fix_def = b2FixtureDef();
-    floor_shape.SetAsBox(_window.getSize().x / scale, 0);
+    floor_shape.SetAsBox(_engine.window().getSize().x / scale, 0);
     floor_fix_def.shape = &floor_shape;
     floor_fix_def.friction = 0.5;
-    floor_def.position.Set(0, _window.getSize().y / scale - 0.5);
+    floor_def.position.Set(0, _engine.window().getSize().y / scale - 0.5);
     _world.CreateBody(&floor_def)->CreateFixture(&floor_fix_def);
 
     auto wall_def = b2BodyDef();
     auto wall_shape = b2PolygonShape();
     auto wall_fix_def = b2FixtureDef();
-    wall_shape.SetAsBox(_window.getSize().x / scale, 0);
+    wall_shape.SetAsBox(_engine.window().getSize().x / scale, 0);
     wall_fix_def.shape = &wall_shape;
     wall_fix_def.friction = 0.5;
-    wall_def.position.Set(_window.getSize().x / scale - 0.5, 0);
+    wall_def.position.Set(_engine.window().getSize().x / scale - 0.5, 0);
     _world.CreateBody(&wall_def)->CreateFixture(&wall_fix_def);
 }
 
 main_menu::~main_menu() {}
 
-void main_menu::update(std::unique_ptr<game_state>&) {
-    _window.clear(sf::Color::Cyan);
+std::unique_ptr<game_state> main_menu::update() {
+    _engine.window().clear(sf::Color::Cyan);
     _world.Step(1 / 60.0f, 1, 1);
     for (auto& item : _items) {
         auto pos = item.body->GetPosition();
         item.sprite.setPosition(pos.x * scale, pos.y * scale);
         item.sprite.setRotation(item.body->GetAngle() * deg_radian_conv_factor);
-        _window.draw(item.sprite);
+        _engine.window().draw(item.sprite);
     }
-    _window.display();
 }

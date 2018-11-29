@@ -7,7 +7,7 @@ class game_state {
 public:
     virtual ~game_state() = default;
 
-    virtual void update(std::unique_ptr<game_state>&) = 0;
+    virtual std::unique_ptr<game_state> update() = 0;
 };
 
 #endif // GAME_STATE_H
