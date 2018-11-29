@@ -86,7 +86,7 @@ int gameplay::move_tank(char dir, int current_move)
     return current_move+ abs(delta_x)+ abs(delta_y);
 }
 
-void gameplay::update(std::unique_ptr<game_state>&) {
+std::unique_ptr<game_state> gameplay::update() {
 
     int tile_height = 5;
     int tile_width = 5;

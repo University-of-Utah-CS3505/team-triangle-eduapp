@@ -14,7 +14,7 @@ class level_menu : public game_state
 public:
     level_menu(sf::RenderWindow& window);
     ~level_menu() override;
-    void update(std::unique_ptr<game_state>&) override;
+    std::unique_ptr<game_state> update() override;
 
 private:
     struct menu_item {

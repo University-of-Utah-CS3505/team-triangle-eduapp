@@ -35,7 +35,10 @@ event_handle engine::add_event_listener(
             std::move(listener));
     _event_handlers[type].push_back(std::weak_ptr(handle));
     return handle;
+
 }
+
+ sf::RenderWindow& engine::window(){return _window;}
 
 void engine::run() {
     while (_window.isOpen()) {

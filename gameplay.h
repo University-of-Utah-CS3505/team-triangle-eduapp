@@ -11,7 +11,7 @@ public:
     gameplay(sf::RenderWindow& window);
 
     int move_tank(char dir, int current_move);
-    void update(std::unique_ptr<game_state>&) override;
+    std::unique_ptr<game_state> update() override;
 
 private:
     textedit _editor;

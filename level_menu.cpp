@@ -72,7 +72,7 @@ level_menu::level_menu(sf::RenderWindow& window)
 
 level_menu::~level_menu(){}
 
-void level_menu::update(std::unique_ptr<game_state>&){
+std::unique_ptr<game_state> level_menu::update(){
     _window.clear(sf::Color::Black);
     _world.Step(1/60.0f,1,1);
     for(auto& item:_items){
