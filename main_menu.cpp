@@ -1,11 +1,12 @@
 #include "main_menu.h"
 
+#include "game_state.h"
+#include "level_menu.h"
+#include "pre_game_options.h"
 #include <QDebug>
 #include <SFML/Graphics.hpp>
-#include <game_state.h>
 #include <iostream>
 #include <memory>
-#include <pre_game_options.h>
 
 const auto deg_radian_conv_factor = 57.2957795130823208767981548;
 
@@ -13,7 +14,7 @@ auto scale = 100.0;
 
 main_menu::menu_item::menu_item(b2World& world,
                                 const std::string& tex_path,
-                                std::function<bool()> f,
+                                std::function<void()> f,
                                 float x,
                                 float y,
                                 float r)
@@ -37,7 +38,11 @@ main_menu::menu_item::menu_item(b2World& world,
     body->SetTransform(b2Vec2(x, y), r);
 }
 
-main_menu::main_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)) {
+main_menu::main_menu(engine& eng)
+    : _engine(eng), _world(b2Vec2(0.f, 10.f)),
+      _click_handle(_engine.add_event_listener(
+              sf::Event::MouseButtonPressed,
+              [this](auto e) { return _handle_click(e); })) {
     // TODO this is a bad global
     if (_engine.window().getSize().x <= 1280) {
         scale = 82.0;
@@ -45,21 +50,22 @@ main_menu::main_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)) {
 
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/play_button.png",
-                        []() { return false; },
+                        [this]() {},
                         -2,
                         2,
                         0.5);
 
-    _items.emplace_back(_world,
-                        "../team-triangle-eduapp/assets/levels_button.png",
-                        []() { return false; },
-                        -4,
-                        5,
-                        1);
+    _items.emplace_back(
+            _world,
+            "../team-triangle-eduapp/assets/levels_button.png",
+            [this]() { _to_state = std::make_unique<level_menu>(); },
+            -4,
+            5,
+            1);
 
     _items.emplace_back(_world,
                         "../team-triangle-eduapp/assets/quit_button.png",
-                        []() { return false; },
+                        [this]() {},
                         -2,
                         8,
                         5.15);
@@ -94,4 +100,16 @@ std::unique_ptr<game_state> main_menu::update() {
         item.sprite.setRotation(item.body->GetAngle() * deg_radian_conv_factor);
         _engine.window().draw(item.sprite);
     }
+    return std::move(_to_state);
+}
+
+bool main_menu::_handle_click(sf::Event e) {
+    for (auto& item : _items) {
+        if (item.body->GetFixtureList()->TestPoint(
+                    b2Vec2(e.mouseButton.x / scale, e.mouseButton.y / scale))) {
+            item.on_press();
+            return true;
+        }
+    }
+    return false;
 }

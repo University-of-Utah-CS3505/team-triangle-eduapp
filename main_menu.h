@@ -17,10 +17,12 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
+    bool handle_click(sf::Event);
+
     struct menu_item {
         menu_item(b2World& world,
                   const std::string& tex_path,
-                  std::function<bool()> on_press,
+                  std::function<void()> on_press,
                   float x,
                   float y,
                   float r);
@@ -28,12 +30,16 @@ private:
         std::unique_ptr<sf::Texture> texture;
         sf::Sprite sprite;
         b2Body* body;
-        std::function<bool()> on_press;
+        std::function<void()> on_press;
     };
 
     std::vector<menu_item> _items;
     engine& _engine;
     b2World _world;
+
+    std::unique_ptr<game_state> _to_state;
+
+    event_handle _click_handle;
 };
 
 #endif // MAIN_MENU_H
