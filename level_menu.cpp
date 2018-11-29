@@ -8,7 +8,7 @@ namespace pt = boost::property_tree;
 
 const auto deg_radian_conv_factor = 0.017453292519943295769236907;
 
-const auto scale = 75.0;
+const auto scale = 100.0;
 
 level_menu::menu_item::menu_item(b2World& world,
                                  const std::string& tex_path,
@@ -32,22 +32,24 @@ level_menu::menu_item::menu_item(b2World& world,
     fix_def.shape = &shape;
     body = world.CreateBody(&body_def);
     body->CreateFixture(&fix_def);
-    body->ApplyLinearImpulse(b2Vec2(0, 0), body_def.position, true);
+    //body->ApplyLinearImpulse(b2Vec2(50, -10), body_def.position, true);
     body->SetTransform(b2Vec2(x, y), r);
 }
 
-level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 1.f)) {
+level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)) {
     pt::ptree root;
     pt::read_json("../team-triangle-eduapp/levels/levels.json", root);
 
+    int x = 2;
     for (pt::ptree::value_type& v : root.get_child("levels")) {
         std::string s = v.second.data();
         _items.emplace_back(_world,
                             "../team-triangle-eduapp/assets/level.png",
                             []() { return false; },
+                            x,
                             2,
-                            2,
-                            1);
+                            0);
+        x+=2;
     }
 
     auto floor_def = b2BodyDef();
