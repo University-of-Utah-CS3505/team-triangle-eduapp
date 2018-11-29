@@ -8,6 +8,7 @@
 #include <memory>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Box2D.h>
+#include "tile_set_generator.h"
 
 class level_menu : public game_state
 {

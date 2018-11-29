@@ -33,7 +33,8 @@ SOURCES += \
     textedit.cpp \
     engine.cpp \
     level_menu.cpp \
-    tile.cpp
+    tile.cpp \
+    tile_set_generator.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -43,7 +44,8 @@ HEADERS += \
     textedit.h \
     engine.h \
     level_menu.h \
-    tile.h
+    tile.h \
+    tile_set_generator.h
 
 FORMS += \
     pre_game_options.ui

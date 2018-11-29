@@ -3,6 +3,7 @@
 #include <vector>
 #include <QDebug>
 #include <stdlib.h>
+#include <boost/multi_array.hpp>
 gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window},
                                                _tank(_texture,sf::IntRect(432,48,42,46)),
                                                _current_move{0}{
@@ -17,6 +18,7 @@ gameplay::gameplay(sf::RenderWindow& window) : _editor{12, 3, 3}, _window{window
     _tiles.emplace_back(new tile(4, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerLR.png", "road"));
     _tiles.emplace_back(new tile(5, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerUL.png", "road"));
     _tiles.emplace_back(new tile(6, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerUR.png", "road"));
+    _tiles.emplace_back(new tile(7, "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeGreen_large.png", "tree"));
 
 }
 

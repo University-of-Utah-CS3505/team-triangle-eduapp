@@ -13,6 +13,9 @@
 #include <vector>
 #include "level_menu.h"
 
+//DEBUG
+#include "tile_set_generator.h"
+
 typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 
 std::optional<launch_options> launch_dialog(int argc, char** argv) {
@@ -25,6 +28,12 @@ std::optional<launch_options> launch_dialog(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
+
+    //SCOTT DEBUG
+    tile_set_generator q;
+    q.tile_set_generate_level(1);
+    //END SCOTT DEBUG
+
     const auto options = launch_dialog(argc, argv);
     // do we set a global config here?
     if (!options) {
@@ -54,7 +63,7 @@ int main(int argc, char** argv) {
                 }
             });
 
-    auto state = std::unique_ptr<game_state>(std::make_unique<gameplay>(window));
+    auto state = std::unique_ptr<game_state>(std::make_unique<main_menu>(window));
     while (window.isOpen()) {
         auto frame_start = std::chrono::high_resolution_clock::now();
         auto event = sf::Event();
