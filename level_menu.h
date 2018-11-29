@@ -1,18 +1,18 @@
 #ifndef LEVEL_MENU_H
 #define LEVEL_MENU_H
 
+#include "engine.h"
 #include "game_state.h"
+#include <Box2D/Box2D.h>
+#include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <memory>
-#include <Box2D/Dynamics/b2Fixture.h>
-#include <Box2D/Box2D.h>
 
-class level_menu : public game_state
-{
+class level_menu : public game_state {
 public:
-    level_menu(sf::RenderWindow& window);
+    level_menu(engine& window);
     ~level_menu() override;
     std::unique_ptr<game_state> update() override;
 
@@ -32,7 +32,7 @@ private:
     };
 
     std::vector<menu_item> _items;
-    sf::RenderWindow& _window;
+    engine& _engine;
     b2World _world;
 };
 

@@ -1,6 +1,6 @@
 #include "main_menu.h"
-#include "gameplay.h"
 #include "game_state.h"
+#include "gameplay.h"
 #include "level_menu.h"
 #include "pre_game_options.h"
 #include <QDebug>
@@ -48,17 +48,18 @@ main_menu::main_menu(engine& eng)
         scale = 82.0;
     }
 
-    _items.emplace_back(_world,
-                        "../team-triangle-eduapp/assets/play_button.png",
-                        [this]() { _to_state = std::make_unique<gameplay>(_engine.window()); },
-                        -2,
-                        2,
-                        0.5);
+    _items.emplace_back(
+            _world,
+            "../team-triangle-eduapp/assets/play_button.png",
+            [this]() { _to_state = std::make_unique<gameplay>(_engine); },
+            -2,
+            2,
+            0.5);
 
     _items.emplace_back(
             _world,
             "../team-triangle-eduapp/assets/levels_button.png",
-            [this]() { _to_state = std::make_unique<level_menu>(_engine.window()); },
+            [this]() { _to_state = std::make_unique<level_menu>(_engine); },
             -4,
             5,
             1);

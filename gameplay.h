@@ -1,6 +1,7 @@
 #ifndef GAMEPLAY_H
 #define GAMEPLAY_H
 
+#include "engine.h"
 #include "game_state.h"
 #include "textedit.h"
 #include "tile.h"
@@ -8,16 +9,16 @@
 
 class gameplay : public game_state {
 public:
-    gameplay(sf::RenderWindow& window);
+    gameplay(engine& window);
 
     int move_tank(char dir, int current_move);
     std::unique_ptr<game_state> update() override;
 
 private:
     textedit _editor;
-    sf::RenderWindow& _window;
+    engine& _engine;
     sf::Texture _texture;
-    std::vector<tile *> _tiles;
+    std::vector<tile*> _tiles;
     sf::Sprite _tank;
     int _current_move;
     // TODO some structure to handle the tile (boost::multi_array or something,
