@@ -17,7 +17,7 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
-    bool handle_click(sf::Event);
+    bool _handle_click(sf::Event);
 
     struct menu_item {
         menu_item(b2World& world,

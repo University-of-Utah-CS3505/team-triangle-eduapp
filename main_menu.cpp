@@ -1,5 +1,5 @@
 #include "main_menu.h"
-
+#include "gameplay.h"
 #include "game_state.h"
 #include "level_menu.h"
 #include "pre_game_options.h"
@@ -58,7 +58,7 @@ main_menu::main_menu(engine& eng)
     _items.emplace_back(
             _world,
             "../team-triangle-eduapp/assets/levels_button.png",
-            [this]() { _to_state = std::make_unique<level_menu>(); },
+            [this]() { _to_state = std::make_unique<gameplay>(_engine.window()); },
             -4,
             5,
             1);
