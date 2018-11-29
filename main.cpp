@@ -11,6 +11,7 @@
 #include <memory>
 #include <thread>
 #include <vector>
+#include "level_menu.h"
 
 typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 
@@ -53,8 +54,7 @@ int main(int argc, char** argv) {
                 }
             });
 
-    auto state =
-            std::unique_ptr<game_state>(std::make_unique<gameplay>(window));
+    auto state = std::unique_ptr<game_state>(std::make_unique<gameplay>(window));
     while (window.isOpen()) {
         auto frame_start = std::chrono::high_resolution_clock::now();
         auto event = sf::Event();

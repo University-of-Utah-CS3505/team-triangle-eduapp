@@ -17,14 +17,21 @@ public:
     void update(std::unique_ptr<game_state>&) override;
 
 private:
-    struct level_menu_item{
-        sf::Texture texture;
+    struct menu_item {
+        menu_item(b2World& world,
+                  const std::string& tex_path,
+                  std::function<bool()> on_press,
+                  float x,
+                  float y,
+                  float r);
+
+        std::unique_ptr<sf::Texture> texture;
         sf::Sprite sprite;
-        b2Body *body;
+        b2Body* body;
         std::function<bool()> on_press;
     };
 
-    std::vector<level_menu_item> _items;
+    std::vector<menu_item> _items;
     sf::RenderWindow& _window;
     b2World _world;
 };
