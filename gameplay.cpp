@@ -5,7 +5,7 @@
 #include <vector>
 
 gameplay::gameplay(engine& eng)
-    : _editor{12, 3, 3}, _engine{eng},
+    : _editor{20, 300, 300}, _engine{eng},
       _tank(_texture, sf::IntRect(432, 48, 42, 46)), _current_move{0} {
     _texture.loadFromFile("../team-triangle-eduapp/assets/Tanks/Spritesheet/"
                           "allSprites_default.png");
@@ -40,6 +40,8 @@ gameplay::gameplay(engine& eng)
                                  "../team-triangle-eduapp/assets/Tanks/PNG/"
                                  "DefaultSize/tileGrass_roadCornerUR.png",
                                  "road"));
+    // editor hard coded for testing
+    _editor.set_text("hello!\nTesting text for enter and space !");
 }
 
 int gameplay::move_tank(char dir, int current_move) {
@@ -139,5 +141,6 @@ std::unique_ptr<game_state> gameplay::update() {
     }
 
     _engine.window().draw(_tank);
+    _engine.window().draw(_editor);
     return nullptr;
 }
