@@ -1,8 +1,6 @@
 {
-	"levels": [
-		"/level2/level2.json",
-		"/level1/level1.json"
-	
-	]
-
+    "levels": [
+	"/level2/level2.json",
+	"/level1/level1.json"
+    ]
 }
