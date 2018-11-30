@@ -5,7 +5,7 @@
 #include <vector>
 
 gameplay::gameplay(engine& eng)
-    : _editor{20, 300, 300}, _engine{eng},
+    : _editor{15, 400, 650}, _engine{eng},
       _tank("../team-triangle-eduapp/assets/Tanks/PNG/"
             "DefaultSize/tank_blue.png") {
 
@@ -38,7 +38,7 @@ gameplay::gameplay(engine& eng)
                                  "DefaultSize/tileGrass_roadCornerUR.png",
                                  "road"));
     // editor hard coded for testing
-    _editor.set_text("hello!\nTesting text for enter and space !");
+    _editor.set_text("hello!\nTesting text for enter and space !\n test cursor position.");
 }
 
 std::unique_ptr<game_state> gameplay::update() {

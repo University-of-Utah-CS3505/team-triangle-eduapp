@@ -1,37 +1,64 @@
 #include "textedit.h"
+#include <QDebug>
 
 textedit::textedit(int font_size, int w, int h) :
-                    _font_size(font_size), _w(w), _h(h), _text(""){
+                    _font_size(font_size), _w(w), _h(h),
+                     _cursor(font_size) {
     // TODO: need to pull font from main
+    _originx = 350;
+    _originy = 10;
     _font.loadFromFile("../team-triangle-eduapp/arial.ttf");
+    _text.setFont(_font);
+    _text.setFillColor(sf::Color::Black);
+    _text.setCharacterSize(_font_size);
+    _text.setPosition(_originx + MARGIN, _originy + MARGIN);
+    _text.setString("");
 }
 
-void textedit::insert_char(char c) { _text.push_back(c); }
-void textedit::set_text(const std::string& text) { _text = text; }
-std::string textedit::get_text() const { return _text; }
+void textedit::insert_char(char c) {
+    // insert char at last index
+    _text.setString(_text.getString() + c);
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                _text.findCharacterPos(_text.getString().getSize()).y);
+}
+void textedit::set_text(const std::string& text) {
+    // set x, y position of end of text
+    if(_text.getString().getSize() != 0)
+        clear();
+
+    _text.setString(text);
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                _text.findCharacterPos(_text.getString().getSize()).y);
+}
+sf::String textedit::get_text() const { return _text.getString(); }
 void textedit::backspace() {
-    if(_text.size() == 0) return;
-    else _text.pop_back();
+    if(_text.getString().getSize() == 0) return;
+    // remove last index string
+    sf::String tmp_text = _text.getString();
+    tmp_text.erase(_text.getString().getSize() - 1);
+    _text.setString(tmp_text);
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                _text.findCharacterPos(_text.getString().getSize()).y);
 }
 
 void textedit::move_cursor(int x, int y) {
-
+    _cursor.set_position(x, y);
 }
 
-void textedit::clear() { _text.clear(); }
+void textedit::clear() {
+    // clean up every text
+    _text.setString("");
+    _cursor.set_position(_originx + MARGIN, _originy + MARGIN);
+}
 
 void textedit::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // will implement more for style later
     sf::RectangleShape rect;
-    rect.setSize(sf::Vector2f(350, 700));
+    rect.setSize(sf::Vector2f(_w, _h));
     rect.setFillColor(sf::Color(255, 255, 255));
-    rect.setPosition(350, 10);
-    sf::Text text;
-    text.setFont(_font);
-    text.setFillColor(sf::Color::Black);
-    text.setString(_text);
-    text.setCharacterSize(_font_size);
-    text.setPosition(360, 30);
+    rect.setPosition(_originx, _originy);
     target.draw(rect);
-    target.draw(text);
+    target.draw(_text);
+    target.draw(_cursor);
+    //target.draw(cursor);
 }
