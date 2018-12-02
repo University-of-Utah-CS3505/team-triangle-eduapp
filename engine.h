@@ -21,14 +21,18 @@ public:
 
     void run();
 
+    const sf::Texture& load_texture(const std::string& path);
+
 private:
-    std::map<sf::Event::EventType,
-             std::vector<std::weak_ptr<std::function<bool(sf::Event)>>>>
+    std::unordered_map<
+            sf::Event::EventType,
+            std::vector<std::weak_ptr<std::function<bool(sf::Event)>>>>
             _event_handlers;
     sf::RenderWindow _window;
     event_handle _esc_quit;
     event_handle _close_quit;
     std::unique_ptr<game_state> _state;
+    std::unordered_map<std::string, sf::Texture> _texture_cache;
 };
 
 #endif // ENGINE_H
