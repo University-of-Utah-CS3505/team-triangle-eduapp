@@ -9,9 +9,11 @@
 #include <stack>
 #include <string>
 
+class gameplay;
+
 class tank : public sf::Drawable {
 public:
-    tank(engine& eng);
+    tank(engine&, sf::Sprite);
     virtual ~tank() override;
 
     class state {
@@ -19,7 +21,7 @@ public:
         virtual ~state();
 
     private:
-        virtual void update(tank&);
+        virtual void update(tank&) = 0;
     };
 
     class rotate : public state {
@@ -28,6 +30,8 @@ public:
 
     private:
         void update(tank&) override;
+        bool _is_right;
+        int _progress;
     };
 
     class move : public state {
@@ -36,6 +40,8 @@ public:
 
     private:
         void update(tank&) override;
+        bool _is_forward;
+        int _progress;
     };
 
     class rot_turret : public state {
@@ -44,6 +50,7 @@ public:
 
     private:
         void update(tank&) override;
+        bool _end_angle;
     };
 
     class shoot : public state {
@@ -55,6 +62,8 @@ public:
     };
 
     void run_state(std::unique_ptr<state>);
+
+    void update();
 
     void wait_until_idle();
 

@@ -1,5 +1,27 @@
 #include "tank.h"
-#include <stdlib.h>
+
+tank::tank(engine& eng, sf::Sprite sprite) : _engine(eng), _sprite(sprite){};
+tank::~tank() = default;
+
+tank::state::~state() = default;
+
+tank::rotate::rotate(bool is_right) : _is_right(is_right), _progress(0) {}
+
+void tank::rotate::update(tank& t) {
+    if (++_progress < 9) {
+        t._sprite.rotate(_is_right ? 10 : -10);
+    } else {
+        t.run_state(nullptr);
+    }
+};
+
+tank::move::move(bool is_forward) : _is_forward(is_forward), _progress(0) {}
+
+void tank::move::update(tank& t) {}
+
+tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {}
+
+void tank::rot_turret::update(tank& t) {}
 
 /*tank::tank(std::string img) : _sprite(_texture, sf::IntRect(0, 0, 42, 46)) {
     _texture.loadFromFile(img);
