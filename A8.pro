@@ -35,7 +35,8 @@ SOURCES += \
     level_menu.cpp \
     tile.cpp \
     tank.cpp \
-    cursor.cpp
+    cursor.cpp \
+    level.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -47,7 +48,8 @@ HEADERS += \
     level_menu.h \
     tile.h \
     tank.h \
-    cursor.h
+    cursor.h \
+    level.h
 
 FORMS += \
     pre_game_options.ui
