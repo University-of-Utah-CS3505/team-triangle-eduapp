@@ -49,7 +49,7 @@ std::unique_ptr<game_state> gameplay::update() {
                           {1, 0, 0, 0, 0},
                           {6, 2, 2, 3, 0},
                           {0, 0, 0, 1, 0},
-                          {0, 0, 0, 1, 0}};
+                          {0, 0, 0, 1, 0}};//get boost array
 
     _engine.window().clear();
     for (int i = 0; i < tile_height; i++) {

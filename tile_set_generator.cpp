@@ -1,3 +1,8 @@
+//DEPRECATED, REPLACED WITH LEVEL.CPP
+//DEPRECATED, REPLACED WITH LEVEL.CPP
+//DEPRECATED, REPLACED WITH LEVEL.CPP
+//DEPRECATED, REPLACED WITH LEVEL.CPP
+//DEPRECATED, REPLACED WITH LEVEL.CPP
 #include "tile_set_generator.h"
 #include <boost/foreach.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -18,7 +23,7 @@ tile_set_generator::tile_set_generator() {
 
 // **Seems like texture is not the right return here, maybe pass in a
 // tank and tiles map and set, void return**
-
+//BIG shoutout to chase vanbuskirk, wrote most of this
 boost::multi_array<int,2> tile_set_generator::tile_set_generate_level(int level) {
     boost::multi_array<int, 2> _levels_boost;
     auto texture = sf::Texture {};
