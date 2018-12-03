@@ -1,4 +1,5 @@
 #include "tank.h"
+#include <assert.h>
 
 tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret)
     : _engine(eng), _sprite(sprite), _turret(turret) {}
@@ -9,12 +10,12 @@ tank::state::~state() = default;
 
 tank::rotate::rotate(bool is_right) : _is_right(is_right), _progress(0) {}
 
-void tank::rotate::update(tank& t) {
+bool tank::rotate::update(tank& t) {
     if (++_progress < 9) {
         t._sprite.rotate(_is_right ? 10 : -10);
         t._turret.rotate(_is_right ? 10 : -10);
     } else {
-        t.run_state(nullptr);
+        return true;
     }
 
     int current_rotation = t._turret.getRotation();
@@ -32,11 +33,12 @@ void tank::rotate::update(tank& t) {
         if (t._sprite.getRotation() < 0)
             t._sprite.setRotation(current_rotation + 360);
     }
+    return false;
 };
 
 tank::move::move(bool is_forward) : _is_forward(is_forward), _progress(0) {}
 
-void tank::move::update(tank& t) {
+bool tank::move::update(tank& t) {
     if (++_progress < 32) {
         switch ((int)t._sprite.getRotation()) {
         case (0 || 360):
@@ -59,20 +61,21 @@ void tank::move::update(tank& t) {
             break;
         }
     } else {
-        t.run_state(nullptr);
+        return true;
     }
+    return false;
 }
 
 tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {}
 
-void tank::rot_turret::update(tank& t) {
+bool tank::rot_turret::update(tank& t) {
     if (_end_angle < t._turret.getRotation()) {
         t._turret.rotate(-1);
     } else {
         if (_end_angle > t._turret.getRotation()) {
             t._turret.rotate(1);
         } else {
-            t.run_state(nullptr);
+            return true;
         }
     }
 
@@ -83,6 +86,7 @@ void tank::rot_turret::update(tank& t) {
         if (current_rotation < 0)
             t._turret.setRotation(current_rotation + 360);
     }
+    return false;
 }
 
 void tank::run_state(std::unique_ptr<state> state) {

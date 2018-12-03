@@ -22,7 +22,7 @@ public:
         virtual ~state();
 
     private:
-        virtual void update(tank&) = 0;
+        virtual bool update(tank&) = 0;
         friend class tank;
     };
 
@@ -31,7 +31,7 @@ public:
         rotate(bool is_right);
 
     private:
-        void update(tank&) override;
+        bool update(tank&) override;
         bool _is_right;
         int _progress;
     };
@@ -41,7 +41,7 @@ public:
         move(bool is_forward);
 
     private:
-        void update(tank&) override;
+        bool update(tank&) override;
         bool _is_forward;
         int _progress;
     };
@@ -51,7 +51,7 @@ public:
         rot_turret(float angle);
 
     private:
-        void update(tank&) override;
+        bool update(tank&) override;
         bool _end_angle;
     };
 
@@ -60,12 +60,12 @@ public:
         shoot();
 
     private:
-        void update(tank&) override;
+        bool update(tank&) override;
     };
 
     void run_state(std::unique_ptr<state>);
 
-    bool update();
+    void update();
 
     void wait_until_idle();
 
