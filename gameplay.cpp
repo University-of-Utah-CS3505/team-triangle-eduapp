@@ -5,9 +5,7 @@
 #include <vector>
 
 gameplay::gameplay(engine& eng)
-    : _editor{20, 300, 300}, _engine{eng},
-      _tank("../team-triangle-eduapp/assets/Tanks/PNG/"
-            "DefaultSize/tank_blue.png") {
+    : _editor{20, 300, 300}, _engine{eng} {
 
     _tiles.emplace_back(new tile(0,
                                  "../team-triangle-eduapp/assets/Tanks/PNG/"
@@ -43,6 +41,8 @@ gameplay::gameplay(engine& eng)
 
 std::unique_ptr<game_state> gameplay::update() {
 
+    //tank test;
+    //test_tank.run_state(tank::move(true));
     int tile_height = 5;
     int tile_width = 5;
     int tile_map[5][5] = {{1, 0, 0, 0, 0},
@@ -60,7 +60,7 @@ std::unique_ptr<game_state> gameplay::update() {
     }
 
 
-    _engine.window().draw(_tank.get_sprite());
+    //_engine.window().draw(_tank.get_sprite());
     _engine.window().draw(_editor);
     return nullptr;
 }
