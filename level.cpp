@@ -5,9 +5,7 @@
 #include <iostream>
 namespace pt = boost::property_tree;
 
-
-Level::Level(int level)
-{
+level::level(int level_index) {
 
     auto root = pt::ptree();
     pt::read_json("../team-triangle-eduapp/levels/levels.json", root);
@@ -15,40 +13,39 @@ Level::Level(int level)
         auto level_path = level.second.data();
         levels_master_list.emplace_back(level_path);
     }
-   load_new_level(level);
+    load_new_level(level_index);
 }
-sf::Texture Level::get_preview()
-{
-//TODO
+sf::Texture level::get_preview() {
+    // TODO
     sf::Texture texture;
     return texture;
 }
-sf::Texture Level:: get_full_texture()
-{
-//TODO
+sf::Texture level::get_full_texture() {
+    // TODO
     sf::Texture texture;
     return texture;
 }
 
-sf::Sprite Level::get_tile_sprite()
-{
+sf::Sprite level::get_tile_sprite() {
     sf::Sprite texture;
     return texture;
 }
-tile Level::get_location_tile_def(int x, int y){
+tile level::get_location_tile_def(int x, int y) {
     int tile_loc = location_matrix[x][y];
-    return tile((x+1)*(y+1), type_defs[tile_loc].first, type_defs[tile_loc].second);
-
+    return tile((x + 1) * (y + 1),
+                type_defs[tile_loc].first,
+                type_defs[tile_loc].second);
 }
 
-void Level::save_level(){
-//TODO, find out if nessesary
+void level::save_level() {
+    // TODO, find out if nessesary
 }
-void Level::load_new_level(int level){
-    location_matrix.resize(boost::extents[0][0]);//Clear matrix, valid according to documentation.
+void level::load_new_level(int level) {
+    location_matrix.resize(boost::extents[0][0]); // Clear matrix, valid
+                                                  // according to documentation.
     type_defs.clear();
 
-    auto texture = sf::Texture {};
+    auto texture = sf::Texture{};
     auto root = pt::ptree();
     auto level_path = levels_master_list[level];
     pt::read_json("../team-triangle-eduapp/levels" + level_path, root);
@@ -67,8 +64,9 @@ void Level::load_new_level(int level){
     for (pt::ptree::value_type& row : root.get_child("tiles")) {
         auto y = 0;
         for (pt::ptree::value_type& tile : row.second) {
-            std::cout<< "coor: " << x << " " << y << " -- val: "
-                      << tile.second.get_value<std::string>() << " -- typedef: "
+            std::cout << "coor: " << x << " " << y
+                      << " -- val: " << tile.second.get_value<std::string>()
+                      << " -- typedef: "
                       << type_defs[tile.second.get_value<int>()].second << " "
                       << type_defs[tile.second.get_value<int>()].first
                       << std::endl;
@@ -77,6 +75,4 @@ void Level::load_new_level(int level){
         }
         x++;
     }
-
 }
-
