@@ -20,19 +20,25 @@ Level::Level(int level)
 sf::Texture Level::get_preview()
 {
 //TODO
+    sf::Texture texture;
+    return texture;
 }
 sf::Texture Level:: get_full_texture()
 {
 //TODO
+    sf::Texture texture;
+    return texture;
 }
 
 sf::Sprite Level::get_tile_sprite()
 {
-//
+    sf::Sprite texture;
+    return texture;
 }
 tile Level::get_location_tile_def(int x, int y){
     int tile_loc = location_matrix[x][y];
     return tile((x+1)*(y+1), type_defs[tile_loc].first, type_defs[tile_loc].second);
+
 }
 
 void Level::save_level(){
