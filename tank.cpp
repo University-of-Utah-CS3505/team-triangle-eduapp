@@ -23,6 +23,27 @@ tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {}
 
 void tank::rot_turret::update(tank& t) {}
 
+void tank::run_state(std::unique_ptr<state> state) {
+    auto lock = std::lock_guard(_mutex);
+    assert(_to_run == nullptr);
+    _to_run = std::move(state);
+}
+
+void tank::update() {
+    auto lock = std::unique_lock(_mutex);
+    lock.lock();
+    if (_to_run && _to_run->update(*this)) {
+        _to_run = nullptr;
+        lock.unlock();
+        _fin_cv.notify_one();
+    }
+}
+
+void tank::wait_until_idle() {
+    auto lock = std::unique_lock(_mutex);
+    _fin_cv.wait(lock);
+}
+
 /*tank::tank(std::string img) : _sprite(_texture, sf::IntRect(0, 0, 42, 46)) {
     _texture.loadFromFile(img);
 

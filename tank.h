@@ -22,6 +22,7 @@ public:
 
     private:
         virtual void update(tank&) = 0;
+        friend class tank;
     };
 
     class rotate : public state {
@@ -73,7 +74,8 @@ private:
     sf::Sprite _sprite;
     sf::Texture _texture;
 
-    std::mutex _to_run_mutex;
+    std::mutex _mutex;
+    std::unique_lock<std::mutex> _lock;
     std::unique_ptr<state> _to_run;
 
     std::condition_variable _fin_cv;
