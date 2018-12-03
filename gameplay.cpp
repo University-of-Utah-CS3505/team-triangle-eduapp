@@ -109,7 +109,11 @@ std::unique_ptr<game_state> gameplay::update() {
 }
 
 bool gameplay::handle_keyboard(sf::Event event){
-    if(event.KeyPressed){
+    qDebug() << event.key.code;
+    qDebug() << sf::Keyboard::BackSpace;
+    if(event.key.code == 8){
+        _editor.backspace();
+    }else{
         _editor.insert_char(event.text.unicode);
         return true;
     }
