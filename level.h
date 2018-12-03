@@ -18,6 +18,8 @@ public:
                        // commands?
     void load_new_level(
             int level); // UNLOADS CURRENT LEVEL, reloads from master list
+    boost::multi_array<int,2> get_location_matrix();
+
 private:
     int tankstart[2]; // x then y
     boost::multi_array<int, 2> location_matrix;

@@ -35,6 +35,8 @@ tile level::get_location_tile_def(int x, int y) {
     return tile((x + 1) * (y + 1),
                 type_defs[tile_loc].first,
                 type_defs[tile_loc].second);
+
+
 }
 
 void level::save_level() {
@@ -76,3 +78,5 @@ void level::load_new_level(int level) {
         x++;
     }
 }
+
+boost::multi_array<int,2> level::get_location_matrix(){return location_matrix;};

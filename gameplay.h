@@ -7,6 +7,7 @@
 #include "textedit.h"
 #include "tile.h"
 #include <SFML/Graphics.hpp>
+#include "level.h"
 
 class gameplay : public game_state {
 public:
@@ -18,6 +19,7 @@ private:
     engine& _engine;
     std::vector<tile*> _tiles;
     tank _tank;
+    level _level;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)
