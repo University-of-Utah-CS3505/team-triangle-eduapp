@@ -81,7 +81,7 @@ private:
 
     std::condition_variable _fin_cv;
 
-    //void draw(sf::RenderTarget&, sf::RenderStates) const override;
+    void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 
 #endif // TANK_H

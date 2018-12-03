@@ -109,3 +109,8 @@ void tank::wait_until_idle() {
     auto lock = std::unique_lock(_mutex);
     _fin_cv.wait(lock);
 }
+
+void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
+    target.draw(_sprite);
+    target.draw(_turret);
+}
