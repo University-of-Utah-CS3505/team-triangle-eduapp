@@ -49,7 +49,7 @@ HEADERS += \
     tile.h \
     tank.h \
     cursor.h \
-    level.h \
+    level.h
 
 FORMS += \
     pre_game_options.ui
