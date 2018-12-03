@@ -14,7 +14,9 @@ gameplay::gameplay(engine& eng)
                                          "DefaultSize/tankBlue_barrel2_outline.png")),
             sf::Sprite( eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
                                          "DefaultSize/bulletBlue1_outline.png"))),
-        _level(0){
+        _level(0), _keyboard_handle(
+                       _engine.add_event_listener(sf::Event::TextEntered,
+                              [this](auto e){return handle_keyboard(e);})){
 
 //    _tiles.emplace_back(new tile(0,
 //                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
@@ -104,4 +106,12 @@ std::unique_ptr<game_state> gameplay::update() {
     _engine.window().draw(_tank);
     _engine.window().draw(_editor);
     return nullptr;
+}
+
+bool gameplay::handle_keyboard(sf::Event event){
+    if(event.KeyPressed){
+        _editor.insert_char(event.text.unicode);
+        return true;
+    }
+    return false;
 }
