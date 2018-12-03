@@ -52,7 +52,7 @@ public:
 
     private:
         bool update(tank&) override;
-        bool _end_angle;
+        float _end_angle;
     };
 
     class shoot : public state {

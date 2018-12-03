@@ -2,7 +2,12 @@
 #include <cassert>
 
 tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret)
-    : _engine(eng), _sprite(sprite), _turret(turret) {}
+    : _engine(eng), _sprite(sprite), _turret(turret) {
+    _sprite.setOrigin(19,19);
+    _turret.setOrigin(6, 5);
+    _sprite.setPosition(32,32);
+    _turret.setPosition(32,32);
+}
 
 tank::~tank() = default;
 
@@ -11,9 +16,9 @@ tank::state::~state() = default;
 tank::rotate::rotate(bool is_right) : _is_right(is_right), _progress(0) {}
 
 bool tank::rotate::update(tank& t) {
-    if (++_progress < 9) {
-        t._sprite.rotate(_is_right ? 10 : -10);
-        t._turret.rotate(_is_right ? 10 : -10);
+    if (++_progress <= 45) {
+        t._sprite.rotate(_is_right ? 2 : -2);
+        t._turret.rotate(_is_right ? 2 : -2);
     } else {
         return true;
     }
@@ -39,23 +44,26 @@ bool tank::rotate::update(tank& t) {
 tank::move::move(bool is_forward) : _is_forward(is_forward), _progress(0) {}
 
 bool tank::move::update(tank& t) {
-    if (++_progress < 32) {
+    int direction = 1;
+    if(!_is_forward)
+        direction = -1;
+    if (++_progress < 64) {
         switch ((int)t._sprite.getRotation()) {
-        case (0 || 360):
-            t._sprite.move(0, 2);
-            t._turret.move(0, 2);
+        case (0):
+            t._sprite.move(0, direction*1);
+            t._turret.move(0, direction*1);
             break;
         case (90):
-            t._sprite.move(-2, 0);
-            t._turret.move(-2, 0);
+            t._sprite.move(direction*-1, 0);
+            t._turret.move(direction*-1, 0);
             break;
         case (180):
-            t._sprite.move(0, -2);
-            t._turret.move(0, -2);
+            t._sprite.move(0, direction*-1);
+            t._turret.move(0, direction*-1);
             break;
         case (270):
-            t._sprite.move(2, 0);
-            t._turret.move(2, 0);
+            t._sprite.move(direction*1, 0);
+            t._turret.move(direction*1, 0);
             break;
         default:
             break;
@@ -66,14 +74,17 @@ bool tank::move::update(tank& t) {
     return false;
 }
 
-tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {}
+tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {
+    _end_angle = (int)_end_angle;
+}
 
 bool tank::rot_turret::update(tank& t) {
-    if (_end_angle < t._turret.getRotation()) {
-        t._turret.rotate(-1);
+    int actual_end_angle = abs(((int)(_end_angle-t._sprite.getRotation())%360));
+    if (actual_end_angle > t._turret.getRotation()) {
+        t._turret.rotate(1);
     } else {
-        if (_end_angle > t._turret.getRotation()) {
-            t._turret.rotate(1);
+        if (actual_end_angle < t._turret.getRotation()) {
+            t._turret.rotate(-1);
         } else {
             return true;
         }

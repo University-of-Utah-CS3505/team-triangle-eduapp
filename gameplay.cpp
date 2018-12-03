@@ -10,8 +10,9 @@ gameplay::gameplay(engine& eng)
       _tank(eng,
             sf::Sprite(
                     eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
-                                     "DefaultSize/tank_blue.png")),
-            sf::Sprite()) {
+                                     "DefaultSize/tankBody_blue.png")),
+            sf::Sprite( eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                         "DefaultSize/tankBlue_barrel2_outline.png"))) {
 
     _tiles.emplace_back(new tile(0,
                                  "../team-triangle-eduapp/assets/Tanks/PNG/"
@@ -47,9 +48,25 @@ gameplay::gameplay(engine& eng)
     auto t = std::thread([this]() {
         _tank.run_state(std::make_unique<tank::move>(true));
         _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rot_turret>(90));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::move>(true));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rot_turret>(270));
+        _tank.wait_until_idle();
         _tank.run_state(std::make_unique<tank::rotate>(false));
         _tank.wait_until_idle();
         _tank.run_state(std::make_unique<tank::move>(true));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rotate>(true));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rotate>(true));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::move>(false));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::move>(false));
+        _tank.wait_until_idle();
+
     });
     t.detach();
 }
