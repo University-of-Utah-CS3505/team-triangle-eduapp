@@ -2,12 +2,16 @@
 #include "tile.h"
 #include <QDebug>
 #include <stdlib.h>
+#include <thread>
 #include <vector>
 
 gameplay::gameplay(engine& eng)
     : _editor{15, 400, 650}, _engine{eng},
-      _tank("../team-triangle-eduapp/assets/Tanks/PNG/"
-            "DefaultSize/tank_blue.png") {
+      _tank(eng,
+            sf::Sprite(
+                    eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                     "DefaultSize/tank_blue.png")),
+            sf::Sprite()) {
 
     _tiles.emplace_back(new tile(0,
                                  "../team-triangle-eduapp/assets/Tanks/PNG/"
@@ -38,18 +42,29 @@ gameplay::gameplay(engine& eng)
                                  "DefaultSize/tileGrass_roadCornerUR.png",
                                  "road"));
     // editor hard coded for testing
-    _editor.set_text("hello!\nTesting text for enter and space !\n test cursor position.");
+    _editor.set_text("hello!\nTesting text for enter and space !\n test cursor "
+                     "position.");
+    auto t = std::thread([this]() {
+        _tank.run_state(std::make_unique<tank::move>(true));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rotate>(false));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::move>(true));
+    });
+    t.detach();
 }
 
 std::unique_ptr<game_state> gameplay::update() {
 
+    // tank test;
+    // test_tank.run_state(tank::move(true));
     int tile_height = 5;
     int tile_width = 5;
     int tile_map[5][5] = {{1, 0, 0, 0, 0},
                           {1, 0, 0, 0, 0},
                           {6, 2, 2, 3, 0},
                           {0, 0, 0, 1, 0},
-                          {0, 0, 0, 1, 0}};//get boost array
+                          {0, 0, 0, 1, 0}}; // get boost array
 
     _engine.window().clear();
     for (int i = 0; i < tile_height; i++) {
@@ -59,8 +74,9 @@ std::unique_ptr<game_state> gameplay::update() {
         }
     }
 
-
-    _engine.window().draw(_tank.get_sprite());
+    //_engine.window().draw(_tank.get_sprite());
+    _tank.update();
+    _engine.window().draw(_tank);
     _engine.window().draw(_editor);
     return nullptr;
 }

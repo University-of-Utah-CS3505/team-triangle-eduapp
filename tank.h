@@ -1,29 +1,87 @@
 #ifndef TANK_H
 #define TANK_H
 
+#include "engine.h"
 #include <SFML/Graphics.hpp>
+#include <atomic>
+#include <condition_variable>
+#include <functional>
+#include <stack>
 #include <string>
 
-class tank
-{
-public:
-    tank(std::string img);
+class gameplay;
 
-    bool rotate(char dir);
-    bool move_forward();
-    bool shoot();
-    void set_position(int x, int y);
-    int get_x();
-    int get_y();
-    sf::Sprite get_sprite();
+class tank : public sf::Drawable {
+public:
+    tank(engine&, sf::Sprite, sf::Sprite);
+    virtual ~tank() override;
+
+    class state {
+    public:
+        friend class tank;
+        virtual ~state();
+
+    private:
+        virtual bool update(tank&) = 0;
+        friend class tank;
+    };
+
+    class rotate : public state {
+    public:
+        rotate(bool is_right);
+
+    private:
+        bool update(tank&) override;
+        bool _is_right;
+        int _progress;
+    };
+
+    class move : public state {
+    public:
+        move(bool is_forward);
+
+    private:
+        bool update(tank&) override;
+        bool _is_forward;
+        int _progress;
+    };
+
+    class rot_turret : public state {
+    public:
+        rot_turret(float angle);
+
+    private:
+        bool update(tank&) override;
+        bool _end_angle;
+    };
+
+    class shoot : public state {
+    public:
+        shoot();
+
+    private:
+        bool update(tank&) override;
+    };
+
+    void run_state(std::unique_ptr<state>);
+
+    void update();
+
+    void wait_until_idle();
 
 private:
-    int _x;
-    int _y;
-    sf::Sprite _sprite;
-    sf::Texture _texture;
-    int _current_move_pos;
+    engine& _engine;
 
+    sf::Sprite _sprite;
+    sf::Sprite _turret;
+
+    std::mutex _mutex;
+    std::unique_lock<std::mutex> _lock;
+    std::unique_ptr<state> _to_run;
+
+    std::condition_variable _fin_cv;
+
+    void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 
 #endif // TANK_H

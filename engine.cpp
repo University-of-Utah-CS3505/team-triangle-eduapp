@@ -35,10 +35,9 @@ event_handle engine::add_event_listener(
             std::move(listener));
     _event_handlers[type].push_back(std::weak_ptr(handle));
     return handle;
-
 }
 
- sf::RenderWindow& engine::window(){return _window;}
+sf::RenderWindow& engine::window() { return _window; }
 
 void engine::run() {
     while (_window.isOpen()) {
@@ -65,4 +64,11 @@ void engine::run() {
         _window.display();
         std::this_thread::sleep_until(frame_start + frame_duration(1));
     }
+}
+
+const sf::Texture& engine::load_texture(const std::string& path) {
+    if (_texture_cache.find(path) == _texture_cache.end()) {
+        _texture_cache[path].loadFromFile(path);
+    }
+    return _texture_cache[path];
 }

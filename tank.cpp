@@ -1,120 +1,115 @@
-#include <stdlib.h>
 #include "tank.h"
+#include <cassert>
 
+tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret)
+    : _engine(eng), _sprite(sprite), _turret(turret) {}
 
-tank::tank(std::string img):_sprite(_texture,sf::IntRect(0,0,42,46)){
-    _texture.loadFromFile(img);
+tank::~tank() = default;
 
-    _sprite.setOrigin(21, 23);
-    _sprite.setPosition(32, 32);
-}
+tank::state::~state() = default;
 
-bool tank::rotate(char dir){
-    int rotation = _sprite.getRotation();
-    switch (dir) {
-    case 'u':
-    case 'U':     //180
-        if(rotation != 180){
-            if (rotation < 180) {
-                rotation += 2;
-            } else {
-                rotation -= 2;
-            }
-        }
-        break;
-    case 'd':
-    case 'D': //0
-        if(rotation != 0){
-            if(rotation > 180){
-                rotation += 2;
-            }else{
-                rotation -= 2;
-            }
-        }
-        break;
-    case 'l':
-    case 'L': //90
-        if(rotation != 90){
-            if(rotation > 270 || rotation < 90){
-                rotation += 2;
-            }else{
-                rotation -= 2;
-            }
-        }
-        break;
-    case 'r':
-    case 'R': //270
-        if(rotation != 270){
-            if(rotation < 90 || rotation > 270){
-                rotation -= 2;
-            }else{
-                rotation += 2;
-            }
-        }
-        break;
-    }
+tank::rotate::rotate(bool is_right) : _is_right(is_right), _progress(0) {}
 
-    //Change rotation to between 0 and 360
-    if(rotation >= 360){
-        rotation = rotation%360;
-    }else{
-        if(rotation < 0){
-            rotation = 360 + rotation;
-        }
-    }
-    _sprite.setRotation(rotation);
-
-    if(_current_move_pos = 90){
-        _current_move_pos = 0;
+bool tank::rotate::update(tank& t) {
+    if (++_progress < 9) {
+        t._sprite.rotate(_is_right ? 10 : -10);
+        t._turret.rotate(_is_right ? 10 : -10);
+    } else {
         return true;
     }
-    _current_move_pos += 2;
+
+    int current_rotation = t._turret.getRotation();
+    if (current_rotation >= 360) {
+        t._turret.setRotation(current_rotation % 360);
+    } else {
+        if (current_rotation < 0)
+            t._turret.setRotation(current_rotation + 360);
+    }
+
+    current_rotation = t._sprite.getRotation();
+    if (current_rotation >= 360) {
+        t._sprite.setRotation(current_rotation % 360);
+    } else {
+        if (t._sprite.getRotation() < 0)
+            t._sprite.setRotation(current_rotation + 360);
+    }
+    return false;
+};
+
+tank::move::move(bool is_forward) : _is_forward(is_forward), _progress(0) {}
+
+bool tank::move::update(tank& t) {
+    if (++_progress < 32) {
+        switch ((int)t._sprite.getRotation()) {
+        case (0 || 360):
+            t._sprite.move(0, 2);
+            t._turret.move(0, 2);
+            break;
+        case (90):
+            t._sprite.move(-2, 0);
+            t._turret.move(-2, 0);
+            break;
+        case (180):
+            t._sprite.move(0, -2);
+            t._turret.move(0, -2);
+            break;
+        case (270):
+            t._sprite.move(2, 0);
+            t._turret.move(2, 0);
+            break;
+        default:
+            break;
+        }
+    } else {
+        return true;
+    }
     return false;
 }
 
-bool tank::move_forward(){
-    int dx = 0;
-    int dy = 0;
+tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {}
 
-    switch ((int)_sprite.getRotation()) {
-    case 0:
-        dy = 1;
-        break;
-    case 90:
-        dx = -1;
-        break;
-    case 180:
-        dy = -1;
-        break;
-    case 270:
-        dx = 1;
-        break;
-    default:
-        break;
+bool tank::rot_turret::update(tank& t) {
+    if (_end_angle < t._turret.getRotation()) {
+        t._turret.rotate(-1);
+    } else {
+        if (_end_angle > t._turret.getRotation()) {
+            t._turret.rotate(1);
+        } else {
+            return true;
+        }
     }
 
-    _sprite.setPosition((_sprite.getPosition().x) + dx,
-                      (_sprite.getPosition().y) + dy);
-    if(_current_move_pos = 64){
-        _current_move_pos = 0;
-        return true;
+    int current_rotation = t._turret.getRotation();
+    if (current_rotation >= 360) {
+        t._turret.setRotation(current_rotation % 360);
+    } else {
+        if (current_rotation < 0)
+            t._turret.setRotation(current_rotation + 360);
     }
-    _current_move_pos += abs(dx) + abs(dy);
     return false;
 }
 
-bool tank::shoot(){
-
+void tank::run_state(std::unique_ptr<state> state) {
+    assert(state != nullptr);
+    auto lock = std::lock_guard(_mutex);
+    _to_run = std::move(state);
 }
 
-void tank::set_position(int x, int y){
-    _sprite.setPosition(x,y);
+void tank::update() {
+    auto lock = std::unique_lock(_mutex);
+    if (_to_run && _to_run->update(*this)) {
+        _to_run = nullptr;
+        lock.unlock();
+        _fin_cv.notify_all();
+    }
 }
 
-int tank::get_x(){ return _x; }
+void tank::wait_until_idle() {
+    auto lock = std::unique_lock(_mutex);
+    _fin_cv.wait(lock, [this] { return _to_run == nullptr; });
+}
 
-int tank::get_y(){ return _y; }
-
-sf::Sprite tank::get_sprite(){
-    return _sprite;
+void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
+    target.draw(_sprite);
+    target.draw(_turret);
 }
