@@ -14,7 +14,6 @@ public:
      void move(int x, int y);
      void set_direction(float x, float y);
      void set_rotation(float);
-
      sf::Vector2f get_location();
      bool show_explosion();
 private:

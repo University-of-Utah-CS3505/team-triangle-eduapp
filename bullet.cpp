@@ -38,16 +38,13 @@ bool bullet::show_explosion() {
     return false;
 }
 
-bool bullet::update()
-{
-
+bool bullet::update() {
     if((_sprite.getPosition().x > 320 || _sprite.getPosition().x < 0) ||(_sprite.getPosition().y > 320 || _sprite.getPosition().y < 0)){
         return show_explosion();
     }else{
         _sprite.move(_direction);
         return false;
     }
-
 }
 
 void bullet::set_location(sf::Vector2f pos) { _sprite.setPosition(pos); }
@@ -62,7 +59,7 @@ void bullet::draw(sf::RenderTarget& target, sf::RenderStates) const {
     if(_show_explosion){
         _explosion[_progress/10]->setPosition(_sprite.getPosition());
         target.draw(*_explosion[(_progress/10)]);
-    }else{
+    } else {
         target.draw(_sprite);
     }
 }

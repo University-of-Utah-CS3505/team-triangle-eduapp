@@ -50,7 +50,7 @@ bool tank::move::update(tank& t) {
     int direction = 1;
     if(!_is_forward)
         direction = -1;
-    if (++_progress < 64) {
+    if (++_progress <= 64) {
         switch ((int)t._sprite.getRotation()) {
         case (0):
             t._sprite.move(0, direction*1);
@@ -145,5 +145,4 @@ void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
     target.draw(_bullet);
     target.draw(_sprite);
     target.draw(_turret);
-
 }
