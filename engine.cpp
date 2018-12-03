@@ -60,7 +60,6 @@ void engine::run() {
         if (_new_state) {
             _state.swap(_new_state);
         }
-
         _window.display();
         std::this_thread::sleep_until(frame_start + frame_duration(1));
     }

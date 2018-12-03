@@ -2,6 +2,7 @@
 #define TANK_H
 
 #include "engine.h"
+#include "bullet.h"
 #include <SFML/Graphics.hpp>
 #include <atomic>
 #include <condition_variable>
@@ -13,7 +14,7 @@ class gameplay;
 
 class tank : public sf::Drawable {
 public:
-    tank(engine&, sf::Sprite, sf::Sprite);
+    tank(engine&, sf::Sprite, sf::Sprite, sf::Sprite);
     virtual ~tank() override;
 
     class state {
@@ -74,6 +75,8 @@ private:
 
     sf::Sprite _sprite;
     sf::Sprite _turret;
+
+    bullet _bullet;
 
     std::mutex _mutex;
     std::unique_lock<std::mutex> _lock;

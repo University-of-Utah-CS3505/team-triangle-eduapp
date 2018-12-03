@@ -8,11 +8,12 @@
 gameplay::gameplay(engine& eng)
     : _editor{15, 400, 650}, _engine{eng},
       _tank(eng,
-            sf::Sprite(
-                    eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
-                                     "DefaultSize/tankBody_blue.png")),
             sf::Sprite( eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
-                                         "DefaultSize/tankBlue_barrel2_outline.png"))) {
+                                         "DefaultSize/tankBody_blue.png")),
+            sf::Sprite( eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                         "DefaultSize/tankBlue_barrel2_outline.png")),
+            sf::Sprite( eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                         "DefaultSize/bulletBlue1_outline.png"))) {
 
     _tiles.emplace_back(new tile(0,
                                  "../team-triangle-eduapp/assets/Tanks/PNG/"
@@ -66,15 +67,17 @@ gameplay::gameplay(engine& eng)
         _tank.wait_until_idle();
         _tank.run_state(std::make_unique<tank::move>(false));
         _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::shoot>());
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rot_turret>(180));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::shoot>());
 
     });
     t.detach();
 }
 
 std::unique_ptr<game_state> gameplay::update() {
-
-    // tank test;
-    // test_tank.run_state(tank::move(true));
     int tile_height = 5;
     int tile_width = 5;
     int tile_map[5][5] = {{1, 0, 0, 0, 0},
@@ -91,7 +94,6 @@ std::unique_ptr<game_state> gameplay::update() {
         }
     }
 
-    //_engine.window().draw(_tank.get_sprite());
     _tank.update();
     _engine.window().draw(_tank);
     _engine.window().draw(_editor);

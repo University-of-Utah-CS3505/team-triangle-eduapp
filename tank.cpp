@@ -1,12 +1,15 @@
 #include "tank.h"
 #include <cassert>
+#include <cmath>
 
-tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret)
-    : _engine(eng), _sprite(sprite), _turret(turret) {
+tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret, sf::Sprite bullet)
+    : _engine(eng), _sprite(sprite), _turret(turret),
+      _bullet(eng, bullet) {
     _sprite.setOrigin(19,19);
     _turret.setOrigin(6, 5);
     _sprite.setPosition(32,32);
     _turret.setPosition(32,32);
+    _bullet.set_location(sf::Vector2f(32,32));
 }
 
 tank::~tank() = default;
@@ -52,18 +55,22 @@ bool tank::move::update(tank& t) {
         case (0):
             t._sprite.move(0, direction*1);
             t._turret.move(0, direction*1);
+            t._bullet.move(0, direction*1);
             break;
         case (90):
             t._sprite.move(direction*-1, 0);
             t._turret.move(direction*-1, 0);
+            t._bullet.move(direction*-1, 0);
             break;
         case (180):
             t._sprite.move(0, direction*-1);
             t._turret.move(0, direction*-1);
+            t._bullet.move(0, direction*-1);
             break;
         case (270):
             t._sprite.move(direction*1, 0);
             t._turret.move(direction*1, 0);
+            t._bullet.move(direction*1, 0);
             break;
         default:
             break;
@@ -100,6 +107,19 @@ bool tank::rot_turret::update(tank& t) {
     return false;
 }
 
+tank::shoot::shoot() {}
+
+bool tank::shoot::update(tank& t) {
+    t._bullet.set_rotation(t._turret.getRotation());
+
+    t._bullet.set_direction(std::cos((t._turret.getRotation()+90) * M_PI / 180.0), std::sin((t._turret.getRotation()+90)* M_PI / 180.0));
+    if(t._bullet.update()){
+        t._bullet.set_location(sf::Vector2f(t._sprite.getPosition()));
+        return true;
+    }
+    return false;
+}
+
 void tank::run_state(std::unique_ptr<state> state) {
     assert(state != nullptr);
     auto lock = std::lock_guard(_mutex);
@@ -115,12 +135,15 @@ void tank::update() {
     }
 }
 
+
 void tank::wait_until_idle() {
     auto lock = std::unique_lock(_mutex);
     _fin_cv.wait(lock, [this] { return _to_run == nullptr; });
 }
 
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
+    target.draw(_bullet);
     target.draw(_sprite);
     target.draw(_turret);
+
 }
