@@ -32,7 +32,7 @@ sf::Sprite level::get_tile_sprite() {
 }
 tile level::get_location_tile_def(int x, int y) {
     int tile_loc = location_matrix[x][y];
-    return tile((x + 1) * (y + 1),
+    return tile(tile_loc,
                 type_defs[tile_loc].first,
                 type_defs[tile_loc].second);
 

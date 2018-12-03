@@ -90,9 +90,11 @@ std::unique_ptr<game_state> gameplay::update() {
     _engine.window().clear();
     for (int i = 0; i < _level.get_location_matrix().shape()[0]; i++) {
         for (int j = 0; j < _level.get_location_matrix().shape()[1]; j++) {
-            _level.get_location_tile_def(i,j).set_sprite_position(j*64,i*64);
+            tile tile_to_draw =  _level.get_location_tile_def(i,j);
+           tile_to_draw.set_sprite_position(j*64,i*64);
 //            _tiles[tile_map[i][j]]->set_sprite_position(j * 64, i * 64);
-            _engine.window().draw(_level.get_location_tile_def(i,j).get_sprite());
+            _engine.window().draw((tile_to_draw.get_sprite()));
+
 //            _engine.window().draw(_tiles[tile_map[i][j]]->get_sprite());
 
         }
