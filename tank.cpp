@@ -41,20 +41,20 @@ void tank::move::update(tank& t) {
     if (++_progress < 32) {
         switch((int)t._sprite.getRotation()){
         case (0 || 360):
-            t._sprite.move(0,1);
-            t._turret.move(0,1);
+            t._sprite.move(0,2);
+            t._turret.move(0,2);
             break;
         case (90):
-            t._sprite.move(-1,0);
-            t._turret.move(-1,0);
+            t._sprite.move(-2,0);
+            t._turret.move(-2,0);
             break;
         case (180):
-            t._sprite.move(0,-1);
-            t._turret.move(0,-1);
+            t._sprite.move(0,-2);
+            t._turret.move(0,-2);
             break;
         case (270):
-            t._sprite.move(1,0);
-            t._turret.move(1,0);
+            t._sprite.move(2,0);
+            t._turret.move(2,0);
             break;
         default:
             break;
