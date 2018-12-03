@@ -17,7 +17,7 @@ private:
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
-    tank _tank;
+    //tank _tank;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)
