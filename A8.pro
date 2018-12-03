@@ -36,6 +36,8 @@ SOURCES += \
     tile.cpp \
     tank.cpp \
     cursor.cpp \
+    level.cpp \
+    tile_set_generator.cpp \
     level.cpp
 
 HEADERS += \
@@ -49,6 +51,8 @@ HEADERS += \
     tile.h \
     tank.h \
     cursor.h \
+    level.h \
+    tile_set_generator.h \
     level.h
 
 FORMS += \
