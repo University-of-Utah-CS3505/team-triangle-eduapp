@@ -13,8 +13,12 @@ public:
     void backspace();
     void set_text(const std::string& text);
     sf::String get_text() const;
+    sf::String wrap_text();
     void move_cursor(int x, int y);
-    void scroll(bool);
+    void scroll_up();
+    void scroll_down();
+    void scroll_left();
+    void scroll_right();
     void clear();
     const bool SCROLL_DOWN = true;
     const bool SCROLL_UP = false;

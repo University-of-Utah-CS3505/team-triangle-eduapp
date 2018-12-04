@@ -117,9 +117,13 @@ bool gameplay::handle_keyboard(sf::Event event){
         _editor.insert_char('\n');
         return true;
     } else if (event.key.code == 53) { // to test scroll "5" down
-        _editor.scroll(_editor.SCROLL_DOWN);
+        _editor.scroll_down();
     } else if (event.key.code == 54) { // to test scroll "6" up
-        _editor.scroll(_editor.SCROLL_UP);
+        _editor.scroll_up();
+    } else if (event.key.code == 55) { // "7" left
+        _editor.scroll_left();
+    } else if (event.key.code == 56) { // "8" right
+        _editor.scroll_right();
     }
     else {
         _editor.insert_char(event.text.unicode);
