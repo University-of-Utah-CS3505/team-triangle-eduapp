@@ -46,6 +46,7 @@ void MainWindow::update_color(int col){
 
     box->setPalette(pal);
     if (col == 1){
+
         pal.setColor(box->backgroundRole(), Qt::blue);
         box->setStyleSheet("QSpinBox {background-color: blue;}");
     }
