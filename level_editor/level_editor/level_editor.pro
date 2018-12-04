@@ -40,3 +40,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+INCLUDEPATH += $$PWD/../libs/boost_1_67_0/stage
+INCLUDEPATH += /usr/include/python3.7m
+DEPENDPATH += $$PWD/../libs/boost_1_67_0/stage
