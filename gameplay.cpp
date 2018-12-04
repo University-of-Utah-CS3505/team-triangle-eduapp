@@ -110,10 +110,18 @@ std::unique_ptr<game_state> gameplay::update() {
 
 bool gameplay::handle_keyboard(sf::Event event){
     qDebug() << event.key.code;
-    qDebug() << sf::Keyboard::BackSpace;
-    if(event.key.code == 8){
+    // qDebug() << sf::Keyboard::BackSpace;
+    if (event.key.code == BACKSPACE_KEY) {
         _editor.backspace();
-    }else{
+    } else if (event.key.code == RETURN_KEY) {
+        _editor.insert_char('\n');
+        return true;
+    } else if (event.key.code == 53) { // to test scroll "5" down
+        _editor.scroll(_editor.SCROLL_DOWN);
+    } else if (event.key.code == 54) { // to test scroll "6" up
+        _editor.scroll(_editor.SCROLL_UP);
+    }
+    else {
         _editor.insert_char(event.text.unicode);
         return true;
     }

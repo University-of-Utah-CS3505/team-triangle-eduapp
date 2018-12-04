@@ -9,6 +9,14 @@
 #include <SFML/Graphics.hpp>
 #include "level.h"
 
+#define RETURN_KEY 13
+#define BACKSPACE_KEY 8
+// Arrow keys are not heard by handle_keyboard
+#define ARROW_L_KEY 1
+#define ARROW_R_KEY 2
+#define ARROW_D_KEY 3
+#define ARROW_U_KEY 4
+
 class gameplay : public game_state {
 public:
     gameplay(engine& window);
