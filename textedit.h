@@ -14,9 +14,14 @@ public:
     void set_text(const std::string& text);
     sf::String get_text() const;
     void move_cursor(int x, int y);
+    void scroll(bool);
     void clear();
+    const bool SCROLL_DOWN = true;
+    const bool SCROLL_UP = false;
 private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    virtual void draw(sf::RenderTarget& target,
+                      sf::RenderStates states) const;
+    sf::View _view; // This would be nice to use, but need separate rendertarget
     sf::Font _font;
     sf::Text _text;
     int _font_size, _w, _h;

@@ -7,7 +7,7 @@ textedit::textedit(int font_size, int w, int h) :
     // TODO: need to pull font from main
     _originx = 350;
     _originy = 10;
-    _font.loadFromFile("../team-triangle-eduapp/arial.ttf");
+    _font.loadFromFile("../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
     _text.setFont(_font);
     _text.setFillColor(sf::Color::Black);
     _text.setCharacterSize(_font_size);
@@ -21,16 +21,18 @@ void textedit::insert_char(char c) {
     move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
                 _text.findCharacterPos(_text.getString().getSize()).y);
 }
+
 void textedit::set_text(const std::string& text) {
     // set x, y position of end of text
     if(_text.getString().getSize() != 0)
         clear();
-
     _text.setString(text);
     move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
                 _text.findCharacterPos(_text.getString().getSize()).y);
 }
+
 sf::String textedit::get_text() const { return _text.getString(); }
+
 void textedit::backspace() {
     if(_text.getString().getSize() == 0) return;
     // remove last index string
@@ -43,6 +45,21 @@ void textedit::backspace() {
 
 void textedit::move_cursor(int x, int y) {
     _cursor.set_position(x, y);
+}
+
+void textedit::scroll(bool direction) {
+    // TODO: top / bottom cases
+    if (_text.getOrigin().y > _originy + MARGIN) { return; }
+    if (direction) {
+        move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                    _text.findCharacterPos(_text.getString().getSize()).y-_text.getCharacterSize());
+        _text.setPosition(_text.getPosition().x, _text.getPosition().y-_text.getCharacterSize());
+    }
+    else {
+        move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                    _text.findCharacterPos(_text.getString().getSize()).y+_text.getCharacterSize());
+        _text.setPosition(_text.getPosition().x, _text.getPosition().y+_text.getCharacterSize());
+    }
 }
 
 void textedit::clear() {
@@ -60,5 +77,4 @@ void textedit::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(rect);
     target.draw(_text);
     target.draw(_cursor);
-    //target.draw(cursor);
 }
