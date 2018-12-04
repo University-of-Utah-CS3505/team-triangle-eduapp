@@ -2,7 +2,7 @@
 
 model::model(int size)
 {
-    backing = boost::extents[size][size];
+    backing.resize(boost::extents[0][0]);
 }
 
 model::model(std::string path){
@@ -19,4 +19,8 @@ void model::set_item(int x, int y, int item){
 }
 bool model::save_model(){
     return false; //TODO!
+}
+
+void model::resize_array(int size){
+    backing.resize(boost::extents[size][size]);
 }
