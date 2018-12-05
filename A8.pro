@@ -51,7 +51,8 @@ HEADERS += \
     tank.h \
     cursor.h \
     level.h \
-    bullet.h
+    bullet.h \
+    pyinqt.h
 
 FORMS += \
     pre_game_options.ui

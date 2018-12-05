@@ -4,6 +4,7 @@
 #include "level_menu.h"
 #include "main_menu.h"
 #include "pre_game_options.h"
+#include "pyinqt.h"
 #include <QApplication>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -23,6 +24,7 @@ std::optional<launch_options> launch_dialog(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
+    Py_Initialize();
     const auto options = launch_dialog(argc, argv);
     // do we set a global config here?
     if (!options) {

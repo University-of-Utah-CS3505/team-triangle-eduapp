@@ -23,12 +23,15 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
-    bool handle_keyboard(sf::Event);
+    bool _handle_text(sf::Event);
+    bool _handle_keyboard(sf::Event);
+    bool _run_tanks();
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
-    tank _tank;
+    std::vector<std::unique_ptr<tank>> _tanks;
     level _level;
+    event_handle _text_handle;
     event_handle _keyboard_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
