@@ -5,9 +5,9 @@
 
 gap_buffer::gap_buffer(int size) : _gap_size(size)
 {
-    if(_buffer){
-        free(_buffer);
-    }
+//    if(_buffer){
+//        free(_buffer);
+//    }
 
     _buffer = (char*) malloc(size);
 
