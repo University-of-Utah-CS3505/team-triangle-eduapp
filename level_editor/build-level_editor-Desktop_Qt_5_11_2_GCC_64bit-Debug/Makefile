@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../level_editor -I. -I/home/scott/Qt/5.11.2/gcc_64/include -I/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets -I/home/scott/Qt/5.11.2/gcc_64/include/QtGui -I/home/scott/Qt/5.11.2/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I/home/scott/Qt/5.11.2/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../level_editor -I. -I/home/scott/Documents/3505/A8/team-triangle-eduapp/level_editor/level_editor/../libs/boost_1_67_0/stage -isystem /usr/include/python3.7m -I/home/scott/Qt/5.11.2/gcc_64/include -I/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets -I/home/scott/Qt/5.11.2/gcc_64/include/QtGui -I/home/scott/Qt/5.11.2/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I/home/scott/Qt/5.11.2/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/scott/Qt/5.11.2/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -807,10 +807,15 @@ moc_mainwindow.cpp: ../level_editor/model.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qicon.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QSpinBox \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qspinbox.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
 		../level_editor/mainwindow.h \
 		moc_predefs.h \
 		/home/scott/Qt/5.11.2/gcc_64/bin/moc
-	/home/scott/Qt/5.11.2/gcc_64/bin/moc $(DEFINES) --include /home/scott/Documents/3505/A8/team-triangle-eduapp/level_editor/build-level_editor-Desktop_Qt_5_11_2_GCC_64bit-Debug/moc_predefs.h -I/home/scott/Qt/5.11.2/gcc_64/mkspecs/linux-g++ -I/home/scott/Documents/3505/A8/team-triangle-eduapp/level_editor/level_editor -I/home/scott/Qt/5.11.2/gcc_64/include -I/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets -I/home/scott/Qt/5.11.2/gcc_64/include/QtGui -I/home/scott/Qt/5.11.2/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../level_editor/mainwindow.h -o moc_mainwindow.cpp
+	/home/scott/Qt/5.11.2/gcc_64/bin/moc $(DEFINES) --include /home/scott/Documents/3505/A8/team-triangle-eduapp/level_editor/build-level_editor-Desktop_Qt_5_11_2_GCC_64bit-Debug/moc_predefs.h -I/home/scott/Qt/5.11.2/gcc_64/mkspecs/linux-g++ -I/home/scott/Documents/3505/A8/team-triangle-eduapp/level_editor/level_editor -I/home/scott/Documents/3505/A8/team-triangle-eduapp/level_editor/libs/boost_1_67_0/stage -I/usr/include/python3.7m -I/home/scott/Qt/5.11.2/gcc_64/include -I/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets -I/home/scott/Qt/5.11.2/gcc_64/include/QtGui -I/home/scott/Qt/5.11.2/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../level_editor/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -941,6 +946,11 @@ main.o: ../level_editor/main.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qicon.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QSpinBox \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qspinbox.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QApplication \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qapplication.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1058,6 +1068,11 @@ mainwindow.o: ../level_editor/mainwindow.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qicon.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QSpinBox \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qspinbox.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
 		ui_mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/QVariant \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QAction \
@@ -1086,11 +1101,6 @@ mainwindow.o: ../level_editor/mainwindow.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qscrollarea.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qframe.h \
-		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QSpinBox \
-		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qspinbox.h \
-		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
-		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QStatusBar \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qstatusbar.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QToolBar \

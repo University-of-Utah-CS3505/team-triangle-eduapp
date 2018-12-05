@@ -1,5 +1,6 @@
 #include "textedit.h"
 #include <QDebug>
+#include <iostream>
 
 textedit::textedit(int font_size, int w, int h) :
                     _font_size(font_size), _w(w), _h(h),
@@ -33,6 +34,12 @@ void textedit::set_text(const std::string& text) {
 
 sf::String textedit::get_text() const { return _text.getString(); }
 
+sf::String textedit::wrap_text() {
+    auto characters_per_line = _w / (_font.getKerning(0, 1, _font_size));
+    std::cout << characters_per_line << std::endl;
+    return _text.getString();
+}
+
 void textedit::backspace() {
     if(_text.getString().getSize() == 0) return;
     // remove last index string
@@ -44,22 +51,36 @@ void textedit::backspace() {
 }
 
 void textedit::move_cursor(int x, int y) {
-    _cursor.set_position(x, y);
+    // TODO: align cursor to character pos and
+    auto align_x = (x - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
+    auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
+    std::cout << x << "," << y << " " << _text.getCharacterSize()
+              << " " << x-align_x << std::endl;
+    _cursor.set_position(x-align_x, y-align_y);
 }
 
-void textedit::scroll(bool direction) {
-    // TODO: top / bottom cases
-    if (_text.getOrigin().y > _originy + MARGIN) { return; }
-    if (direction) {
-        move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
-                    _text.findCharacterPos(_text.getString().getSize()).y-_text.getCharacterSize());
-        _text.setPosition(_text.getPosition().x, _text.getPosition().y-_text.getCharacterSize());
-    }
-    else {
-        move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
-                    _text.findCharacterPos(_text.getString().getSize()).y+_text.getCharacterSize());
-        _text.setPosition(_text.getPosition().x, _text.getPosition().y+_text.getCharacterSize());
-    }
+void textedit::scroll_up() {
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                _text.findCharacterPos(_text.getString().getSize()).y-_text.getCharacterSize());
+    _text.setPosition(_text.getPosition().x, _text.getPosition().y-_text.getCharacterSize());
+}
+
+void textedit::scroll_down() {
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+                _text.findCharacterPos(_text.getString().getSize()).y+_text.getCharacterSize());
+    _text.setPosition(_text.getPosition().x, _text.getPosition().y+_text.getCharacterSize());
+}
+
+void textedit::scroll_left() {
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x-_text.getCharacterSize(),
+                _text.findCharacterPos(_text.getString().getSize()).y);
+    _text.setPosition(_text.getPosition().x-_text.getCharacterSize(), _text.getPosition().y);
+}
+
+void textedit::scroll_right() {
+    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x+_text.getCharacterSize(),
+                _text.findCharacterPos(_text.getString().getSize()).y);
+    _text.setPosition(_text.getPosition().x+_text.getCharacterSize(), _text.getPosition().y);
 }
 
 void textedit::clear() {
