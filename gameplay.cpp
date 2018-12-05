@@ -106,16 +106,35 @@ bool gameplay::_run_tanks() {
         // Retrieve the main module.
         qDebug() << _editor.get_text().toAnsiString().c_str();
         try {
+
             auto main = py::import("__main__");
 
             // Retrieve the main module's namespace
             auto global = main.attr("__dict__");
+            auto debug_print = py::make_function(
+                    std::function([](py::object x) {
+                        std::cout << py::extract<std::string>(x)() << std::endl;
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void, py::object>());
+            global["d_print"] = debug_print;
+
             auto result = py::exec(
                     py::str(_editor.get_text().toAnsiString()), global, global);
             std::cout << "test" << std::endl;
-        } catch (boost::python::error_already_set const&) {
+        } catch (py::error_already_set const&) {
+            // https://stackoverflow.com/a/1418703
             // TODO give user the exception somehow (maybe print and redirect
             // stdout to something we print on screen)
+            auto ptype = static_cast<PyObject*>(nullptr),
+                 pvalue = static_cast<PyObject*>(nullptr),
+                 ptraceback = static_cast<PyObject*>(nullptr);
+            PyErr_Fetch(&ptype, &pvalue, &ptraceback);
+            // pvalue contains error message
+            // ptraceback contains stack snapshot and many other information
+            std::cout //<< py::extract<std::string>(ptype)() << "\n"
+                    << py::extract<std::string>(pvalue)() << std::endl;
+            // << py::extract<std::string>(ptraceback)() << std::endl;
         }
     });
     thread.detach();
