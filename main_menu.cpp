@@ -88,6 +88,14 @@ main_menu::main_menu(engine& eng)
     wall_fix_def.friction = 0.5;
     wall_def.position.Set(_engine.window().getSize().x / scale - 0.5, 0);
     _world.CreateBody(&wall_def)->CreateFixture(&wall_fix_def);
+
+
+
+   logo_tex.loadFromFile("../team-triangle-eduapp/assets/snaketanks.png");
+   logo.setTexture(logo_tex);
+   logo.setOrigin(logo.getTexture()->getSize().x/2,0);
+   logo.setPosition(_engine.window().getSize().x/2, 20.0);
+
 }
 
 main_menu::~main_menu() {}
@@ -101,6 +109,8 @@ std::unique_ptr<game_state> main_menu::update() {
         item.sprite.setRotation(item.body->GetAngle() * deg_radian_conv_factor);
         _engine.window().draw(item.sprite);
     }
+
+    _engine.window().draw(logo);
     return std::move(_to_state);
 }
 
