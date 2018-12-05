@@ -24,12 +24,15 @@ public:
 
 private:
     bool handle_keyboard(sf::Event);
+    bool handle_mouse(sf::Event);
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
     tank _tank;
     level _level;
     event_handle _keyboard_handle;
+    event_handle _mouse_handle;
+    event_handle _click_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)

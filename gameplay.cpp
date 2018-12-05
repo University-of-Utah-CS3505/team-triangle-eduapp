@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <thread>
 #include <vector>
+#include <QTextDocument>
 
 gameplay::gameplay(engine& eng)
     : _editor{15, 400, 650}, _engine{eng},
@@ -16,37 +17,11 @@ gameplay::gameplay(engine& eng)
                                          "DefaultSize/bulletBlue1_outline.png"))),
         _level(0), _keyboard_handle(
                        _engine.add_event_listener(sf::Event::TextEntered,
-                              [this](auto e){return handle_keyboard(e);})){
+                              [this](auto e){return handle_keyboard(e);})),
+          _mouse_handle(_engine.add_event_listener(sf::Event::MouseButtonPressed,
+                                                   [this](auto e){return handle_mouse(e);})){
 
-//    _tiles.emplace_back(new tile(0,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass1.png",
-//                                 "grass"));
-//    _tiles.emplace_back(new tile(1,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadNorth.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(2,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadEast.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(3,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerLL.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(4,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerLR.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(5,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerUL.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(6,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerUR.png",
-//                                 "road"));
-//    // editor hard coded for testing
+
     _editor.set_text("hello!\nTesting text for enter and space !\n test cursor "
                      "position.");
     auto t = std::thread([this]() {
@@ -75,6 +50,7 @@ gameplay::gameplay(engine& eng)
         _tank.run_state(std::make_unique<tank::rot_turret>(180));
         _tank.wait_until_idle();
         _tank.run_state(std::make_unique<tank::shoot>());
+
 
     });
     t.detach();
@@ -126,4 +102,10 @@ bool gameplay::handle_keyboard(sf::Event event){
         return true;
     }
     return false;
+}
+
+bool gameplay::handle_mouse(sf::Event event){
+    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y);
+
+    return true;
 }
