@@ -37,7 +37,8 @@ SOURCES += \
     tank.cpp \
     cursor.cpp \
     level.cpp \
-    bullet.cpp
+    bullet.cpp \
+    object_def.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -51,7 +52,8 @@ HEADERS += \
     tank.h \
     cursor.h \
     level.h \
-    bullet.h
+    bullet.h \
+    object_def.h
 
 FORMS += \
     pre_game_options.ui

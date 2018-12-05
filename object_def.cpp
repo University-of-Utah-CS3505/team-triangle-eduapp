@@ -1,0 +1,25 @@
+#include "object_def.h"
+
+object_def::object_def(std::string img, std::string type, sf::Vector2i position, sf::Vector2i size)
+    : _img{img}, _position(position),
+      _sprite(_texture,sf::IntRect(0,0,size.x, size.y)), _size(size){
+   _texture.loadFromFile(_img);
+   _sprite.setOrigin(_size.x/2, _size.y/2);
+   _sprite.setPosition(_position.x, _position.y);
+}
+
+std::string object_def::get_img() { return _img; }
+
+std::string object_def::get_type() { return ""; }
+
+sf::Sprite object_def::get_sprite() { return _sprite; }
+
+sf::Vector2i object_def::get_size()
+{
+    return _size;
+}
+
+sf::Vector2f object_def::get_position()
+{
+    return _sprite.getPosition();
+}

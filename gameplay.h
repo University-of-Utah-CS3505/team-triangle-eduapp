@@ -27,8 +27,10 @@ private:
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
+    std::vector<object_def*> _objects;
     tank _tank;
     level _level;
+
     event_handle _keyboard_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties

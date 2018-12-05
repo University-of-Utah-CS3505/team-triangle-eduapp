@@ -1,4 +1,5 @@
 #include "gameplay.h"
+#include "object_def.h"
 #include "tile.h"
 #include <QDebug>
 #include <stdlib.h>
@@ -18,99 +19,65 @@ gameplay::gameplay(engine& eng)
                        _engine.add_event_listener(sf::Event::TextEntered,
                               [this](auto e){return handle_keyboard(e);})){
 
-//    _tiles.emplace_back(new tile(0,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass1.png",
-//                                 "grass"));
-//    _tiles.emplace_back(new tile(1,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadNorth.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(2,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadEast.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(3,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerLL.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(4,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerLR.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(5,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerUL.png",
-//                                 "road"));
-//    _tiles.emplace_back(new tile(6,
-//                                 "../team-triangle-eduapp/assets/Tanks/PNG/"
-//                                 "DefaultSize/tileGrass_roadCornerUR.png",
-//                                 "road"));
-//    // editor hard coded for testing
     _editor.set_text("hello!\nTesting text for enter and space !\n test cursor "
                      "position.");
-    auto t = std::thread([this]() {
-        _tank.run_state(std::make_unique<tank::move>(true));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::rot_turret>(90));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::move>(true));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::rot_turret>(270));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::rotate>(false));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::move>(true));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::rotate>(true));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::rotate>(true));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::move>(false));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::move>(false));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::shoot>());
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::rot_turret>(180));
-        _tank.wait_until_idle();
-        _tank.run_state(std::make_unique<tank::shoot>());
 
+    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png", "Temp", sf::Vector2i(100,100), sf::Vector2i(28,28)));
+    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png", "Temp", sf::Vector2i(200,100), sf::Vector2i(28,28)));
+
+    auto t = std::thread([this]() {
+        //_tank.run_state(std::make_unique<tank::move>(true));
+        //_tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rot_turret>(300));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::shoot>());
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::rot_turret>(290));
+        _tank.wait_until_idle();
+        _tank.run_state(std::make_unique<tank::shoot>());
+        _tank.wait_until_idle();
     });
     t.detach();
 }
 
 std::unique_ptr<game_state> gameplay::update() {
-//    int tile_height = 5;
-//    int tile_width = 5;
-//    int tile_map[5][5] = {{1, 0, 0, 0, 0},
-//                          {1, 0, 0, 0, 0},
-//                          {6, 2, 2, 3, 0},
-//                          {0, 0, 0, 1, 0},
-//                          {0, 0, 0, 1, 0}}; // get boost array
-
     _engine.window().clear();
+
+    //Draw tiles
     for (int i = 0; i < _level.get_location_matrix().shape()[0]; i++) {
         for (int j = 0; j < _level.get_location_matrix().shape()[1]; j++) {
             tile tile_to_draw =  _level.get_location_tile_def(i,j);
            tile_to_draw.set_sprite_position(j*64,i*64);
-//            _tiles[tile_map[i][j]]->set_sprite_position(j * 64, i * 64);
             _engine.window().draw((tile_to_draw.get_sprite()));
+        }
+    }
 
-//            _engine.window().draw(_tiles[tile_map[i][j]]->get_sprite());
-
+    //Draw objects
+    for(int i = 0; i < _objects.size(); i++){
+        _engine.window().draw(_objects[i]->get_sprite());
+        //Hit detection
+        if(_objects[i]->get_position().x - _objects[i]->get_size().x < _tank.get_bullet_pos().x){
+            if(_objects[i]->get_position().x + _objects[i]->get_size().x > _tank.get_bullet_pos().x){
+                if(_objects[i]->get_position().y - _objects[i]->get_size().y < _tank.get_bullet_pos().y){
+                    if(_objects[i]->get_position().y + _objects[i]->get_size().y > _tank.get_bullet_pos().y){
+                        _tank.bullet_hit();
+                        _objects.erase(_objects.begin() + i);
+                        i = 0;
+                    }
+                }
+            }
         }
     }
 
     _tank.update();
     _engine.window().draw(_tank);
     _engine.window().draw(_editor);
+
     return nullptr;
 }
 
 bool gameplay::handle_keyboard(sf::Event event){
     qDebug() << event.key.code;
-    // qDebug() << sf::Keyboard::BackSpace;
     if (event.key.code == BACKSPACE_KEY) {
         _editor.backspace();
     } else if (event.key.code == RETURN_KEY) {
