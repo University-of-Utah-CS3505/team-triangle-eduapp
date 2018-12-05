@@ -28,7 +28,7 @@ engine::engine(launch_options options)
                                              return false;
                                          }
                                      })),
-      _state(std::make_unique<main_menu>(*this)) {}
+      _state(std::make_unique<gameplay>(*this)) {}
 
 event_handle engine::add_event_listener(
         sf::Event::EventType type, std::function<bool(sf::Event)> listener) {

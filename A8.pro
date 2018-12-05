@@ -38,7 +38,8 @@ SOURCES += \
     cursor.cpp \
     level.cpp \
     bullet.cpp \
-    object_def.cpp
+    object_def.cpp \
+    gap_buffer.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -54,7 +55,8 @@ HEADERS += \
     level.h \
     bullet.h \
     pyinqt.h \
-    object_def.h
+    object_def.h \
+    gap_buffer.h
 
 FORMS += \
     pre_game_options.ui
