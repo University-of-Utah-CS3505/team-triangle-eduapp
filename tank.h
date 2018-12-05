@@ -70,9 +70,12 @@ public:
 
     void wait_until_idle();
 
+    sf::Vector2f get_bullet_pos();
+
+    void bullet_hit();
+
 private:
     engine& _engine;
-
     sf::Sprite _sprite;
     sf::Sprite _turret;
 

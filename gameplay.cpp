@@ -1,4 +1,5 @@
 #include "gameplay.h"
+#include "object_def.h"
 #include "pyinqt.h"
 #include "tile.h"
 #include <iostream>
@@ -17,40 +18,64 @@ gameplay::gameplay(engine& eng)
 
     _editor.set_text("hello!\nTesting text for enter and space !\n test cursor "
                      "position.");
+
+    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
+                                         "PNG/DefaultSize/crateWood.png",
+                                         "Temp",
+                                         sf::Vector2i(100, 100),
+                                         sf::Vector2i(28, 28)));
+    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
+                                         "PNG/DefaultSize/crateWood.png",
+                                         "Temp",
+                                         sf::Vector2i(200, 100),
+                                         sf::Vector2i(28, 28)));
 }
 
 std::unique_ptr<game_state> gameplay::update() {
-    //    int tile_height = 5;
-    //    int tile_width = 5;
-    //    int tile_map[5][5] = {{1, 0, 0, 0, 0},
-    //                          {1, 0, 0, 0, 0},
-    //                          {6, 2, 2, 3, 0},
-    //                          {0, 0, 0, 1, 0},
-    //                          {0, 0, 0, 1, 0}}; // get boost array
-
     _engine.window().clear();
+
+    // Draw tiles
     for (int i = 0; i < _level.get_location_matrix().shape()[0]; i++) {
         for (int j = 0; j < _level.get_location_matrix().shape()[1]; j++) {
             tile tile_to_draw = _level.get_location_tile_def(i, j);
             tile_to_draw.set_sprite_position(j * 64, i * 64);
-            //            _tiles[tile_map[i][j]]->set_sprite_position(j * 64, i
-            //            * 64);
             _engine.window().draw((tile_to_draw.get_sprite()));
-
-            //            _engine.window().draw(_tiles[tile_map[i][j]]->get_sprite());
         }
     }
 
-    for (auto& _tank : _tanks) {
-        _tank->update();
-        _engine.window().draw(*_tank);
+    // Draw objects
+    for (auto& c_tank : _tanks) {
+        c_tank->update();
+        _engine.window().draw(*c_tank);
+        for (int i = 0; i < _objects.size(); i++) {
+            _engine.window().draw(_objects[i]->get_sprite());
+            // Hit detection
+            if (_objects[i]->get_position().x - _objects[i]->get_size().x <
+                c_tank->get_bullet_pos().x) {
+                if (_objects[i]->get_position().x + _objects[i]->get_size().x >
+                    c_tank->get_bullet_pos().x) {
+                    if (_objects[i]->get_position().y -
+                                _objects[i]->get_size().y <
+                        c_tank->get_bullet_pos().y) {
+                        if (_objects[i]->get_position().y +
+                                    _objects[i]->get_size().y >
+                            c_tank->get_bullet_pos().y) {
+                            c_tank->bullet_hit();
+                            _objects.erase(_objects.begin() + i);
+                            i = 0;
+                        }
+                    }
+                }
+            }
+        }
     }
+
     _engine.window().draw(_editor);
+
     return nullptr;
 }
 
 bool gameplay::_handle_text(sf::Event event) {
-    qDebug() << event.key.code;
     // qDebug() << sf::Keyboard::BackSpace;
     // for whatever reason, we get return carriage for the return key rather
     // than a newline
@@ -100,14 +125,19 @@ bool gameplay::_handle_keyboard(sf::Event event) {
     if (event.key.code == sf::Keyboard::F5) {
         _run_tanks();
         return true;
-    } else if (event.key.code ==
-               sf::Keyboard::Key::Down) { // to test scroll "5" down
-        _editor.scroll(_editor.SCROLL_DOWN);
+    } else if (event.key.code == sf::Keyboard::PageDown) {
+        _editor.scroll_down();
         return true;
-    } else if (event.key.code ==
-               sf::Keyboard::Key::Up) { // to test scroll "6" up
-        _editor.scroll(_editor.SCROLL_UP);
+    } else if (event.key.code == sf::Keyboard::PageUp) {
+        _editor.scroll_up();
         return true;
+    } else if (event.key.code == sf::Keyboard::Home) {
+        _editor.scroll_left();
+        return true;
+    } else if (event.key.code == sf::Keyboard::End) {
+        _editor.scroll_right();
+        return true;
+    } else {
+        return false;
     }
-    return false;
 }

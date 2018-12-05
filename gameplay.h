@@ -3,11 +3,11 @@
 
 #include "engine.h"
 #include "game_state.h"
+#include "level.h"
 #include "tank.h"
 #include "textedit.h"
 #include "tile.h"
 #include <SFML/Graphics.hpp>
-#include "level.h"
 
 #define RETURN_KEY 13
 #define BACKSPACE_KEY 8
@@ -32,6 +32,7 @@ private:
     std::vector<std::unique_ptr<tank>> _tanks;
     level _level;
     event_handle _text_handle;
+    std::vector<object_def*> _objects;
     event_handle _keyboard_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties

@@ -1,6 +1,7 @@
 #include "tank.h"
 #include <cassert>
 #include <cmath>
+#include <QDebug>
 
 tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret, sf::Sprite bullet)
     : _engine(eng), _sprite(sprite), _turret(turret),
@@ -87,13 +88,16 @@ tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {
 
 bool tank::rot_turret::update(tank& t) {
     int actual_end_angle = abs(((int)(_end_angle-t._sprite.getRotation())%360));
-    if (actual_end_angle > t._turret.getRotation()) {
+    if(actual_end_angle == t._turret.getRotation()){
+        return true;
+    }
+
+    int offset = actual_end_angle-t._turret.getRotation();
+    if ((offset < 179 && offset > 0) || offset <= -180) {
         t._turret.rotate(1);
     } else {
-        if (actual_end_angle < t._turret.getRotation()) {
+        if (offset >= 180 || (offset > -179 && offset < 0)) {
             t._turret.rotate(-1);
-        } else {
-            return true;
         }
     }
 
@@ -135,10 +139,20 @@ void tank::update() {
     }
 }
 
-
 void tank::wait_until_idle() {
     auto lock = std::unique_lock(_mutex);
     _fin_cv.wait(lock, [this] { return _to_run == nullptr; });
+}
+
+sf::Vector2f tank::get_bullet_pos()
+{
+    return sf::Vector2f(_bullet.get_location());
+}
+
+void tank::bullet_hit()
+{
+    _to_run = std::make_unique<tank::shoot>();
+    _bullet.show_explosion();
 }
 
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
