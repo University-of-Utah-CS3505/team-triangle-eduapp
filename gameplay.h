@@ -3,11 +3,11 @@
 
 #include "engine.h"
 #include "game_state.h"
+#include "level.h"
 #include "tank.h"
 #include "textedit.h"
 #include "tile.h"
 #include <SFML/Graphics.hpp>
-#include "level.h"
 
 #define RETURN_KEY 13
 #define BACKSPACE_KEY 8
@@ -23,13 +23,17 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
-    bool handle_keyboard(sf::Event);
     bool handle_mouse(sf::Event);
+    bool _handle_text(sf::Event);
+    bool _handle_keyboard(sf::Event);
+    bool _run_tanks();
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
-    tank _tank;
+    std::vector<std::unique_ptr<tank>> _tanks;
     level _level;
+    event_handle _text_handle;
+    std::vector<object_def*> _objects;
     event_handle _keyboard_handle;
     event_handle _mouse_handle;
     event_handle _click_handle;

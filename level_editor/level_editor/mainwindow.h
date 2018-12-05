@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include"model.h"
 #include <QMainWindow>
+#include <QSpinBox>
 
 namespace Ui {
 class MainWindow;
@@ -19,9 +20,13 @@ private slots:
     void on_spinButton_clicked();
     void update_color(int color);
 
+
 private:
     Ui::MainWindow *ui;
     //const model m();
+    void save();
+    model m;
+    std::vector<QSpinBox*> list_of_boxes;
 };
 
 #endif // MAINWINDOW_H

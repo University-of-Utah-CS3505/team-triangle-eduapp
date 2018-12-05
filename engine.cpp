@@ -2,6 +2,7 @@
 #include "main_menu.h"
 #include <memory>
 #include <thread>
+#include "gameplay.h"
 
 typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 
@@ -27,7 +28,7 @@ engine::engine(launch_options options)
                                              return false;
                                          }
                                      })),
-      _state(std::make_unique<main_menu>(*this)) {}
+      _state(std::make_unique<gameplay>(*this)) {}
 
 event_handle engine::add_event_listener(
         sf::Event::EventType type, std::function<bool(sf::Event)> listener) {

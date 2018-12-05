@@ -13,8 +13,12 @@ public:
     void backspace();
     void set_text(const std::string& text);
     sf::String get_text() const;
+    sf::String wrap_text();
     void move_cursor(int x, int y);
-    void scroll(bool);
+    void scroll_up();
+    void scroll_down();
+    void scroll_left();
+    void scroll_right();
     void clear();
     const bool SCROLL_DOWN = true;
     const bool SCROLL_UP = false;
@@ -23,12 +27,14 @@ private:
                       sf::RenderStates states) const;
     sf::View _view; // This would be nice to use, but need separate rendertarget
     sf::Font _font;
+    std::vector<sf::Text> _data;
     sf::Text _text;
     int _font_size, _w, _h;
     //std::string _text;
     int _originx, _originy;
     int MARGIN = 20;
     cursor _cursor;
+    std::string get_line_numbers();
 };
 
 #endif // TEXTEDIT_H

@@ -42,8 +42,8 @@ void MainWindow::on_spinButton_clicked()
 void MainWindow::update_color(int col){
     QSpinBox* box = qobject_cast<QSpinBox *>(sender());
     QPalette pal = box->palette();
-    std::cout << box->objectName().split('#').first().toUtf8().constData() << box->objectName().split('#').last().toUtf8().constData()<< std::endl;
-    //m.set_item(box->objectName().split('#').first().toInt(),box->objectName().split('#'),box->value());
+    //std::cout << box->objectName().split('#').first().toUtf8().constData() << box->objectName().split('#').last().toUtf8().constData()<< std::endl;
+    m.set_item(box->objectName().split('#').first().toInt(),box->objectName().split('#').last().toInt(,box->value());
 
 
     box->setPalette(pal);

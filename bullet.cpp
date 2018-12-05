@@ -31,7 +31,7 @@ bool bullet::show_explosion() {
     _show_explosion = true;
     _progress++;
     if(_progress == 49){
-        _show_explosion = false;
+        //_show_explosion = false;
         _progress = 0;
         return true;
     }
@@ -39,10 +39,22 @@ bool bullet::show_explosion() {
 }
 
 bool bullet::update() {
-    if((_sprite.getPosition().x > 320 || _sprite.getPosition().x < 0) ||(_sprite.getPosition().y > 320 || _sprite.getPosition().y < 0)){
-        return show_explosion();
+    if(!_show_explosion){
+        if((_sprite.getPosition().x > 320 || _sprite.getPosition().x < 0) ||(_sprite.getPosition().y > 320 || _sprite.getPosition().y < 0)){
+            if(show_explosion()){
+                _show_explosion = false;
+                return true;
+            }
+            return false;
+        }else{
+            _sprite.move(_direction);
+            return false;
+        }
     }else{
-        _sprite.move(_direction);
+        if(show_explosion()){
+            _show_explosion = false;
+            return true;
+        }
         return false;
     }
 }
