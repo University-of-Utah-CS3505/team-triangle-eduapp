@@ -2,6 +2,7 @@
 #include "main_menu.h"
 #include <memory>
 #include <thread>
+#include "gameplay.h"
 
 typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 

@@ -5,19 +5,19 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <QTextDocument>
 
 gameplay::gameplay(engine& eng)
-    : _editor{15, 400, 650}, _engine{eng}, _level(0),
-      _text_handle(_engine.add_event_listener(
-              sf::Event::TextEntered,
-              [this](auto e) { return _handle_text(e); })),
-      _keyboard_handle(
-              _engine.add_event_listener(sf::Event::KeyPressed, [this](auto e) {
-                  return _handle_keyboard(e);
-              })) {
 
-    _editor.set_text("hello!\nTesting text for enter and space !\n test cursor "
-                     "position.");
+    : _editor{15, 400, 650}, _engine{eng},
+        _level(0), _keyboard_handle(
+                       _engine.add_event_listener(sf::Event::TextEntered,
+                              [this](auto e){return _handle_keyboard(e);})),
+          _mouse_handle(_engine.add_event_listener(sf::Event::MouseButtonPressed,
+                                                   [this](auto e){return handle_mouse(e);})),
+          _text_handle(_engine.add_event_listener(
+                  sf::Event::TextEntered,
+                  [this](auto e) { return _handle_text(e); })){
     _load_level(1);
 }
 
@@ -79,6 +79,11 @@ bool gameplay::_handle_text(sf::Event event) {
     return false;
 }
 
+bool gameplay::handle_mouse(sf::Event event){
+    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y);
+
+    return true;
+}
 bool gameplay::_run_tanks() {
 
     auto thread = std::thread([this]() {
@@ -151,4 +156,5 @@ bool gameplay::_handle_keyboard(sf::Event event) {
     } else {
         return false;
     }
+
 }
