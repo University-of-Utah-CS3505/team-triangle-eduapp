@@ -64,12 +64,12 @@ void level::load_new_level(int level) {
     for (pt::ptree::value_type& row : root.get_child("tiles")) {
         auto y = 0;
         for (pt::ptree::value_type& tile : row.second) {
-            std::cout << "coor: " << x << " " << y
-                      << " -- val: " << tile.second.get_value<std::string>()
-                      << " -- typedef: "
-                      << type_defs[tile.second.get_value<int>()].second << " "
-                      << type_defs[tile.second.get_value<int>()].first
-                      << std::endl;
+//            std::cout << "coor: " << x << " " << y
+//                      << " -- val: " << tile.second.get_value<std::string>()
+//                      << " -- typedef: "
+//                      << type_defs[tile.second.get_value<int>()].second << " "
+//                      << type_defs[tile.second.get_value<int>()].first
+//                      << std::endl;
             location_matrix[x][y] = tile.second.get_value<int>();
             y++;
         }

@@ -16,10 +16,13 @@ textedit::textedit(int font_size, int w, int h) :
     _text.setString("");
 }
 
+sf::Text t;
+
 void textedit::insert_char(char c) {
     // insert char at last index
-    _text.setString(_text.getString() + c);
-    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
+
+   _text.setString(_text.getString() + c);
+   move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
                 _text.findCharacterPos(_text.getString().getSize()).y);
 }
 
@@ -56,7 +59,7 @@ void textedit::move_cursor(int x, int y) {
     auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
     std::cout << x << "," << y << " " << _text.getCharacterSize()
               << " " << x-align_x << std::endl;
-    _cursor.set_position(x-align_x, y-align_y);
+    _cursor.set_position(x, y);
 }
 
 void textedit::scroll_up() {
@@ -98,4 +101,32 @@ void textedit::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(rect);
     target.draw(_text);
     target.draw(_cursor);
+
+    sf::RectangleShape line_numbers;
+    line_numbers.setSize(sf::Vector2f(20.0, _h));
+    line_numbers.setFillColor(sf::Color(230,230,230));
+    line_numbers.setPosition(_originx-20,_originy);
+    target.draw(line_numbers);
+
+    sf::Text nums;
+    nums.setString("1");
+    nums.setPosition(_originx-15, _originy+MARGIN);
+    nums.setFont(_font);
+    nums.setFillColor(sf::Color(100, 100, 100));
+    nums.setCharacterSize(_font_size);
+    target.draw(nums);
+
+}
+
+std::string textedit::get_line_numbers(){
+    std::string nums="";
+    int i = 1;
+    for(char c: _text.getString()){
+        if(c == '\n'){
+            nums += i;
+            nums+= "\n";
+        }
+        i++;
+    }
+    return nums;
 }

@@ -23,9 +23,11 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
+    bool handle_mouse(sf::Event);
     bool _handle_text(sf::Event);
     bool _handle_keyboard(sf::Event);
     bool _run_tanks();
+    bool _load_level(int);
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
@@ -34,6 +36,8 @@ private:
     event_handle _text_handle;
     std::vector<object_def*> _objects;
     event_handle _keyboard_handle;
+    event_handle _mouse_handle;
+    event_handle _click_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)

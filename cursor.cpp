@@ -10,3 +10,6 @@ void cursor::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     rect.setFillColor(sf::Color::Black);
     target.draw(rect);
 }
+
+int cursor::get_x_position(){return _x;};
+int cursor:: get_y_position(){return _y;};

@@ -27,13 +27,14 @@ private:
                       sf::RenderStates states) const;
     sf::View _view; // This would be nice to use, but need separate rendertarget
     sf::Font _font;
-    std::vector<std::string> _data;
+    std::vector<sf::Text> _data;
     sf::Text _text;
     int _font_size, _w, _h;
     //std::string _text;
     int _originx, _originy;
     int MARGIN = 20;
     cursor _cursor;
+    std::string get_line_numbers();
 };
 
 #endif // TEXTEDIT_H

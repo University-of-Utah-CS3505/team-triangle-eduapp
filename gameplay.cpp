@@ -5,30 +5,20 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <QTextDocument>
 
 gameplay::gameplay(engine& eng)
-    : _editor{15, 400, 650}, _engine{eng}, _level(0),
-      _text_handle(_engine.add_event_listener(
-              sf::Event::TextEntered,
-              [this](auto e) { return _handle_text(e); })),
-      _keyboard_handle(
-              _engine.add_event_listener(sf::Event::KeyPressed, [this](auto e) {
-                  return _handle_keyboard(e);
-              })) {
 
-    _editor.set_text("hello!\nTesting text for enter and space !\n test cursor "
-                     "position.");
-
-    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
-                                         "PNG/DefaultSize/crateWood.png",
-                                         "Temp",
-                                         sf::Vector2i(100, 100),
-                                         sf::Vector2i(28, 28)));
-    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
-                                         "PNG/DefaultSize/crateWood.png",
-                                         "Temp",
-                                         sf::Vector2i(200, 100),
-                                         sf::Vector2i(28, 28)));
+    : _editor{15, 400, 650}, _engine{eng},
+        _level(0), _keyboard_handle(
+                       _engine.add_event_listener(sf::Event::TextEntered,
+                              [this](auto e){return _handle_keyboard(e);})),
+          _mouse_handle(_engine.add_event_listener(sf::Event::MouseButtonPressed,
+                                                   [this](auto e){return handle_mouse(e);})),
+          _text_handle(_engine.add_event_listener(
+                  sf::Event::TextEntered,
+                  [this](auto e) { return _handle_text(e); })){
+    _load_level(1);
 }
 
 std::unique_ptr<game_state> gameplay::update() {
@@ -89,18 +79,13 @@ bool gameplay::_handle_text(sf::Event event) {
     return false;
 }
 
+bool gameplay::handle_mouse(sf::Event event){
+    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y);
+
+    return true;
+}
 bool gameplay::_run_tanks() {
-    _tanks.emplace_back(std::make_unique<tank>(
-            _engine,
-            sf::Sprite(_engine.load_texture(
-                    "../team-triangle-eduapp/assets/Tanks/PNG/"
-                    "DefaultSize/tankBody_blue.png")),
-            sf::Sprite(_engine.load_texture(
-                    "../team-triangle-eduapp/assets/Tanks/PNG/"
-                    "DefaultSize/tankBlue_barrel2_outline.png")),
-            sf::Sprite(_engine.load_texture(
-                    "../team-triangle-eduapp/assets/Tanks/PNG/"
-                    "DefaultSize/bulletBlue1_outline.png"))));
+
     auto thread = std::thread([this]() {
         namespace py = boost::python;
         // Retrieve the main module.
@@ -140,6 +125,37 @@ bool gameplay::_run_tanks() {
     thread.detach();
 }
 
+bool gameplay::_load_level(int level)
+{
+    _level.load_new_level(level);
+    //Load Tiles
+    //Load Objects
+    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
+                                         "PNG/DefaultSize/crateWood.png",
+                                         "Temp",
+                                         sf::Vector2i(100, 100),
+                                         sf::Vector2i(28, 28)));
+    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
+                                         "PNG/DefaultSize/crateWood.png",
+                                         "Temp",
+                                         sf::Vector2i(200, 100),
+                                         sf::Vector2i(28, 28)));
+
+    //Load Tank
+    _tanks.emplace_back(std::make_unique<tank>(
+            _engine,
+            sf::Sprite(_engine.load_texture(
+                    "../team-triangle-eduapp/assets/Tanks/PNG/"
+                    "DefaultSize/tankBody_blue.png")),
+            sf::Sprite(_engine.load_texture(
+                    "../team-triangle-eduapp/assets/Tanks/PNG/"
+                    "DefaultSize/tankBlue_barrel2_outline.png")),
+            sf::Sprite(_engine.load_texture(
+                    "../team-triangle-eduapp/assets/Tanks/PNG/"
+                    "DefaultSize/bulletBlue1_outline.png"))));
+    return true;
+}
+
 bool gameplay::_handle_keyboard(sf::Event event) {
     if (event.key.code == sf::Keyboard::F5) {
         _run_tanks();
@@ -159,4 +175,5 @@ bool gameplay::_handle_keyboard(sf::Event event) {
     } else {
         return false;
     }
+
 }
