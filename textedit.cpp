@@ -51,7 +51,12 @@ void textedit::backspace() {
 }
 
 void textedit::move_cursor(int x, int y) {
-    _cursor.set_position(x, y);
+    // TODO: align cursor to character pos and
+    auto align_x = (x - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
+    auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
+    std::cout << x << "," << y << " " << _text.getCharacterSize()
+              << " " << x-align_x << std::endl;
+    _cursor.set_position(x-align_x, y-align_y);
 }
 
 void textedit::scroll_up() {

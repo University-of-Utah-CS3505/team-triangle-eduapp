@@ -27,6 +27,7 @@ private:
                       sf::RenderStates states) const;
     sf::View _view; // This would be nice to use, but need separate rendertarget
     sf::Font _font;
+    std::vector<std::string> _data;
     sf::Text _text;
     int _font_size, _w, _h;
     //std::string _text;
