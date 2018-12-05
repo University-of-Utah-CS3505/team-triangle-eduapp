@@ -26,6 +26,7 @@ private:
     bool _handle_text(sf::Event);
     bool _handle_keyboard(sf::Event);
     bool _run_tanks();
+    bool _load_level(int);
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
