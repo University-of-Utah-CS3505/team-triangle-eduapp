@@ -23,22 +23,22 @@ gap_buffer::gap_buffer(int size) : _gap_size(size)
 
 }
 
-gap_buffer::gap_buffer(const gap_buffer& gb){
+//gap_buffer::gap_buffer(const gap_buffer& gb){
 
-    _gap_size = gb._gap_size;
+//    _gap_size = gb._gap_size;
 
-    _buffer = (char*) malloc(gb._buffer_end - gb._buffer);
-    strcpy(_buffer, gb._buffer);
+//    _buffer = (char*) malloc(gb._buffer_end - gb._buffer);
+//    strcpy(_buffer, gb._buffer);
 
-    _buffer_end = _buffer +(gb._buffer_end - gb._buffer);
-    _gap_start = _buffer +(gb._gap_start - gb._buffer);
-    _gap_end = _gap_start + (gb._gap_end - gb._gap_start);
-    _point = _buffer + (gb._point - gb._buffer);
-}
+//    _buffer_end = _buffer +(gb._buffer_end - gb._buffer);
+//    _gap_start = _buffer +(gb._gap_start - gb._buffer);
+//    _gap_end = _gap_start + (gb._gap_end - gb._gap_start);
+//    _point = _buffer + (gb._point - gb._buffer);
+//}
 
-gap_buffer::~gap_buffer(){
-    if (_buffer) free(_buffer);
-}
+//gap_buffer::~gap_buffer(){
+//    if (_buffer) free(_buffer);
+//}
 
 int gap_buffer::buffer_size(){
     return (_buffer_end - _buffer) - (_gap_end - _gap_start);
