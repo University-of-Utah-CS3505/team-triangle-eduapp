@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>735</width>
-    <height>460</height>
+    <width>962</width>
+    <height>753</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="spinButton">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>70</y>
+      <x>40</x>
+      <y>310</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -64,8 +64,8 @@
    <widget class="QSpinBox" name="spinBox">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>250</y>
+      <x>130</x>
+      <y>310</y>
       <width>48</width>
       <height>26</height>
      </rect>
@@ -74,13 +74,253 @@
      <number>5</number>
     </property>
    </widget>
+   <widget class="QScrollArea" name="scrollArea_resources">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>20</y>
+      <width>471</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>469</width>
+       <height>379</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>9</y>
+        <width>451</width>
+        <height>261</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout"/>
+     </widget>
+     <widget class="QPushButton" name="add_resource">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>290</y>
+        <width>121</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add Resource</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="remove_resource">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>290</y>
+        <width>131</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Remove Resource</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spin_select_ressource">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>290</y>
+        <width>48</width>
+        <height>26</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>320</y>
+        <width>141</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Resource to remove:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="resource_label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>340</y>
+        <width>451</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;AS OF NOW RESOURCES IS UNITERACTABLE!&gt;</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea_objects">
+    <property name="geometry">
+     <rect>
+      <x>29</x>
+      <y>349</y>
+      <width>401</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>399</width>
+       <height>339</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>111</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="object_label_area"/>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>129</x>
+        <y>9</y>
+        <width>121</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="object_loc_1_area"/>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>259</x>
+        <y>10</y>
+        <width>131</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="object_loc_2_area"/>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="tank_button">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>440</y>
+      <width>141</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add Tank Spawn</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tree_button">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>470</y>
+      <width>141</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add Solid (tree)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="target_button">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>500</y>
+      <width>141</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add Target(box)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="remove_object_button">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>550</y>
+      <width>141</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Remove Object</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="remove_object_box">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>550</y>
+      <width>48</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_remove">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>580</y>
+      <width>191</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Object to Remove</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_remove_dynamic">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>600</y>
+      <width>141</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;PLACEHOLDER&gt;</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>735</width>
+     <width>962</width>
      <height>22</height>
     </rect>
    </property>
