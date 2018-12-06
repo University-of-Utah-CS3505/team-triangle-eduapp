@@ -81,7 +81,7 @@ bool gameplay::_handle_text(sf::Event event) {
 }
 
 bool gameplay::handle_mouse(sf::Event event) {
-    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y-10);
+    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y - 10);
 
     return true;
 }
@@ -95,13 +95,76 @@ bool gameplay::_run_tanks() {
 
             // Retrieve the main module's namespace
             auto global = main.attr("__dict__");
-            auto debug_print = py::make_function(
+            global["d_print"] = py::make_function(
                     std::function([](py::object x) {
                         std::cout << py::extract<std::string>(x)() << std::endl;
                     }),
                     py::default_call_policies(),
                     boost::mpl::vector<void, py::object>());
-            global["d_print"] = debug_print;
+
+            global["forward"] = py::make_function(
+                    std::function([this]() {
+                        for (auto& c_tank : _tanks) {
+                            c_tank->run_state(
+                                    std::make_unique<tank::move>(true));
+                        }
+                        for (auto& c_tank : _tanks) {
+                            c_tank->wait_until_idle();
+                        }
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void>());
+
+            global["backward"] = py::make_function(
+                    std::function([this]() {
+                        for (auto& c_tank : _tanks) {
+                            c_tank->run_state(
+                                    std::make_unique<tank::move>(false));
+                        }
+                        for (auto& c_tank : _tanks) {
+                            c_tank->wait_until_idle();
+                        }
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void>());
+
+            global["turn_left"] = py::make_function(
+                    std::function([this]() {
+                        for (auto& c_tank : _tanks) {
+                            c_tank->run_state(
+                                    std::make_unique<tank::rotate>(false));
+                        }
+                        for (auto& c_tank : _tanks) {
+                            c_tank->wait_until_idle();
+                        }
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void>());
+
+            global["turn_right"] = py::make_function(
+                    std::function([this]() {
+                        for (auto& c_tank : _tanks) {
+                            c_tank->run_state(
+                                    std::make_unique<tank::rotate>(true));
+                        }
+                        for (auto& c_tank : _tanks) {
+                            c_tank->wait_until_idle();
+                        }
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void>());
+
+            global["shoot"] = py::make_function(
+                    std::function([this]() {
+                        for (auto& c_tank : _tanks) {
+                            c_tank->run_state(std::make_unique<tank::shoot>());
+                        }
+                        for (auto& c_tank : _tanks) {
+                            c_tank->wait_until_idle();
+                        }
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void>());
 
             auto result = py::exec(
                     py::str(_editor.get_text().toAnsiString()), global, global);
