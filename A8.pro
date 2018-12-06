@@ -39,7 +39,15 @@ SOURCES += \
     level.cpp \
     bullet.cpp \
     object_def.cpp \
-    gap_buffer.cpp
+    gap_buffer.cpp \
+    texteditor/Cursor.cpp \
+    texteditor/ImplementationUtils.cpp \
+    texteditor/InputController.cpp \
+    texteditor/SelectionData.cpp \
+    texteditor/SpecialChars.cpp \
+    texteditor/TextDocument.cpp \
+    texteditor/TextView.cpp \
+    texteditor/TextViewContent.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -56,7 +64,15 @@ HEADERS += \
     bullet.h \
     pyinqt.h \
     object_def.h \
-    gap_buffer.h
+    gap_buffer.h \
+    texteditor/Cursor.h \
+    texteditor/ImplementationUtils.h \
+    texteditor/InputController.h \
+    texteditor/SelectionData.h \
+    texteditor/SpecialChars.h \
+    texteditor/TextDocument.h \
+    texteditor/TextView.h \
+    texteditor/TextViewContent.h
 
 FORMS += \
     pre_game_options.ui
