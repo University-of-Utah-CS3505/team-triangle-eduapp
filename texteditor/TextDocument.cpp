@@ -2,7 +2,12 @@
 
 // La idea es leer el file y guardarlo en buffer (quiero cargarlo en la memoria)
 // Para esto uso std::ifstream para levantar el archivo
-bool TextDocument::init(string &filename) {
+
+TextDocument::TextDocument() {
+    lineBuffer.push_back(0);
+}
+
+/*bool TextDocument::init(string &filename) {
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {
         std::cerr << "Error opening file: " << filename << std::endl;
@@ -17,7 +22,7 @@ bool TextDocument::init(string &filename) {
     inputFile.close();
     this->initLinebuffer();
     return true;
-}
+}*/
 
 bool TextDocument::saveFile(string &filename) {
     std::ofstream outputFile(filename);

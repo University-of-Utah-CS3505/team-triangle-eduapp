@@ -14,9 +14,7 @@ Cursor::Cursor(int height, int charWidth, int lineN, int charN) {
     this->updatePos(lineN, charN);
 }
 
-void Cursor::draw(sf::RenderWindow &window) {
-    window.draw(this->rect);
-}
+void Cursor::draw(sf::RenderTarget& target) { target.draw(this->rect); }
 
 // updateMaxChar=false por defecto
 void Cursor::setPosition(int lineN, int charN, bool updateMaxChar) {
@@ -26,29 +24,17 @@ void Cursor::setPosition(int lineN, int charN, bool updateMaxChar) {
     }
 }
 
-int Cursor::getLineN() {
-    return this->lineN;
-}
+int Cursor::getLineN() { return this->lineN; }
 
-int Cursor::getCharN() {
-    return this->charN;
-}
+int Cursor::getCharN() { return this->charN; }
 
-void Cursor::setMaxCharNReached(int charN) {
-    this->maxCharNReached = charN;
-}
+void Cursor::setMaxCharNReached(int charN) { this->maxCharNReached = charN; }
 
-int Cursor::getMaxCharNReached() {
-    return this->maxCharNReached;
-}
+int Cursor::getMaxCharNReached() { return this->maxCharNReached; }
 
-void Cursor::moveUp() {
-    this->updatePos(this->lineN - 1, this->charN);
-}
+void Cursor::moveUp() { this->updatePos(this->lineN - 1, this->charN); }
 
-void Cursor::moveDown() {
-    this->updatePos(this->lineN + 1, this->charN);
-}
+void Cursor::moveDown() { this->updatePos(this->lineN + 1, this->charN); }
 
 void Cursor::moveUpToMaxCharN() {
     this->updatePos(this->lineN - 1, this->maxCharNReached);
@@ -93,18 +79,13 @@ void Cursor::nextLine() {
     this->moveDown();
 }
 
-void Cursor::setHeight(int height) {
-    this->height = height;
-}
+void Cursor::setHeight(int height) { this->height = height; }
 
-void Cursor::setCharWidth(int charWidth) {
-    this->charWidth = charWidth;
-}
+void Cursor::setCharWidth(int charWidth) { this->charWidth = charWidth; }
 
 void Cursor::updatePos(int l, int c) {
     this->lineN = l;
     this->charN = c;
-    this->rect.setPosition(
-        this->charN * this->charWidth,
-        (this->lineN * this->height) + this->offsetY);
+    this->rect.setPosition(this->charN * this->charWidth,
+                           (this->lineN * this->height) + this->offsetY);
 }

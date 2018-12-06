@@ -6,6 +6,9 @@
 #include "level.h"
 #include "tank.h"
 #include "textedit.h"
+#include "texteditor/InputController.h"
+#include "texteditor/TextDocument.h"
+#include "texteditor/TextView.h"
 #include "tile.h"
 #include <SFML/Graphics.hpp>
 
@@ -35,9 +38,16 @@ private:
     level _level;
     event_handle _text_handle;
     std::vector<object_def*> _objects;
-    event_handle _keyboard_handle;
-    event_handle _mouse_handle;
+    event_handle _pressed_handle;
+    event_handle _mouse_click;
     event_handle _click_handle;
+
+    sf::RenderTexture _editor_subtarget;
+    TextView _text_view;
+    TextDocument _text_doc;
+    InputController _input_con;
+
+    event_handle _released_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)

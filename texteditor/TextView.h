@@ -8,9 +8,9 @@
 
 class TextView {
 public:
-    TextView(const sf::RenderWindow& window, const sf::String& fontPath);
+    TextView(const sf::RenderTarget& target, const sf::String& fontPath);
 
-    void draw(sf::RenderWindow& window, TextDocument& document);
+    void draw(sf::RenderTarget& window, TextDocument& document);
     void setFontSize(int fontSize);
 
     void selectText(int startLineN, int startCharN, int endLineN, int endCharN);

@@ -15,7 +15,7 @@ TextViewContent::TextViewContent(const sf::String& fontPath) {
 // todos
 // TODO: Que devuelva un vector diciendo el alto que ocupa el dibujo de cada
 // linea, para saber el tamaño de cada linea en el margen
-void TextViewContent::drawLines(sf::RenderWindow& window,
+void TextViewContent::drawLines(sf::RenderTarget& window,
                                 TextDocument& document) {
     this->bottomLimitPx = document.getLineCount() * this->fontSize;
 

@@ -41,7 +41,6 @@ SOURCES += \
     object_def.cpp \
     gap_buffer.cpp \
     texteditor/Cursor.cpp \
-    texteditor/ImplementationUtils.cpp \
     texteditor/InputController.cpp \
     texteditor/SelectionData.cpp \
     texteditor/SpecialChars.cpp \
@@ -66,7 +65,6 @@ HEADERS += \
     object_def.h \
     gap_buffer.h \
     texteditor/Cursor.h \
-    texteditor/ImplementationUtils.h \
     texteditor/InputController.h \
     texteditor/SelectionData.h \
     texteditor/SpecialChars.h \

@@ -5,12 +5,12 @@
 #include <iostream>
 
 class Cursor {
-   public:
+public:
     Cursor();
     Cursor(int height, int charWidth);
     Cursor(int height, int charWidth, int lineN, int charN);
 
-    void draw(sf::RenderWindow &window);
+    void draw(sf::RenderTarget& target);
     void setHeight(int height);
     void setCharWidth(int charWidth);
 
@@ -35,7 +35,7 @@ class Cursor {
     void setMaxCharNReached(int charN);
     int getMaxCharNReached();
 
-   private:
+private:
     sf::RectangleShape rect;
     int height;
     int charWidth;

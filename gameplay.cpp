@@ -3,6 +3,7 @@
 #include "pyinqt.h"
 #include "tile.h"
 #include <QTextDocument>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -12,15 +13,49 @@ gameplay::gameplay(engine& eng)
     : _editor{15, 800, 650}, _engine{eng}, _level(0),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
-              [this](auto e) { return _handle_text(e); })),
-      _keyboard_handle(_engine.add_event_listener(
+              [this](auto e) {
+                  _input_con.handleEvents(
+                          _text_doc, _text_view, _engine.window(), e);
+                  return true;
+              })),
+
+      _pressed_handle(_engine.add_event_listener(
               sf::Event::KeyPressed,
-              [this](auto e) { return _handle_keyboard(e); })),
-      _mouse_handle(_engine.add_event_listener(
+              [this](auto e) {
+                  if (_handle_keyboard(e)) {
+                      return true;
+                  } else {
+                      _input_con.handleEvents(
+                              _text_doc, _text_view, _engine.window(), e);
+                      return true;
+                  }
+              })),
+      _released_handle(_engine.add_event_listener(
+              sf::Event::KeyReleased,
+              [this](auto e) {
+                  _input_con.handleEvents(
+                          _text_doc, _text_view, _engine.window(), e);
+                  return true;
+              })),
+
+      _mouse_click(_engine.add_event_listener(
               sf::Event::MouseButtonPressed,
-              [this](auto e) { return handle_mouse(e); })) {
+              [this](auto e) {
+                  if (handle_mouse(e)) {
+                      return true;
+                  } else {
+                      _input_con.handleEvents(
+                              _text_doc, _text_view, _engine.window(), e);
+                  }
+              })),
+      _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
+                  _editor_subtarget),
+                 "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
     _load_level(1);
-    _editor.set_text("Initial text\nYou can edit text.\n cursor can position after word what you choose\nYou can insert characters between characters\nbut, still need to do right position for curor, string selection\nand scrollbar.");
+    _editor.set_text("Initial text\nYou can edit text.\n cursor can position "
+                     "after word what you choose\nYou can insert characters "
+                     "between characters\nbut, still need to do right position "
+                     "for curor, string selection\nand scrollbar.");
 }
 
 std::unique_ptr<game_state> gameplay::update() {
@@ -62,7 +97,18 @@ std::unique_ptr<game_state> gameplay::update() {
         }
     }
 
-    _engine.window().draw(_editor);
+    // _engine.window().draw(_editor);
+
+    //_engine.window().draw(_editor_holder);
+    _editor_subtarget.clear(sf::Color(21, 29, 45));
+    _editor_subtarget.setView(_text_view.getCameraView());
+
+    _text_view.draw(_editor_subtarget, _text_doc);
+    auto editor = sf::Sprite();
+    editor.setPosition(0.66666 * 1920, 0);
+    _editor_subtarget.display();
+    editor.setTexture(_editor_subtarget.getTexture());
+    _engine.window().draw(editor);
 
     return nullptr;
 }

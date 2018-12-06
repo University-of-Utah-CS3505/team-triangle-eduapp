@@ -1,8 +1,8 @@
 #include "TextView.h"
 
-TextView::TextView(const sf::RenderWindow& window, const sf::String& fontPath)
+TextView::TextView(const sf::RenderTarget& target, const sf::String& fontPath)
     : content(fontPath),
-      camera(sf::FloatRect(-50, 0, window.getSize().x, window.getSize().y)),
+      camera(sf::FloatRect(-50, 0, target.getSize().x, target.getSize().y)),
       deltaScroll(20), deltaRotation(2), deltaZoomIn(0.8f), deltaZoomOut(1.2f) {
     this->cursor =
             Cursor(this->content.getLineHeight(), this->content.getCharWidth());
@@ -15,7 +15,7 @@ TextView::TextView(const sf::RenderWindow& window, const sf::String& fontPath)
     this->colorMargin = sf::Color(32, 44, 68);
 }
 
-void TextView::draw(sf::RenderWindow& window, TextDocument& document) {
+void TextView::draw(sf::RenderTarget& window, TextDocument& document) {
     // TODO: El content devuelve un vector diciendo que alto tiene cada linea,
     //      por ahora asumo que todas miden "1" de alto
     this->content.drawLines(window, document);
