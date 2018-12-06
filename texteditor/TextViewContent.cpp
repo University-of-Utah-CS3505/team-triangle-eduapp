@@ -1,37 +1,46 @@
 #include "TextViewContent.h"
 
-TextViewContent::TextViewContent(const sf::String &workingDirectory) {
+TextViewContent::TextViewContent(const sf::String& fontPath) {
     this->bottomLimitPx = 1;
     this->rightLimitPx = 1;
 
-    this->font.loadFromFile(workingDirectory.toAnsiString() + "fonts/DejaVuSansMono.ttf");
-    this->setFontSize(18);  // Important to call
+    this->font.loadFromFile(fontPath.toAnsiString());
+    this->setFontSize(18); // Important to call
     this->colorChar = sf::Color::White;
     this->colorSelection = sf::Color(106, 154, 232);
 }
 
 // TODO: Reemplazar fontSize por fontHeight especifica para cada tipo de font.
-// TODO: Multiples cursores similar a Selecciones, que los moveUp.. etc muevan todos
-// TODO: Que devuelva un vector diciendo el alto que ocupa el dibujo de cada linea, para saber el tamaño de cada linea en el margen
-void TextViewContent::drawLines(sf::RenderWindow &window, TextDocument &document) {
+// TODO: Multiples cursores similar a Selecciones, que los moveUp.. etc muevan
+// todos
+// TODO: Que devuelva un vector diciendo el alto que ocupa el dibujo de cada
+// linea, para saber el tamaño de cada linea en el margen
+void TextViewContent::drawLines(sf::RenderWindow& window,
+                                TextDocument& document) {
     this->bottomLimitPx = document.getLineCount() * this->fontSize;
 
-    for (int lineNumber = 0; lineNumber < document.getLineCount(); lineNumber++) {
+    for (int lineNumber = 0; lineNumber < document.getLineCount();
+         lineNumber++) {
         sf::String line = document.getLine(lineNumber);
         sf::String currentLineText = "";
 
-        this->rightLimitPx = std::max((int)this->rightLimitPx, (int)(this->charWidth * line.getSize()));
+        this->rightLimitPx = std::max((int)this->rightLimitPx,
+                                      (int)(this->charWidth * line.getSize()));
 
         float offsetx = 0;
         bool previousSelected = false;
 
-        for (int charIndexInLine = 0; charIndexInLine <= (int)line.getSize(); charIndexInLine++) {
-            // En general hay una unica seleccion, en el futuro podria haber mas de una
-            bool currentSelected = this->selections.isSelected(lineNumber, charIndexInLine);
+        for (int charIndexInLine = 0; charIndexInLine <= (int)line.getSize();
+             charIndexInLine++) {
+            // En general hay una unica seleccion, en el futuro podria haber mas
+            // de una
+            bool currentSelected =
+                    this->selections.isSelected(lineNumber, charIndexInLine);
 
             // Cuando hay un cambio, dibujo el tipo de seleccion anterior
             // Tambien dibujo cuando es el fin de la linea actual
-            if (currentSelected != previousSelected || charIndexInLine == (int)line.getSize()) {
+            if (currentSelected != previousSelected ||
+                charIndexInLine == (int)line.getSize()) {
                 sf::Text texto;
                 texto.setFillColor(this->colorChar);
                 texto.setFont(font);
@@ -40,10 +49,13 @@ void TextViewContent::drawLines(sf::RenderWindow &window, TextDocument &document
                 texto.setPosition(offsetx, lineNumber * this->fontSize);
 
                 if (previousSelected) {
-                    sf::RectangleShape selectionRect(sf::Vector2f(this->charWidth * currentLineText.getSize(), this->fontSize));
+                    sf::RectangleShape selectionRect(sf::Vector2f(
+                            this->charWidth * currentLineText.getSize(),
+                            this->fontSize));
                     selectionRect.setFillColor(this->colorSelection);
                     // TODO: Que el +2 no sea un numero magico
-                    selectionRect.setPosition(offsetx, 2 + lineNumber * this->fontSize);
+                    selectionRect.setPosition(offsetx,
+                                              2 + lineNumber * this->fontSize);
                     window.draw(selectionRect);
                 }
 
@@ -82,7 +94,8 @@ void TextViewContent::setFontSize(int fontSize) {
     this->lineHeight = fontSize;
 
     // HACK: Because I use only monospace fonts, every char is the same width
-    //       so I get the width drawing a single character (A WIDE ONE TO BE SURE)
+    //       so I get the width drawing a single character (A WIDE ONE TO BE
+    //       SURE)
     sf::Text tmpText;
     tmpText.setFont(this->font);
     tmpText.setCharacterSize(this->fontSize);
@@ -91,18 +104,10 @@ void TextViewContent::setFontSize(int fontSize) {
     this->charWidth = textwidth;
 }
 
-float TextViewContent::getRightLimitPx() {
-    return this->rightLimitPx;
-}
+float TextViewContent::getRightLimitPx() { return this->rightLimitPx; }
 
-float TextViewContent::getBottomLimitPx() {
-    return this->bottomLimitPx;
-}
+float TextViewContent::getBottomLimitPx() { return this->bottomLimitPx; }
 
-int TextViewContent::getLineHeight() {
-    return this->lineHeight;
-}
+int TextViewContent::getLineHeight() { return this->lineHeight; }
 
-int TextViewContent::getCharWidth() {
-    return this->charWidth;
-}
+int TextViewContent::getCharWidth() { return this->charWidth; }

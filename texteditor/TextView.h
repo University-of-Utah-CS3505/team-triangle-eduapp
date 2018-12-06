@@ -1,47 +1,55 @@
 #ifndef TextView_H
 #define TextView_H
 
-#include <SFML/Graphics.hpp>
-#include <cmath>
 #include "Cursor.h"
 #include "TextViewContent.h"
+#include <SFML/Graphics.hpp>
+#include <cmath>
 
 class TextView {
-   public:
-    TextView(const sf::RenderWindow &window, const sf::String &workingDirectory);
+public:
+    TextView(const sf::RenderWindow& window, const sf::String& fontPath);
 
-    void draw(sf::RenderWindow &window, TextDocument &document);
+    void draw(sf::RenderWindow& window, TextDocument& document);
     void setFontSize(int fontSize);
 
     void selectText(int startLineN, int startCharN, int endLineN, int endCharN);
     void removeSelections();
-    bool deleteSelections(TextDocument &document);
-    sf::String copySelections(TextDocument &document);
+    bool deleteSelections(TextDocument& document);
+    sf::String copySelections(TextDocument& document);
 
-    void startSelectionFromMouse(float mouseX, float mouseY, const TextDocument &document);
+    void startSelectionFromMouse(float mouseX,
+                                 float mouseY,
+                                 const TextDocument& document);
     void startSelectionFromCursor();
-    void cursorActive(float mouseX, float mouseY, const TextDocument &document);
+    void cursorActive(float mouseX, float mouseY, const TextDocument& document);
 
-    void addTextInCursorPos(sf::String text, TextDocument &document);
-    void deleteTextAfterCursorPos(int amount, TextDocument &document);
-    void deleteTextBeforeCursorPos(int amount, TextDocument &document);
+    void addTextInCursorPos(sf::String text, TextDocument& document);
+    void deleteTextAfterCursorPos(int amount, TextDocument& document);
+    void deleteTextBeforeCursorPos(int amount, TextDocument& document);
 
-    bool moveCursorLeft(const TextDocument &document, bool updateActiveSelections = false);
-    void moveCursorRight(const TextDocument &document, bool updateActiveSelections = false);
-    void moveCursorUp(const TextDocument &document, bool updateActiveSelections = false);
-    void moveCursorDown(const TextDocument &document, bool updateActiveSelections = false);
+    bool moveCursorLeft(const TextDocument& document,
+                        bool updateActiveSelections = false);
+    void moveCursorRight(const TextDocument& document,
+                         bool updateActiveSelections = false);
+    void moveCursorUp(const TextDocument& document,
+                      bool updateActiveSelections = false);
+    void moveCursorDown(const TextDocument& document,
+                        bool updateActiveSelections = false);
 
-    void moveCursorToEnd(const TextDocument &document, bool updateActiveSelections = false);
-    void moveCursorToStart(const TextDocument &document, bool updateActiveSelections = false);
+    void moveCursorToEnd(const TextDocument& document,
+                         bool updateActiveSelections = false);
+    void moveCursorToStart(const TextDocument& document,
+                           bool updateActiveSelections = false);
 
-    void duplicateCursorLine(TextDocument &document);
-    void swapCursorLine(TextDocument &document, bool swapWithUp);
-    void swapSelectedLines(TextDocument &document, bool swapWithUp);
+    void duplicateCursorLine(TextDocument& document);
+    void swapCursorLine(TextDocument& document, bool swapWithUp);
+    void swapSelectedLines(TextDocument& document, bool swapWithUp);
 
-    void scrollUp(sf::RenderWindow &window);
-    void scrollDown(sf::RenderWindow &window);
-    void scrollLeft(sf::RenderWindow &window);
-    void scrollRight(sf::RenderWindow &window);
+    void scrollUp(sf::RenderWindow& window);
+    void scrollDown(sf::RenderWindow& window);
+    void scrollLeft(sf::RenderWindow& window);
+    void scrollRight(sf::RenderWindow& window);
 
     void scrollTo(float x, float y);
 
@@ -57,7 +65,7 @@ class TextView {
     void setDeltaScroll(float delta);
     void setDeltaRotation(float delta);
 
-   private:
+private:
     void handleSelectionOnCursorMovement(bool updateActiveSelections);
 
     TextViewContent content;
@@ -69,7 +77,9 @@ class TextView {
         DocCoords(int lineN, int charN) : lineN(lineN), charN(charN) {}
     };
 
-    DocCoords getDocumentCoords(float mouseX, float mouseY, const TextDocument &document);
+    DocCoords getDocumentCoords(float mouseX,
+                                float mouseY,
+                                const TextDocument& document);
 
     Cursor cursor;
 

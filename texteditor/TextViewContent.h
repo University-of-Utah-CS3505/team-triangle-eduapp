@@ -1,16 +1,16 @@
 #ifndef TextViewContent_H
 #define TextViewContent_H
 
-#include <SFML/Graphics.hpp>
 #include "SelectionData.h"
 #include "TextDocument.h"
+#include <SFML/Graphics.hpp>
 
 class TextViewContent {
-   public:
-    TextViewContent(const sf::String &workingDirectory);
+public:
+    TextViewContent(const sf::String& fontPath);
 
     void setFontSize(int fontSize);
-    void drawLines(sf::RenderWindow &window, TextDocument &document);
+    void drawLines(sf::RenderWindow& window, TextDocument& document);
 
     void createNewSelection(int anclaLine, int anclaChar);
     void updateLastSelection(int lineN, int charN);
@@ -24,7 +24,7 @@ class TextViewContent {
     float getRightLimitPx();
     float getBottomLimitPx();
 
-   private:
+private:
     int fontSize;
     int lineHeight;
     int charWidth;
