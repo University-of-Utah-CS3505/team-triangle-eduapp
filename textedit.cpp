@@ -6,7 +6,7 @@ textedit::textedit(int font_size, int w, int h) :
                     _font_size(font_size), _w(w), _h(h),
                      _cursor(font_size) {
     // TODO: need to pull font from main
-    _originx = 350;
+    _originx = 400;
     _originy = 10;
     _font.loadFromFile("../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
     _text.setFont(_font);
@@ -14,16 +14,32 @@ textedit::textedit(int font_size, int w, int h) :
     _text.setCharacterSize(_font_size);
     _text.setPosition(_originx + MARGIN, _originy + MARGIN);
     _text.setString("");
-}
 
-sf::Text t;
+    nums.setString("1\n");
+    nums.setPosition(_originx-25, _originy+MARGIN);
+    nums.setFont(_font);
+    nums.setFillColor(sf::Color(100, 100, 100));
+    nums.setCharacterSize(_font_size);
+
+
+}
 
 void textedit::insert_char(char c) {
     // insert char at last index
-
-   _text.setString(_text.getString() + c);
+    _data.insert_char(c);
+    std::string s;
+    for(int i = 0; i < _data.buffer_size(); i++){
+        s = _data.get_char();
+        _data.set_point(i+1);
+    }
+   _text.setString(_text.getString() + s);
    move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
                 _text.findCharacterPos(_text.getString().getSize()).y);
+
+   if(c == '\n' || c == '\r'){
+
+       nums.setString(get_line_numbers());
+   }
 }
 
 void textedit::set_text(const std::string& text) {
@@ -57,8 +73,9 @@ void textedit::move_cursor(int x, int y) {
     // TODO: align cursor to character pos and
     auto align_x = (x - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
     auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
-    std::cout << x << "," << y << " " << _text.getCharacterSize()
-              << " " << x-align_x << std::endl;
+    sf::Vector2f z = _text.findCharacterPos(_text.getString().getSize());
+    std::cout << x << "," << y << " " << z.x<< " " <<z.y <<std::endl;
+
     _cursor.set_position(x, y);
 }
 
@@ -103,30 +120,28 @@ void textedit::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(_cursor);
 
     sf::RectangleShape line_numbers;
-    line_numbers.setSize(sf::Vector2f(20.0, _h));
+    line_numbers.setSize(sf::Vector2f(40.0, _h));
     line_numbers.setFillColor(sf::Color(230,230,230));
-    line_numbers.setPosition(_originx-20,_originy);
+    line_numbers.setPosition(_originx-40,_originy);
     target.draw(line_numbers);
 
-    sf::Text nums;
-    nums.setString("1");
-    nums.setPosition(_originx-15, _originy+MARGIN);
-    nums.setFont(_font);
-    nums.setFillColor(sf::Color(100, 100, 100));
-    nums.setCharacterSize(_font_size);
-    target.draw(nums);
 
+
+
+    target.draw(nums);
 }
 
-std::string textedit::get_line_numbers(){
-    std::string nums="";
-    int i = 1;
+std::string textedit::get_line_numbers() const{
+    std::string nums="1\n";
+    int i = 2;
     for(char c: _text.getString()){
-        if(c == '\n'){
-            nums += i;
-            nums+= "\n";
+        if(c == '\n' || c=='\r'){
+
+            nums += std::to_string(i)+'\n';
+            i++;
         }
-        i++;
+
     }
+    nums += std::to_string(i)+"\n";
     return nums;
 }

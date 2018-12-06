@@ -36,7 +36,8 @@ private:
     std::vector<menu_item> _items;
     engine& _engine;
     b2World _world;
-
+    sf::Sprite logo;
+    sf::Texture logo_tex;
     std::unique_ptr<game_state> _to_state;
 
     event_handle _click_handle;

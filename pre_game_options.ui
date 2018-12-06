@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Game Display Options</string>
   </property>
   <widget class="QWidget" name="formLayoutWidget_3">
    <property name="geometry">

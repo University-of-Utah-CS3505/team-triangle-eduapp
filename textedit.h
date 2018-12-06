@@ -5,6 +5,8 @@
 #include <string>
 #include <QDebug>
 #include "cursor.h"
+#include "gap_buffer.h"
+
 
 class textedit : public sf::Drawable {
 public:
@@ -27,14 +29,17 @@ private:
                       sf::RenderStates states) const;
     sf::View _view; // This would be nice to use, but need separate rendertarget
     sf::Font _font;
-    std::vector<sf::Text> _data;
+    gap_buffer _data;
     sf::Text _text;
+    sf::Text nums;
     int _font_size, _w, _h;
     //std::string _text;
     int _originx, _originy;
     int MARGIN = 20;
     cursor _cursor;
-    std::string get_line_numbers();
+   std::string get_line_numbers() const;
+   void update_line_numbers();
+
 };
 
 #endif // TEXTEDIT_H
