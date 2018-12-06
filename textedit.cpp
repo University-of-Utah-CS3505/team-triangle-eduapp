@@ -25,6 +25,16 @@ textedit::textedit(int font_size, int w, int h) :
 }
 
 void textedit::insert_char(char c) {
+    // Get char_pos_x = ((x - (origin_x + MARGIN)) / text_width)
+    // Get char_pos_y = ((y - (origin_y + MARGIN)) / text_width)
+
+    // In std::vector<std::string> it's _data[char_pos_y][char_pos_x]
+    // To insert: std::insert(char_pos_x, _data[char_pos_y])
+    // To delete: std::remove(char_pos_x, _data[char_pos_y])
+
+    // In char buffer you need to get the full buffer and count '\n' characters to get line
+    // get_offset -- count '\n' up to line_num and count all characters up to that point to get
+    // line offset, then add x_char_pos
     // insert char at last index
     _data.insert_char(c);
     std::string s;
@@ -71,6 +81,8 @@ void textedit::backspace() {
 
 void textedit::move_cursor(int x, int y) {
     // TODO: align cursor to character pos and
+    // new_x = ((x - (origin_x + MARGIN)) / text_width) * text_width -- need a 0 condition
+    // new_y = ((y - (origin_y + MARGIN)) / line_height) * line_height -- need a 0 condition
     auto align_x = (x - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
     auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
     sf::Vector2f z = _text.findCharacterPos(_text.getString().getSize());

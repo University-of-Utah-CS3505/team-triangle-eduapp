@@ -72,6 +72,7 @@ bool gameplay::_handle_text(sf::Event event) {
     // than a newline
     if (event.text.unicode == '\r') {
         _editor.insert_char('\n');
+        // _editor.new_line();
     } else if (event.text.unicode == '\b') {
         _editor.backspace();
     } else {
