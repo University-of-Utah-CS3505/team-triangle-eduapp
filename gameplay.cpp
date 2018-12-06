@@ -81,7 +81,7 @@ bool gameplay::_handle_text(sf::Event event) {
 }
 
 bool gameplay::handle_mouse(sf::Event event) {
-    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y);
+    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y-10);
 
     return true;
 }

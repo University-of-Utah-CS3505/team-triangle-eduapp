@@ -20,6 +20,8 @@ textedit::textedit(int font_size, int w, int h) :
     nums.setFont(_font);
     nums.setFillColor(sf::Color(100, 100, 100));
     nums.setCharacterSize(_font_size);
+
+
 }
 
 void textedit::insert_char(char c) {
@@ -71,8 +73,9 @@ void textedit::move_cursor(int x, int y) {
     // TODO: align cursor to character pos and
     auto align_x = (x - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
     auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
-    std::cout << x << "," << y << " " << _text.getCharacterSize()
-              << " " << x-align_x << std::endl;
+    sf::Vector2f z = _text.findCharacterPos(_text.getString().getSize());
+    std::cout << x << "," << y << " " << z.x<< " " <<z.y <<std::endl;
+
     _cursor.set_position(x, y);
 }
 

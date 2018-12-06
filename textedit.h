@@ -7,6 +7,7 @@
 #include "cursor.h"
 #include "gap_buffer.h"
 
+
 class textedit : public sf::Drawable {
 public:
     textedit(int font_size, int w, int h);
@@ -38,6 +39,7 @@ private:
     cursor _cursor;
    std::string get_line_numbers() const;
    void update_line_numbers();
+
 };
 
 #endif // TEXTEDIT_H
