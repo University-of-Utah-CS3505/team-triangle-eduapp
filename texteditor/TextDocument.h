@@ -18,7 +18,8 @@ using std::vector;
 
 class TextDocument {
    public:
-    bool init(string &filename);
+    TextDocument();
+//    bool init(string &filename);
     bool saveFile(string &filename);
     bool hasChanged();
 

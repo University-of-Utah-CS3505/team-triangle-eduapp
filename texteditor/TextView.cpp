@@ -5,7 +5,7 @@ TextView::TextView(const sf::RenderWindow &window, const sf::String &workingDire
     this->cursor = Cursor(this->content.getLineHeight(), this->content.getCharWidth());
 
     // this->font.loadFromFile("fonts/FreeMono.ttf");
-    this->font.loadFromFile(workingDirectory.toAnsiString() + "fonts/DejaVuSansMono.ttf");
+    this->font.loadFromFile(workingDirectory.toAnsiString() + "fonts/droid_sans_mono.ttf");
     this->fontSize = 18;
 
     // TODO: Cambiarlo en relacion a la fontsize

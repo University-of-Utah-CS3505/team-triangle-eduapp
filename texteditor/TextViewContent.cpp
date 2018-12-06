@@ -4,7 +4,7 @@ TextViewContent::TextViewContent(const sf::String &workingDirectory) {
     this->bottomLimitPx = 1;
     this->rightLimitPx = 1;
 
-    this->font.loadFromFile(workingDirectory.toAnsiString() + "fonts/DejaVuSansMono.ttf");
+    this->font.loadFromFile(workingDirectory.toAnsiString() + "fonts/droid_sans_mono.ttf");
     this->setFontSize(18);  // Important to call
     this->colorChar = sf::Color::White;
     this->colorSelection = sf::Color(106, 154, 232);

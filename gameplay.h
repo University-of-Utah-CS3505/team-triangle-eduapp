@@ -8,6 +8,10 @@
 #include "textedit.h"
 #include "tile.h"
 #include <SFML/Graphics.hpp>
+#include "texteditor/TextDocument.h"
+#include "texteditor/TextView.h"
+#include "texteditor/InputController.h"
+
 
 #define RETURN_KEY 13
 #define BACKSPACE_KEY 8
@@ -35,9 +39,17 @@ private:
     level _level;
     event_handle _text_handle;
     std::vector<object_def*> _objects;
-    event_handle _keyboard_handle;
-    event_handle _mouse_handle;
+    event_handle _pressed_handle;
+    event_handle _mouse_click;
     event_handle _click_handle;
+
+    TextView _text_view;
+    TextDocument _text_doc;
+    InputController _input_con;
+
+    sf::Sprite _editor_holder;
+
+    event_handle _released_handle;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)
