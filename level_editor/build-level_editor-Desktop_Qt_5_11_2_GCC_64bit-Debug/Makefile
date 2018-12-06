@@ -812,6 +812,9 @@ moc_mainwindow.cpp: ../level_editor/model.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QLabel \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qlabel.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qframe.h \
 		../level_editor/mainwindow.h \
 		moc_predefs.h \
 		/home/scott/Qt/5.11.2/gcc_64/bin/moc
@@ -951,6 +954,9 @@ main.o: ../level_editor/main.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QLabel \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qlabel.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qframe.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QApplication \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qapplication.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1073,6 +1079,9 @@ mainwindow.o: ../level_editor/mainwindow.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtGui/qvalidator.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregularexpression.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QLabel \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qlabel.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qframe.h \
 		ui_mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/QVariant \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QAction \
@@ -1100,7 +1109,6 @@ mainwindow.o: ../level_editor/mainwindow.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QScrollArea \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qscrollarea.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qframe.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QStatusBar \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/qstatusbar.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QToolBar \
@@ -1108,7 +1116,67 @@ mainwindow.o: ../level_editor/mainwindow.cpp ../level_editor/mainwindow.h \
 		/home/scott/Qt/5.11.2/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../level_editor/mainwindow.cpp
 
-model.o: ../level_editor/model.cpp ../level_editor/model.h
+model.o: ../level_editor/model.cpp ../level_editor/model.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/QJsonObject \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qjsonobject.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qglobal.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qconfig.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qtcore-config.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qsysinfo.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qlogging.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qflags.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qatomic.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qmutex.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qnumeric.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qversiontagging.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstring.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qchar.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qbytearray.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qrefcount.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qnamespace.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qarraydata.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstringliteral.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstringview.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qiterator.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qpair.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/QFile \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qfile.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qfiledevice.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qiodevice.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qobject.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qlist.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qalgorithms.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstringlist.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qregexp.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qcoreevent.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qmetatype.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qobject_impl.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/QByteArray \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qjsondocument.h \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/QJsonArray \
+		/home/scott/Qt/5.11.2/gcc_64/include/QtCore/qjsonarray.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o model.o ../level_editor/model.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
