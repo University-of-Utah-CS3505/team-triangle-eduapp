@@ -9,7 +9,7 @@
 
 gameplay::gameplay(engine& eng)
 
-    : _editor{15, 400, 650}, _engine{eng}, _level(0),
+    : _editor{15, 800, 650}, _engine{eng}, _level(0),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) { return _handle_text(e); })),
@@ -20,6 +20,7 @@ gameplay::gameplay(engine& eng)
               sf::Event::MouseButtonPressed,
               [this](auto e) { return handle_mouse(e); })) {
     _load_level(1);
+    _editor.set_text("Initial text\nYou can edit text.\n cursor can position after word what you choose\nYou can insert characters between characters\nbut, still need to do right position for curor, string selection\nand scrollbar.");
 }
 
 std::unique_ptr<game_state> gameplay::update() {

@@ -16,7 +16,7 @@ public:
     void set_text(const std::string& text);
     sf::String get_text() const;
     sf::String wrap_text();
-    void move_cursor(int x, int y);
+    void move_cursor(float x, float y);
     void scroll_up();
     void scroll_down();
     void scroll_left();
@@ -37,6 +37,9 @@ private:
     int _originx, _originy;
     int MARGIN = 20;
     cursor _cursor;
+    int _text_size;
+    bool _iswriting;
+    int _current_char_index;
    std::string get_line_numbers() const;
    void update_line_numbers();
 
