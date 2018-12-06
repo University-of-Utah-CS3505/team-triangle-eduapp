@@ -83,7 +83,10 @@ bool tank::move::update(tank& t) {
 }
 
 tank::rot_turret::rot_turret(float angle) : _end_angle(angle) {
-    _end_angle = (int)_end_angle;
+    _end_angle = (int)_end_angle%360;
+    if(_end_angle < 0)
+        _end_angle = _end_angle + 360;
+
 }
 
 bool tank::rot_turret::update(tank& t) {
