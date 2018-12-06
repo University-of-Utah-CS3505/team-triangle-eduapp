@@ -166,6 +166,20 @@ bool gameplay::_run_tanks() {
                     py::default_call_policies(),
                     boost::mpl::vector<void>());
 
+            global["rotate_turret"] = py::make_function(
+                    std::function([this](py::object py_angle) {
+                        auto angle = py::extract<float>(py_angle);
+                        for (auto& c_tank : _tanks) {
+                            c_tank->run_state(
+                                    std::make_unique<tank::rot_turret>(angle));
+                        }
+                        for (auto& c_tank : _tanks) {
+                            c_tank->wait_until_idle();
+                        }
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<void, py::object>());
+
             auto result = py::exec(
                     py::str(_editor.get_text().toAnsiString()), global, global);
         } catch (py::error_already_set const&) {
