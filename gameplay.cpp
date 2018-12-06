@@ -30,6 +30,7 @@ gameplay::gameplay(engine& eng)
                       return true;
                   }
               })),
+
       _released_handle(_engine.add_event_listener(
               sf::Event::KeyReleased,
               [this](auto e) {
@@ -134,8 +135,11 @@ bool gameplay::handle_mouse(sf::Event event) {
     return true;
 }
 bool gameplay::_run_tanks() {
-
-    auto thread = std::thread([this]() {
+    auto user_source = std::string();
+    for (auto i = 0; i < _text_doc.getLineCount(); i++) {
+        user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
+    }
+    auto thread = std::thread([this, user_source]() {
         namespace py = boost::python;
         // Retrieve the main module.
         try {
@@ -228,8 +232,7 @@ bool gameplay::_run_tanks() {
                     py::default_call_policies(),
                     boost::mpl::vector<void, py::object>());
 
-            auto result = py::exec(
-                    py::str(_editor.get_text().toAnsiString()), global, global);
+            auto result = py::exec(py::str(user_source), global, global);
         } catch (py::error_already_set const&) {
             // https://stackoverflow.com/a/1418703
             // TODO give user the exception somehow (maybe print and redirect
