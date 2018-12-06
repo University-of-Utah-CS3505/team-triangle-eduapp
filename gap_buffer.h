@@ -25,7 +25,6 @@ public:
     void remove_chars(int);
     void insert_string(char*, int);
 
-
 private:
     char* _point;
     char* _buffer;

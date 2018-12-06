@@ -7,7 +7,7 @@ void cursor::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     sf::RectangleShape rect;
     rect.setSize(_size);
     rect.setPosition(_x, _y);
-    rect.setFillColor(sf::Color::Black);
+    rect.setFillColor(sf::Color::Red);
     target.draw(rect);
 }
 

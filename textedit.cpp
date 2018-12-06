@@ -25,9 +25,13 @@ textedit::textedit(int font_size, int w, int h) :
 }
 
 void textedit::insert_char(char c) {
-    // Get char_pos_x = ((x - (origin_x + MARGIN)) / text_width)
-    // Get char_pos_y = ((y - (origin_y + MARGIN)) / text_width)
+        auto char_pos_x = ((_cursor.get_x_position() - (_originx + MARGIN)) / _text.getCharacterSize());
+        auto char_pos_y = ((_cursor.get_y_position() - (_originy + MARGIN)) / _text.getCharacterSize());
 
+        int x = (_cursor.get_x_position()-_originx+MARGIN)/9;
+        int y = (_cursor.get_y_position()- _originy + MARGIN)/17;
+        sf::Vector2f new_cursor =   _text.findCharacterPos(x+y);
+        std::cout << new_cursor.x << " " << new_cursor.y << std::endl;
     // In std::vector<std::string> it's _data[char_pos_y][char_pos_x]
     // To insert: std::insert(char_pos_x, _data[char_pos_y])
     // To delete: std::remove(char_pos_x, _data[char_pos_y])
@@ -43,8 +47,7 @@ void textedit::insert_char(char c) {
         _data.set_point(i+1);
     }
    _text.setString(_text.getString() + s);
-   move_cursor(_text.findCharacterPos(_text.getString().getSize()).x,
-                _text.findCharacterPos(_text.getString().getSize()).y);
+   move_cursor(new_cursor.x+_originx+MARGIN, new_cursor.y+_originy+MARGIN);
 
    if(c == '\n' || c == '\r'){
 
@@ -80,15 +83,12 @@ void textedit::backspace() {
 }
 
 void textedit::move_cursor(int x, int y) {
-    // TODO: align cursor to character pos and
-    // new_x = ((x - (origin_x + MARGIN)) / text_width) * text_width -- need a 0 condition
-    // new_y = ((y - (origin_y + MARGIN)) / line_height) * line_height -- need a 0 condition
-    auto align_x = (x - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
-    auto align_y = (y - MARGIN) % (int)(_text.getLetterSpacing() + _text.getCharacterSize());
-    sf::Vector2f z = _text.findCharacterPos(_text.getString().getSize());
-    std::cout << x << "," << y << " " << z.x<< " " <<z.y <<std::endl;
 
-    _cursor.set_position(x, y);
+    auto new_x = ((x - (_originx+MARGIN))/_text.getCharacterSize()) * _text.getCharacterSize();
+    auto new_y = ((y - (_originy+ MARGIN))/ _text.getLineSpacing()) * _text.getLineSpacing();
+    std::cout << new_x << "," << new_y <<std::endl;
+
+    _cursor.set_position(new_x, new_y);
 }
 
 void textedit::scroll_up() {
