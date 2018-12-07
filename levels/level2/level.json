@@ -1,0 +1,52 @@
+{
+    "name": "Sequential Statements",
+    "tiles": [
+        [2, 0, 0, 0, 0],
+        [2, 0, 0, 0, 0],
+        [3, 1, 1, 4, 0],
+	[0, 0, 0, 2, 0],
+        [0, 0, 0, 2, 0]],
+    "objects": [
+        {
+            "type": "spawn",
+            "pos": [0, 0],
+	    "size": [16,28],
+	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
+        },
+	{
+            "type": "destroyable",
+            "pos": [1, 1],
+	    "size": [28,28],
+	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+        },
+        {
+            "type": "solid",
+            "pos": [4, 3],
+	    "size": [36,36],
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeGreen_small.png"
+        }],
+    "tiledefs": [
+        {
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass1.png",
+            "type": "grass"
+        },
+	{
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadEast.png",
+            "type": "grass"
+        },
+	{
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadNorth.png",
+            "type": "grass"
+        },
+        {
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerUR.png",
+            "type": "road"
+        },
+	{
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerLL.png",
+            "type": "road"
+        }
+
+
+    ]
+}

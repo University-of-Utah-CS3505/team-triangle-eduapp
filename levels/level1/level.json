@@ -1,0 +1,37 @@
+{
+    "name": "Sequential Statements",
+    "tiles": [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 1]],
+    "objects": [
+        {
+            "type": "spawn",
+            "pos": [0, 0],
+	    "size": [16,28],
+	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
+        },
+	{
+            "type": "destroyable",
+            "pos": [1, 1],
+	    "size": [28,28],
+	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+        },
+        {
+            "type": "solid",
+            "pos": [3, 3],
+	    "size": [36,36],
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeBrown_small.png"
+        }],
+    "tiledefs": [
+        {
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass1.png",
+            "type": "grass"
+        },
+        {
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadEast.png",
+            "type": "road"
+        }
+    ]
+}
