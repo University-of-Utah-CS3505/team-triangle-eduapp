@@ -16,6 +16,7 @@ public:
     void load_new_level(int level); // UNLOADS CURRENT LEVEL, reloads from master list
     boost::multi_array<int,2> get_location_matrix();
     std::string _level_name;
+    std::string _level_instructions;
 
 private:
     int tankstart[2]; // x then y
@@ -25,6 +26,8 @@ private:
     std::vector<object_def*> _objects;
     std::vector<std::string> levels_master_list;
     std::vector<std::pair<std::string, std::string>> type_defs;
+    std::string _level_inst_path;
+    std::string get_level_instructions(std::string);
 };
 
 #endif // LEVEL_H

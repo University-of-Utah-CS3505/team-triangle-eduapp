@@ -53,10 +53,7 @@ gameplay::gameplay(engine& eng)
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
     _load_level(1);
-    _editor.set_text("Initial text\nYou can edit text.\n cursor can position "
-                     "after word what you choose\nYou can insert characters "
-                     "between characters\nbut, still need to do right position "
-                     "for curor, string selection\nand scrollbar.");
+    _text_doc.addTextToPos(_level._level_instructions, 0,0);
 }
 
 std::unique_ptr<game_state> gameplay::update() {

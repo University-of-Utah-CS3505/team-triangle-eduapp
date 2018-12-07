@@ -3,6 +3,8 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 namespace pt = boost::property_tree;
 
 level::level(int level_index) {
@@ -45,10 +47,13 @@ void level::load_new_level(int level) {
                                                   // according to documentation.
     type_defs.clear();
 
+    _level_inst_path = levels_master_list[level] + "level.txt";
+    _level_instructions = get_level_instructions(_level_inst_path);
+
     auto texture = sf::Texture{};
     auto root = pt::ptree();
     auto level_path = levels_master_list[level];
-    pt::read_json("../team-triangle-eduapp/levels" + level_path, root);
+    pt::read_json("../team-triangle-eduapp/levels" + level_path + "level.json", root);
 
     // Get tile defs in order to build tiles when getting values
     for (pt::ptree::value_type& def : root.get_child("tiledefs")) {
@@ -81,3 +86,10 @@ void level::load_new_level(int level) {
 }
 
 boost::multi_array<int,2> level::get_location_matrix(){return location_matrix;};
+
+std::string level::get_level_instructions(std::string path){
+    std::stringstream result;
+    std::ifstream file("../team-triangle-eduapp/levels/"+path);
+    result << file.rdbuf();
+    return result.str();
+}
