@@ -15,10 +15,10 @@ public:
     void set_sprite_position(int x, int y);
 
 private:
-    enum Type {SPAWN, GOAL, ENEMY, DESTROYABLE};
+
     sf::Texture _texture;
     sf::Sprite _sprite;
-    Type _type;
+    std::string _type;
     std::string _img;
     sf::Vector2i _size;
     sf::Vector2i _position;

@@ -50,6 +50,29 @@ void level::load_new_level(int level) {
     auto level_path = levels_master_list[level];
     pt::read_json("../team-triangle-eduapp/levels" + level_path, root);
 
+
+    for(pt::ptree::value_type& def : root.get_child("objects")) {
+        std::string type = def.second.get<std::string>("type");
+
+        std::vector<std::string> pos;
+        for (pt::ptree::value_type &p : def.second.get_child("pos")) {
+          pos.push_back(p.second.data());
+        }
+
+        std::vector<std::string> size;
+        for (pt::ptree::value_type &p : def.second.get_child("size")) {
+          size.push_back(p.second.data());
+        }
+
+        std::string img = def.second.get<std::string>("img");
+
+        _objects.emplace_back(new object_def(img,
+                                             type,
+                                             sf::Vector2i(std::stoi(pos[0]),std::stoi(pos[1])),
+                                             sf::Vector2i(std::stoi(size[0]),std::stoi(size[1]))));
+
+    }
+
     // Get tile defs in order to build tiles when getting values
     for (pt::ptree::value_type& def : root.get_child("tiledefs")) {
         std::string img = def.second.get<std::string>("img");
@@ -77,4 +100,9 @@ void level::load_new_level(int level) {
     }
 }
 
-boost::multi_array<int,2> level::get_location_matrix(){return location_matrix;};
+boost::multi_array<int,2> level::get_location_matrix(){return location_matrix;}
+
+std::vector<object_def *> level::get_objects()
+{
+    return _objects;
+};
