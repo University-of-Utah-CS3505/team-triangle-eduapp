@@ -158,6 +158,12 @@ void tank::bullet_hit()
     _bullet.show_explosion();
 }
 
+void tank::set_offset(int x, int y) {
+    _sprite.move(x, y);
+    _turret.move(x, y);
+    _bullet.move(x, y);
+}
+
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
     target.draw(_bullet);
     target.draw(_sprite);
