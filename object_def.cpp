@@ -20,3 +20,5 @@ sf::Vector2f object_def::get_position()
 {
     return _sprite.getPosition();
 }
+
+void object_def::set_offset(int x, int y) { _sprite.move(x,y); }

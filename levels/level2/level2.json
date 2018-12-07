@@ -21,9 +21,9 @@
         },
         {
             "type": "solid",
-            "pos": [3, 3],
+            "pos": [4, 3],
 	    "size": [36,36],
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeBrown_small.png"
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeGreen_small.png"
         }],
     "tiledefs": [
         {

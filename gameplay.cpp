@@ -10,7 +10,7 @@
 
 gameplay::gameplay(engine& eng)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(0),
+    : _editor{15, 800, 650}, _engine{eng}, _level(1),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -66,7 +66,7 @@ std::unique_ptr<game_state> gameplay::update() {
     for (int i = 0; i < _level.get_location_matrix().shape()[0]; i++) {
         for (int j = 0; j < _level.get_location_matrix().shape()[1]; j++) {
             tile tile_to_draw = _level.get_location_tile_def(i, j);
-            tile_to_draw.set_sprite_position(j * 64, i * 64);
+            tile_to_draw.set_sprite_position(j * 64+(.1655*_engine.window().getSize().x), i * 64+(.1665*_engine.window().getSize().y));
             _engine.window().draw((tile_to_draw.get_sprite()));
         }
     }
@@ -108,10 +108,22 @@ std::unique_ptr<game_state> gameplay::update() {
 
     _text_view.draw(_editor_subtarget, _text_doc);
     auto editor = sf::Sprite();
-    editor.setPosition(500, 0);
+    editor.setPosition(0.66666 * _engine.window().getSize().x, 0);
     _editor_subtarget.display();
     editor.setTexture(_editor_subtarget.getTexture());
     _engine.window().draw(editor);
+
+    //draw level name
+    auto level_name = sf::Text();
+    auto font = sf::Font();
+    font.loadFromFile("../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
+    level_name.setString(_level._level_name);
+    level_name.setPosition(0.1665 * _engine.window().getSize().x, 10);
+    level_name.setCharacterSize(30);
+    level_name.setFont(font);
+    level_name.setFillColor(sf::Color::White);
+    _engine.window().draw(level_name);
+
 
     return nullptr;
 }
@@ -137,6 +149,7 @@ bool gameplay::handle_mouse(sf::Event event) {
     return true;
 }
 bool gameplay::_run_tanks() {
+    _load_level(1);
     auto user_source = std::string();
     for (auto i = 0; i < _text_doc.getLineCount(); i++) {
         user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
@@ -255,9 +268,11 @@ bool gameplay::_run_tanks() {
 
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
-
     _objects.clear();
+    _tanks.clear();
+
     for(auto &obj : _level.get_objects()){
+        obj->set_offset(.1655*_engine.window().getSize().x, .1655*_engine.window().getSize().y);
         _objects.emplace_back(obj);
     }
 
@@ -273,6 +288,9 @@ bool gameplay::_load_level(int level) {
             sf::Sprite(_engine.load_texture(
                     "../team-triangle-eduapp/assets/Tanks/PNG/"
                     "DefaultSize/bulletBlue1_outline.png"))));
+    for(auto &tank : _tanks){
+        tank->set_offset(.1655*_engine.window().getSize().x, .1655*_engine.window().getSize().y);
+    }
     return true;
 }
 

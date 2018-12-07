@@ -13,6 +13,7 @@ public:
     sf::Vector2i get_size();
     sf::Vector2f get_position();
     void set_sprite_position(int x, int y);
+    void set_offset(int x, int y);
 
 private:
 

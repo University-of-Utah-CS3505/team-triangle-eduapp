@@ -44,6 +44,7 @@ void level::load_new_level(int level) {
     location_matrix.resize(boost::extents[0][0]); // Clear matrix, valid
                                                   // according to documentation.
     type_defs.clear();
+    _objects.clear();
 
     auto texture = sf::Texture{};
     auto root = pt::ptree();
@@ -80,6 +81,9 @@ void level::load_new_level(int level) {
         type_defs.push_back(std::make_pair(img, type));
     }
 
+    //Get name
+    _level_name = root.get<std::string>("name");
+
     // Get tile values
     auto x = 0;
     auto size = root.get_child("tiles").size();
@@ -87,12 +91,6 @@ void level::load_new_level(int level) {
     for (pt::ptree::value_type& row : root.get_child("tiles")) {
         auto y = 0;
         for (pt::ptree::value_type& tile : row.second) {
-//            std::cout << "coor: " << x << " " << y
-//                      << " -- val: " << tile.second.get_value<std::string>()
-//                      << " -- typedef: "
-//                      << type_defs[tile.second.get_value<int>()].second << " "
-//                      << type_defs[tile.second.get_value<int>()].first
-//                      << std::endl;
             location_matrix[x][y] = tile.second.get_value<int>();
             y++;
         }

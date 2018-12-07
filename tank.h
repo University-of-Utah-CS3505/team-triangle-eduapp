@@ -74,6 +74,8 @@ public:
 
     void bullet_hit();
 
+    void set_offset(int x, int y);
+
 private:
     engine& _engine;
     sf::Sprite _sprite;
