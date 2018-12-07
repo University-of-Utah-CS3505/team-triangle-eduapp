@@ -26,11 +26,11 @@
         }],
     "tiledefs": [
         {
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass1.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png",
             "type": "grass"
         },
         {
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadEast.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
             "type": "road"
         }
     ]

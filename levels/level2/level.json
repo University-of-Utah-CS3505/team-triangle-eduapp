@@ -27,23 +27,23 @@
         }],
     "tiledefs": [
         {
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass1.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png",
             "type": "grass"
         },
 	{
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadEast.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
             "type": "grass"
         },
 	{
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadNorth.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
             "type": "grass"
         },
         {
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerUR.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
             "type": "road"
         },
 	{
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerLL.png",
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
             "type": "road"
         }
 
