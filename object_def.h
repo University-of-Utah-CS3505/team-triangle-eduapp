@@ -13,12 +13,13 @@ public:
     sf::Vector2i get_size();
     sf::Vector2f get_position();
     void set_sprite_position(int x, int y);
+    void set_offset(int x, int y);
 
 private:
-    enum Type {SPAWN, GOAL, ENEMY, DESTROYABLE};
+
     sf::Texture _texture;
     sf::Sprite _sprite;
-    Type _type;
+    std::string _type;
     std::string _img;
     sf::Vector2i _size;
     sf::Vector2i _position;

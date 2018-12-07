@@ -10,7 +10,7 @@
 
 gameplay::gameplay(engine& eng)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(0),
+    : _editor{15, 800, 650}, _engine{eng}, _level(1),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -71,33 +71,35 @@ std::unique_ptr<game_state> gameplay::update() {
     // Draw objects
     for (auto& c_tank : _tanks) {
         c_tank->update();
-        _engine.window().draw(*c_tank);
+
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
             // Hit detection
-            if (_objects[i]->get_position().x - _objects[i]->get_size().x <
-                c_tank->get_bullet_pos().x) {
-                if (_objects[i]->get_position().x + _objects[i]->get_size().x >
+            if(_objects[i]->get_type() == "destroyable" ||
+                    _objects[i]->get_type() == "solid") {
+                if (_objects[i]->get_position().x - _objects[i]->get_size().x <
                     c_tank->get_bullet_pos().x) {
-                    if (_objects[i]->get_position().y -
-                                _objects[i]->get_size().y <
-                        c_tank->get_bullet_pos().y) {
-                        if (_objects[i]->get_position().y +
-                                    _objects[i]->get_size().y >
+                    if (_objects[i]->get_position().x + _objects[i]->get_size().x >
+                        c_tank->get_bullet_pos().x) {
+                        if (_objects[i]->get_position().y -
+                                    _objects[i]->get_size().y <
                             c_tank->get_bullet_pos().y) {
-                            c_tank->bullet_hit();
-                            _objects.erase(_objects.begin() + i);
-                            i = 0;
+                            if (_objects[i]->get_position().y +
+                                        _objects[i]->get_size().y >
+                                c_tank->get_bullet_pos().y) {
+                                c_tank->bullet_hit();
+                                if(_objects[i]->get_type() == "destroyable"){
+                                    _objects.erase(_objects.begin() + i);
+                                    i = 0;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+        _engine.window().draw(*c_tank);
     }
-
-    // _engine.window().draw(_editor);
-
-    //_engine.window().draw(_editor_holder);
     _editor_subtarget.clear(sf::Color(21, 29, 45));
     _editor_subtarget.setView(_text_view.getCameraView());
 
@@ -144,6 +146,7 @@ bool gameplay::handle_mouse(sf::Event event) {
     return true;
 }
 bool gameplay::_run_tanks() {
+    _load_level(1);
     auto user_source = std::string();
     for (auto i = 0; i < _text_doc.getLineCount(); i++) {
         user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
@@ -262,18 +265,13 @@ bool gameplay::_run_tanks() {
 
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
-    // Load Tiles
-    // Load Objects
-    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
-                                         "PNG/DefaultSize/crateWood.png",
-                                         "Temp",
-                                         sf::Vector2i(100, 100),
-                                         sf::Vector2i(28, 28)));
-    _objects.emplace_back(new object_def("../team-triangle-eduapp/assets/Tanks/"
-                                         "PNG/DefaultSize/crateWood.png",
-                                         "Temp",
-                                         sf::Vector2i(200, 100),
-                                         sf::Vector2i(28, 28)));
+    _objects.clear();
+    _tanks.clear();
+
+    for(auto &obj : _level.get_objects()){
+        obj->set_offset(.1655*_engine.window().getSize().x, .1655*_engine.window().getSize().y);
+        _objects.emplace_back(obj);
+    }
 
     // Load Tank
     _tanks.emplace_back(std::make_unique<tank>(
@@ -287,6 +285,9 @@ bool gameplay::_load_level(int level) {
             sf::Sprite(_engine.load_texture(
                     "../team-triangle-eduapp/assets/Tanks/PNG/"
                     "DefaultSize/bulletBlue1_outline.png"))));
+    for(auto &tank : _tanks){
+        tank->set_offset(.1655*_engine.window().getSize().x, .1655*_engine.window().getSize().y);
+    }
     return true;
 }
 
