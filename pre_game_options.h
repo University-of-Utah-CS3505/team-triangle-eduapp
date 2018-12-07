@@ -10,7 +10,6 @@ class pre_game_options;
 }
 
 struct launch_options {
-    std::string font_name;
     std::pair<int, int> resolution;
     bool fullscreen;
 };

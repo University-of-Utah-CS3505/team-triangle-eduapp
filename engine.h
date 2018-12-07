@@ -23,6 +23,8 @@ public:
 
     const sf::Texture& load_texture(const std::string& path);
 
+    const launch_options& options();
+
 private:
     std::unordered_map<
             sf::Event::EventType,
@@ -33,6 +35,7 @@ private:
     event_handle _close_quit;
     std::unique_ptr<game_state> _state;
     std::unordered_map<std::string, sf::Texture> _texture_cache;
+    launch_options _options;
 };
 
 #endif // ENGINE_H

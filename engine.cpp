@@ -1,8 +1,8 @@
 #include "engine.h"
+#include "gameplay.h"
 #include "main_menu.h"
 #include <memory>
 #include <thread>
-#include "gameplay.h"
 
 typedef std::chrono::duration<int, std::ratio<1, 60>> frame_duration;
 
@@ -28,7 +28,7 @@ engine::engine(launch_options options)
                                              return false;
                                          }
                                      })),
-      _state(std::make_unique<main_menu>(*this)) {}
+      _state(std::make_unique<main_menu>(*this)), _options(options) {}
 
 event_handle engine::add_event_listener(
         sf::Event::EventType type, std::function<bool(sf::Event)> listener) {
@@ -72,3 +72,5 @@ const sf::Texture& engine::load_texture(const std::string& path) {
     }
     return _texture_cache[path];
 }
+
+const launch_options& engine::options() { return _options; }
