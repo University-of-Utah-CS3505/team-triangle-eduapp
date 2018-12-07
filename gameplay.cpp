@@ -66,7 +66,7 @@ std::unique_ptr<game_state> gameplay::update() {
     for (int i = 0; i < _level.get_location_matrix().shape()[0]; i++) {
         for (int j = 0; j < _level.get_location_matrix().shape()[1]; j++) {
             tile tile_to_draw = _level.get_location_tile_def(i, j);
-            tile_to_draw.set_sprite_position(j * 64, i * 64);
+            tile_to_draw.set_sprite_position(j * 64+(.1655*_engine.window().getSize().x), i * 64+(.1665*_engine.window().getSize().y));
             _engine.window().draw((tile_to_draw.get_sprite()));
         }
     }
@@ -106,10 +106,22 @@ std::unique_ptr<game_state> gameplay::update() {
 
     _text_view.draw(_editor_subtarget, _text_doc);
     auto editor = sf::Sprite();
-    editor.setPosition(0.66666 * 1920, 0);
+    editor.setPosition(0.66666 * _engine.window().getSize().x, 0);
     _editor_subtarget.display();
     editor.setTexture(_editor_subtarget.getTexture());
     _engine.window().draw(editor);
+
+    //draw level name
+    auto level_name = sf::Text();
+    auto font = sf::Font();
+    font.loadFromFile("../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
+    level_name.setString(_level._level_name);
+    level_name.setPosition(0.1665 * _engine.window().getSize().x, 10);
+    level_name.setCharacterSize(30);
+    level_name.setFont(font);
+    level_name.setFillColor(sf::Color::White);
+    _engine.window().draw(level_name);
+
 
     return nullptr;
 }

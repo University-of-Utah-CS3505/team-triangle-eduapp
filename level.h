@@ -15,6 +15,7 @@ public:
     void save_level(); // do we need this? We are just saving the text editor commands?
     void load_new_level(int level); // UNLOADS CURRENT LEVEL, reloads from master list
     boost::multi_array<int,2> get_location_matrix();
+    std::string _level_name;
 
 private:
     int tankstart[2]; // x then y

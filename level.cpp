@@ -57,6 +57,9 @@ void level::load_new_level(int level) {
         type_defs.push_back(std::make_pair(img, type));
     }
 
+    //Get name
+    _level_name = root.get<std::string>("name");
+
     // Get tile values
     auto x = 0;
     auto size = root.get_child("tiles").size();
