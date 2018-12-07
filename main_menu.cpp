@@ -51,7 +51,7 @@ main_menu::main_menu(engine& eng)
     _items.emplace_back(
             _world,
             "../team-triangle-eduapp/assets/play_button.png",
-            [this]() { _to_state = std::make_unique<gameplay>(_engine); },
+            [this]() { _to_state = std::make_unique<gameplay>(_engine,0); },
             -2,
             2,
             0.5);

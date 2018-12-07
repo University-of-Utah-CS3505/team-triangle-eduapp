@@ -8,7 +8,7 @@
 #include <thread>
 #include <vector>
 
-gameplay::gameplay(engine& eng)
+gameplay::gameplay(engine& eng, int level)
 
     : _editor{15, 800, 650}, _engine{eng}, _level(1),
       _text_handle(_engine.add_event_listener(
@@ -52,7 +52,7 @@ gameplay::gameplay(engine& eng)
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
-    _load_level(1);
+    _load_level(level);
     _text_doc.addTextToPos(_level._level_instructions, 0,0);
 }
 

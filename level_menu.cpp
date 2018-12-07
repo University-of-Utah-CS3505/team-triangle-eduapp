@@ -3,6 +3,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
+#include "gameplay.h"
 
 namespace pt = boost::property_tree;
 
@@ -13,9 +14,9 @@ const auto scale = 100.0;
 level_menu::menu_item::menu_item(b2World& world,
                                  const std::string& tex_path,
                                  std::function<bool()> f,
-                                 float x,
-                                 float y,
-                                 float r)
+                                 int x,
+                                 int y,
+                                 int r)
     : on_press(f), texture(std::make_unique<sf::Texture>()) {
     texture->loadFromFile(tex_path);
     sprite.setTexture(*texture);
@@ -36,20 +37,26 @@ level_menu::menu_item::menu_item(b2World& world,
     body->SetTransform(b2Vec2(x, y), r);
 }
 
-level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)) {
+level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)),
+    _click_handle(_engine.add_event_listener(
+            sf::Event::MouseButtonPressed,
+            [this](auto e) { return _handle_click(e); })){
+
    auto root = pt::ptree();
     pt::read_json("../team-triangle-eduapp/levels/levels.json", root);
 
     int x = 2;
+    int level_id = 0;
     for (pt::ptree::value_type& v : root.get_child("levels")) {
-        std::string s = v.second.data();
+       std::string s = v.second.data();
         _items.emplace_back(_world,
                             "../team-triangle-eduapp/assets/level.png",
-                            []() { return false; },
+                            [this, level_id]() { _to_state = std::make_unique<gameplay>(_engine, level_id); return false; },
                             x,
                             2,
                             0);
         x+=2;
+        level_id++;
     }
 
     auto floor_def = b2BodyDef();
@@ -83,5 +90,16 @@ std::unique_ptr<game_state> level_menu::update() {
         _engine.window().draw(item.sprite);
     }
     _engine.window().display();
-    return nullptr;
+    return std::move(_to_state);
+}
+
+bool level_menu::_handle_click(sf::Event e){
+    for (auto& item : _items) {
+        if (item.body->GetFixtureList()->TestPoint(
+                    b2Vec2(e.mouseButton.x / scale, e.mouseButton.y / scale))) {
+            item.on_press();
+            return true;
+        }
+    }
+    return false;
 }

@@ -21,9 +21,9 @@ private:
         menu_item(b2World& world,
                   const std::string& tex_path,
                   std::function<bool()> on_press,
-                  float x,
-                  float y,
-                  float r);
+                  int x,
+                  int y,
+                  int r);
 
         std::unique_ptr<sf::Texture> texture;
         sf::Sprite sprite;
@@ -34,6 +34,10 @@ private:
     std::vector<menu_item> _items;
     engine& _engine;
     b2World _world;
+    std::unique_ptr<game_state> _to_state;
+    event_handle _click_handle;
+    bool _handle_click(sf::Event);
+
 };
 
 #endif // LEVEL_MENU_H

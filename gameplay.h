@@ -22,7 +22,7 @@
 
 class gameplay : public game_state {
 public:
-    gameplay(engine& window);
+    gameplay(engine& window, int level);
     std::unique_ptr<game_state> update() override;
 
 private:
