@@ -428,19 +428,12 @@ bool gameplay::_load_level(int level) {
     for (auto& thread : _threads) {
         thread.join();
     }
-    //_to_state = std::make_unique<main_menu>(_engine);
 
     _threads.clear();
     _kill_sig.clear();
     _objects.clear();
     _executing_line.clear();
     _tanks.clear();
-
-    for (auto& obj : _level.get_objects()) {
-        obj->set_offset(.1655 * _engine.window().getSize().x,
-                        .1655 * _engine.window().getSize().y);
-        _objects.emplace_back(obj);
-    }
 
     // Load Tank
     _tanks.emplace_back(std::make_unique<tank>(
@@ -454,10 +447,20 @@ bool gameplay::_load_level(int level) {
             sf::Sprite(_engine.load_texture(
                     "../team-triangle-eduapp/assets/Tanks/PNG/"
                     "DefaultSize/bulletBlue1_outline.png"))));
-    for (auto& tank : _tanks) {
-        tank->set_offset(.1655 * _engine.window().getSize().x,
-                         .1655 * _engine.window().getSize().y);
 
+
+    for (auto& obj : _level.get_objects()) {
+        obj->set_offset(.1655 * _engine.window().getSize().x,
+                        .1655 * _engine.window().getSize().y);
+        _objects.emplace_back(obj);
+        if(obj->get_type() == "spawn"){
+            for (auto& tank : _tanks){
+                tank->set_position(obj->get_position());
+            }
+        }
+    }
+
+    for (auto& tank : _tanks) {
         tank->set_bullet_bounds(
                 .1655 * _engine.window().getSize().x,
                 .1655 * _engine.window().getSize().y,

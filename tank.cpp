@@ -206,6 +206,12 @@ void tank::set_offset(int x, int y) {
     _bullet.move(x, y);
 }
 
+void tank::set_position(sf::Vector2f pos) {
+    _sprite.setPosition(pos);
+    _turret.setPosition(pos);
+    _bullet.set_location(pos);
+}
+
 void tank::set_bullet_bounds(int low_x, int low_y, int high_x, int high_y) {
     _bullet.set_bounds(low_x, low_y, high_x, high_y);
 }

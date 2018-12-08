@@ -80,6 +80,7 @@ public:
     sf::Vector2f get_position();
     void bullet_hit();
     void set_offset(int, int);\
+    void set_position(sf::Vector2f);
     void set_bullet_bounds(int,int,int,int);
     bool is_shooting();
     bool done_exploding();
