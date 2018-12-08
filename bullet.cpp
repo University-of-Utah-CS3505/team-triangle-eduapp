@@ -30,7 +30,7 @@ sf::Vector2f bullet::get_location() { return _sprite.getPosition(); }
 bool bullet::show_explosion() {
     _show_explosion = true;
     _progress++;
-    if(_progress == 39){
+    if(_progress == 24){
         //_show_explosion = false;
         _progress = 0;
         return true;
@@ -63,7 +63,7 @@ void bullet::set_location(sf::Vector2f pos) { _sprite.setPosition(pos); }
 
 void bullet::move(int x, int y) { _sprite.move(x, y); }
 
-void bullet::set_direction(float x, float y) { _direction = sf::Vector2f(x,y); }
+void bullet::set_direction(float x, float y) { _direction = sf::Vector2f(x*3,y*3); }
 
 void bullet::set_rotation(float angle) { _sprite.setRotation(180+angle); }
 
@@ -75,8 +75,8 @@ void bullet::set_bounds(int low_x, int low_y, int high_x, int high_y)
 
 void bullet::draw(sf::RenderTarget& target, sf::RenderStates) const {
     if(_show_explosion){
-        _explosion[_progress/8]->setPosition(_sprite.getPosition());
-        target.draw(*_explosion[(_progress/8)]);
+        _explosion[_progress/5]->setPosition(_sprite.getPosition());
+        target.draw(*_explosion[(_progress/5)]);
     } else {
         target.draw(_sprite);
     }
