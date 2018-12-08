@@ -82,10 +82,12 @@ gameplay::gameplay(engine& eng, int level)
     _text_view.moveCursorToEnd(_text_doc, false);
 
 
-    auto _error_console = sf::RectangleShape();
-    _error_console.setSize(sf::Vector2f(200,200));
-    _error_console.setFillColor(sf::Color::White);
-    _error_console.setOrigin(0,0);
+    _error_console.setSize(sf::Vector2f(600,250));
+    _error_console.setFillColor(sf::Color(95,95,95));
+    _error_console.setOrigin(_error_console.getSize().x,_error_console.getSize().y);
+    _error_console.setPosition(.666*_engine.window().getSize().x, _engine.window().getSize().y);
+
+
 
     _stdoutbuf = std::cout.rdbuf();
     std::cout.rdbuf(_stdout.rdbuf());
@@ -259,6 +261,25 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
 
+    //draw error console
+    _engine.window().draw(_error_console);
+    auto error_title = sf::RectangleShape();
+    error_title.setSize(sf::Vector2f(_error_console.getSize().x, 30));
+    error_title.setOrigin(error_title.getSize().x, 0);
+    error_title.setPosition(.666*_engine.window().getSize().x, _engine.window().getSize().y-_error_console.getSize().y);
+    error_title.setFillColor(sf::Color(80,80,80));
+    _engine.window().draw(error_title);
+
+    auto error_title_text = sf::Text();
+    error_title_text.setFont(font);
+    error_title_text.setFillColor(sf::Color::White);
+    error_title_text.setPosition(.666*_engine.window().getSize().x-_error_console.getSize().x,
+                                 _engine.window().getSize().y-_error_console.getSize().y);
+    error_title_text.setCharacterSize(14);
+    error_title_text.setString("Error Console");
+    _engine.window().draw(error_title_text);
+
+    //write errors
     auto stdout_str = std::string();
     for (const auto& s : _stdout_lines) {
         stdout_str += s + "\n";
@@ -267,9 +288,12 @@ std::unique_ptr<game_state> gameplay::update() {
     stdout_text.setFont(font);
     stdout_text.setString(stdout_str);
     stdout_text.setFillColor(sf::Color::White);
-    stdout_text.setPosition(0, 0);
+    stdout_text.setPosition(.666*_engine.window().getSize().x-_error_console.getSize().x+5,
+                            _engine.window().getSize().y-_error_console.getSize().y+30);
     stdout_text.setCharacterSize(15);
     _engine.window().draw(stdout_text);
+
+
 
     return std::move(_to_state);
 }
