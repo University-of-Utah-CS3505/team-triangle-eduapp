@@ -64,24 +64,37 @@ public:
         bool update(tank&) override;
     };
 
+    class explode : public state {
+    public:
+        explode();
+
+    private:
+        bool update(tank&) override;
+        int _progress;
+    };
+
     void run_state(std::unique_ptr<state>);
-
     void update();
-
     void wait_until_idle();
-
     sf::Vector2f get_bullet_pos();
-
+    sf::Vector2f get_position();
     void bullet_hit();
-
-    void set_offset(int x, int y);
+    void set_offset(int, int);\
+    void set_bullet_bounds(int,int,int,int);
+    bool is_shooting();
+    bool explode();
 
 private:
     engine& _engine;
     sf::Sprite _sprite;
     sf::Sprite _turret;
+    std::vector<sf::Sprite*> _explosion;
+    bool _explode;
+    int _progress;
 
     bullet _bullet;
+    bool _shooting;
+
 
     std::mutex _mutex;
     std::unique_lock<std::mutex> _lock;

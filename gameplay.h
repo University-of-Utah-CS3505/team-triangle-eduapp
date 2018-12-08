@@ -31,6 +31,7 @@ private:
     std::vector<tile*> _tiles;
     std::vector<std::unique_ptr<tank>> _tanks;
     level _level;
+    int _current_level;
     event_handle _text_handle;
     std::vector<object_def*> _objects;
     event_handle _pressed_handle;

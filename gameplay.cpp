@@ -10,7 +10,7 @@
 
 gameplay::gameplay(engine& eng, int level)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(1),
+    : _editor{15, 800, 650}, _engine{eng}, _level(0), _current_level(level),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -53,8 +53,13 @@ gameplay::gameplay(engine& eng, int level)
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
-    _load_level(level);
+    _load_level(_current_level);
     _text_doc.addTextToPos(_level._level_instructions, 0, 0);
+    int lines = _text_doc.getLineCount();
+    for (int i = 0; i < lines; i++) {
+        _text_view.moveCursorDown(_text_doc, false);
+    }
+    _text_view.moveCursorToEnd(_text_doc, false);
 }
 
 std::unique_ptr<game_state> gameplay::update() {
@@ -74,27 +79,53 @@ std::unique_ptr<game_state> gameplay::update() {
     // Draw objects
     for (auto& c_tank : _tanks) {
         c_tank->update();
-
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
-            // Hit detection
+            // Tank hitting objects
             if (_objects[i]->get_type() == "destroyable" ||
                 _objects[i]->get_type() == "solid") {
                 if (_objects[i]->get_position().x - _objects[i]->get_size().x <
-                    c_tank->get_bullet_pos().x) {
+                    c_tank->get_position().x) {
                     if (_objects[i]->get_position().x +
                                 _objects[i]->get_size().x >
-                        c_tank->get_bullet_pos().x) {
+                        c_tank->get_position().x) {
                         if (_objects[i]->get_position().y -
                                     _objects[i]->get_size().y <
-                            c_tank->get_bullet_pos().y) {
+                            c_tank->get_position().y) {
                             if (_objects[i]->get_position().y +
                                         _objects[i]->get_size().y >
+                                c_tank->get_position().y) {
+                                // if(c_tank->explode()){
+                                //_load_level(_current_level);
+                                //}
+                            }
+                        }
+                    }
+                }
+            }
+            // Hit detection for objects and bullet
+            if (c_tank->is_shooting()) {
+                if (_objects[i]->get_type() == "destroyable" ||
+                    _objects[i]->get_type() == "solid") {
+                    if (_objects[i]->get_position().x -
+                                _objects[i]->get_size().x <
+                        c_tank->get_bullet_pos().x) {
+                        if (_objects[i]->get_position().x +
+                                    _objects[i]->get_size().x >
+                            c_tank->get_bullet_pos().x) {
+                            if (_objects[i]->get_position().y -
+                                        _objects[i]->get_size().y <
                                 c_tank->get_bullet_pos().y) {
-                                c_tank->bullet_hit();
-                                if (_objects[i]->get_type() == "destroyable") {
-                                    _objects.erase(_objects.begin() + i);
-                                    i = 0;
+
+                                if (_objects[i]->get_position().y +
+                                            _objects[i]->get_size().y >
+                                    c_tank->get_bullet_pos().y) {
+                                    c_tank->bullet_hit();
+                                    if (_objects[i]->get_type() ==
+                                        "destroyable") {
+                                        _objects.erase(_objects.begin() + i);
+                                        i = 0;
+                                    }
                                 }
                             }
                         }
@@ -135,7 +166,6 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFont(font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
-
     return nullptr;
 }
 
@@ -161,7 +191,7 @@ bool gameplay::_handle_mouse(sf::Event event) {
 }
 
 bool gameplay::_run_tanks() {
-    _load_level(1);
+    _load_level(_current_level);
     auto user_source = std::string();
     for (auto i = 0; i < _text_doc.getLineCount(); i++) {
         user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
@@ -313,6 +343,7 @@ bool gameplay::_run_tanks() {
 
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
+    _current_level = level;
     _objects.clear();
     _tanks.clear();
 
@@ -337,6 +368,14 @@ bool gameplay::_load_level(int level) {
     for (auto& tank : _tanks) {
         tank->set_offset(.1655 * _engine.window().getSize().x,
                          .1655 * _engine.window().getSize().y);
+
+        tank->set_bullet_bounds(
+                .1655 * _engine.window().getSize().x,
+                .1655 * _engine.window().getSize().y,
+                .1655 * _engine.window().getSize().x +
+                        (_level.get_location_matrix().shape()[0] * 64),
+                .1655 * _engine.window().getSize().y +
+                        (_level.get_location_matrix().shape()[1] * 64));
     }
     return true;
 }

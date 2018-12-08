@@ -1,10 +1,10 @@
 {
-    "name": "Sequential Statements",
+    "name": "Level 2",
     "tiles": [
         [2, 0, 0, 0, 0],
         [2, 0, 0, 0, 0],
         [3, 1, 1, 4, 0],
-	[0, 0, 0, 2, 0],
+	    [0, 0, 0, 2, 0],
         [0, 0, 0, 2, 0]],
     "objects": [
         {
@@ -12,6 +12,12 @@
             "pos": [0, 0],
 	    "size": [16,28],
 	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
+        },
+	{
+            "type": "goal",
+            "pos": [3, 4],
+	    "size": [32,32],
+	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
         },
 	{
             "type": "destroyable",

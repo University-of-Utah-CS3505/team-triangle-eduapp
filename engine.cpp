@@ -21,7 +21,7 @@ engine::engine(launch_options options)
                                      [this](sf::Event e) {
                                          if (e.key.code ==
                                              sf::Keyboard::Escape) {
-                                             _window.close();
+                                             _state = std::make_unique<main_menu>(*this);
                                              return true;
                                          } else {
 

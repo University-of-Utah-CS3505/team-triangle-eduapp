@@ -17,11 +17,13 @@ level::level(int level_index) {
     }
     load_new_level(level_index);
 }
+
 sf::Texture level::get_preview() {
     // TODO
     sf::Texture texture;
     return texture;
 }
+
 sf::Texture level::get_full_texture() {
     // TODO
     sf::Texture texture;
@@ -32,6 +34,7 @@ sf::Sprite level::get_tile_sprite() {
     sf::Sprite texture;
     return texture;
 }
+
 tile level::get_location_tile_def(int x, int y) {
     int tile_loc = location_matrix[x][y];
     return tile(tile_loc,
@@ -42,6 +45,7 @@ tile level::get_location_tile_def(int x, int y) {
 void level::save_level() {
     // TODO, find out if nessesary
 }
+
 void level::load_new_level(int level) {
     location_matrix.resize(boost::extents[0][0]); // Clear matrix, valid
                                                   // according to documentation.
@@ -86,13 +90,26 @@ void level::load_new_level(int level) {
         type_defs.push_back(std::make_pair(img, type));
     }
 
-    //Get name
+    // Get name
     _level_name = root.get<std::string>("name");
 
-    // Get tile values
+    // Get size of map
+    auto size_x = 0, size_y = 0;
     auto x = 0;
-    auto size = root.get_child("tiles").size();
-    location_matrix.resize(boost::extents[size][size]);
+    for (pt::ptree::value_type& row : root.get_child("tiles")) {
+        auto y = 0;
+        for (pt::ptree::value_type& tile : row.second) {
+            tile.second.get_value<int>();
+            y++;
+        }
+        size_y = y;
+        x++;
+    }
+    size_x = x;
+    location_matrix.resize(boost::extents[size_x][size_y]);
+
+    // Get tile values
+    x = 0;
     for (pt::ptree::value_type& row : root.get_child("tiles")) {
         auto y = 0;
         for (pt::ptree::value_type& tile : row.second) {
@@ -102,7 +119,6 @@ void level::load_new_level(int level) {
         x++;
     }
 }
-
 
 boost::multi_array<int,2> level::get_location_matrix(){return location_matrix;};
 

@@ -1,3 +1,20 @@
-#Here is some level text
-#to complete this level drive your tank
-#off a cliff
+#Welcome to Snake Tanks!!!
+#Here, you will learn basic coding concepts
+# by using Python 
+#to manuever your tank across the map.
+#In this first level, you will learn 
+#sequential statements.
+#Sequential statements, are bits of code
+# that are interpreted one after another,
+#in the order in which they are written
+#Use the following sequential statements 
+#(commands) to move the tank and complete level 1.
+#Move Forward: forward()
+#Turn Left, right: turn_left(), turn_right()
+#shoot: shoot()
+#the first 3 commands are done for you
+#Press F5 to run your code
+
+forward()
+forward()
+turn_left()

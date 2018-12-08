@@ -1,16 +1,23 @@
 {
     "name": "Sequential Statements",
     "tiles": [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [1, 1, 1, 1],
-        [0, 0, 0, 1]],
+
+        [2, 0, 0, 0],
+        [2, 0, 0, 0],
+        [3, 1, 1, 4],
+        [0, 0, 0, 2]],
     "objects": [
         {
             "type": "spawn",
             "pos": [0, 0],
 	    "size": [16,28],
 	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
+        },
+	{
+            "type": "goal",
+            "pos": [3, 3],
+	    "size": [32,32],
+	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
         },
 	{
             "type": "destroyable",
@@ -20,7 +27,7 @@
         },
         {
             "type": "solid",
-            "pos": [3, 3],
+            "pos": [3, 1],
 	    "size": [36,36],
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeBrown_small.png"
         }],
@@ -32,6 +39,20 @@
         {
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
             "type": "road"
+        },
+        {
+            "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
+            "type":"road"
+        }
+        ,
+        {
+            "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
+            "type":"road"
+        }
+        ,
+        {
+            "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
+            "type":"road"
         }
     ]
 }
