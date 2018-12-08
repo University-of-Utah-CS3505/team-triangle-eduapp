@@ -156,7 +156,7 @@ tank::explode::explode() : _progress(0) {}
 bool tank::explode::update(tank& t)
 {
     t._explode = true;
-    if(t._progress < 39){
+    if(t._progress < 24){
         t._progress++;
         return false;
     }else{
@@ -227,8 +227,8 @@ void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
         target.draw(_sprite);
         target.draw(_turret);
     } else {
-        _explosion[_progress/8]->setPosition(_sprite.getPosition());
-        target.draw(*_explosion[_progress / 8]);
+        _explosion[_progress/5]->setPosition(_sprite.getPosition());
+        target.draw(*_explosion[_progress / 5]);
     }
 }
 
