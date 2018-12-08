@@ -14,7 +14,8 @@
 
 gameplay::gameplay(engine& eng, int level)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(0), _current_level(level),
+    : _editor{15, 800, 650}, _engine{eng}, _level(0),
+      _current_level(level), _level_won(false),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -161,10 +162,7 @@ std::unique_ptr<game_state> gameplay::update() {
                                     _objects[i]->get_size().y >
                             _tank->get_position().y) {
                             if (_objects[i]->get_type() == "goal") {
-
-                                _to_state = std::make_unique<win_menu>(
-                                        _engine, _current_level);
-                                return NULL;
+                                _level_won = true;
                                 qDebug() << "Goal reached";
                             } else {
                                 _tank->run_state(
@@ -284,6 +282,13 @@ std::unique_ptr<game_state> gameplay::update() {
                                     _error_console.getSize().y + 30);
     stdout_text.setCharacterSize(15);
     _engine.window().draw(stdout_text);
+
+    if (_level_won) {
+        _kill_sig = true;
+        _tank->run_state(nullptr);
+        _tank_controller->join();
+        _to_state = std::make_unique<win_menu>(_engine, _current_level);
+    }
 
     return std::move(_to_state);
 }

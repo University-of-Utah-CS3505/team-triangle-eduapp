@@ -33,6 +33,7 @@ private:
     std::vector<tile*> _tiles;
     level _level;
     int _current_level;
+    bool _level_won;
     event_handle _text_handle;
     std::vector<object_def*> _objects;
     event_handle _pressed_handle;
