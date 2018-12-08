@@ -57,9 +57,9 @@ level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)),
     int x = 2;
     int level_id = 0;
     for (pt::ptree::value_type& v : root.get_child("levels")) {
-       std::string s = v.second.data();
+        auto preview_path = "../team-triangle-eduapp/levels" + v.second.data() + "preview.png";
         _items.emplace_back(_world,
-                            "../team-triangle-eduapp/assets/level.png",
+                            preview_path,
                             [this, level_id]() { _to_state = std::make_unique<gameplay>(_engine, level_id); return true; },
                             x,
                             2,
