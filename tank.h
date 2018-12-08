@@ -82,7 +82,6 @@ public:
     void set_offset(int, int);\
     void set_bullet_bounds(int,int,int,int);
     bool is_shooting();
-    bool explode();
 
 private:
     engine& _engine;

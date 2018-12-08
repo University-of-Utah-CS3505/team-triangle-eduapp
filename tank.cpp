@@ -4,7 +4,7 @@
 #include <QDebug>
 
 tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret, sf::Sprite bullet)
-    : _engine(eng), _sprite(sprite), _turret(turret), _shooting(false),
+    : _engine(eng), _sprite(sprite), _turret(turret), _shooting(false), _progress(0),
       _bullet(eng, bullet) {
     _sprite.setOrigin(19,19);
     _turret.setOrigin(6, 5);
@@ -144,6 +144,20 @@ bool tank::shoot::update(tank& t) {
     return false;
 }
 
+tank::explode::explode() : _progress(0) {}
+
+bool tank::explode::update(tank& t)
+{
+    t._explode = true;
+    if(t._progress < 39){
+        t._progress++;
+        return false;
+    }else{
+        t._explode = false;
+        t._progress = 0;
+        return true;
+    }
+}
 void tank::run_state(std::unique_ptr<state> state) {
     assert(state != nullptr);
     auto lock = std::lock_guard(_mutex);
@@ -190,19 +204,6 @@ void tank::set_bullet_bounds(int low_x, int low_y, int high_x, int high_y)
 
 bool tank::is_shooting() { return _shooting; }
 
-bool tank::explode()
-{
-    _explode = true;
-    if(_progress < 39){
-        _progress++;
-        return false;
-    }else{
-        _explode = false;
-        _progress = 0;
-        return true;
-    }
-}
-
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
 
     if(!_explode){
@@ -213,3 +214,5 @@ void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
         target.draw(*_explosion[_progress/8]);
     }
 }
+
+

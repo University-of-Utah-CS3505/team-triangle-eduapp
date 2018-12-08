@@ -7,6 +7,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <QDebug>
 
 gameplay::gameplay(engine& eng, int level)
 
@@ -93,14 +94,15 @@ std::unique_ptr<game_state> gameplay::update() {
                             if (_objects[i]->get_position().y +
                                         _objects[i]->get_size().y >
                                 c_tank->get_position().y) {
-                               // if(c_tank->explode()){
+                                    c_tank->run_state(
+                                        std::make_unique<tank::explode>());
                                     //_load_level(_current_level);
-                                //}
                             }
                         }
                     }
                 }
             }
+
             // Hit detection for objects and bullet
             if(c_tank->is_shooting()){
                 if(_objects[i]->get_type() == "destroyable" ||
