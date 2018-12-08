@@ -31,7 +31,6 @@ private:
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
-    std::vector<std::unique_ptr<tank>> _tanks;
     level _level;
     int _current_level;
     event_handle _text_handle;
@@ -47,12 +46,26 @@ private:
     std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
 
-    std::vector<std::thread> _threads;
-    std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
-    std::vector<std::unique_ptr<std::atomic<bool>>> _kill_sig;
+    std::unique_ptr<tank> _tank;
+    std::unique_ptr<std::thread> _tank_controller;
+    std::atomic<int> _executing_line;
+    std::atomic<bool> _kill_sig;
 
     std::mutex _pyout_mutex;
     std::stringstream _pyout;
+    sf::RectangleShape _error_console;
+    sf::Font _error_font;
+    sf::Text _error_text;
+    // TODO some structure to handle the tile (boost::multi_array or something,
+    // maybe have a definition mapping ints to tiles and their properties
+    // elsewhere - something close to the flyweight pattern)
+    // do we want to split this between a 'simulate' and an 'edit' state?
+    // gameplay can have sub-states instead - nothing prevents that
+    // might be better because the tile map needs to persist and it's probably
+    // better than passing it around a bunch
+
+    std::streambuf* _stdoutbuf;
+    std::stringstream _stdout;
 
     boost::circular_buffer<std::string> _stdout_lines;
 };

@@ -46,7 +46,8 @@ SOURCES += \
     texteditor/SpecialChars.cpp \
     texteditor/TextDocument.cpp \
     texteditor/TextView.cpp \
-    texteditor/TextViewContent.cpp
+    texteditor/TextViewContent.cpp \
+    win_menu.cpp
 
 HEADERS += \
     pre_game_options.h \
@@ -70,7 +71,8 @@ HEADERS += \
     texteditor/SpecialChars.h \
     texteditor/TextDocument.h \
     texteditor/TextView.h \
-    texteditor/TextViewContent.h
+    texteditor/TextViewContent.h \
+    win_menu.h
 
 FORMS += \
     pre_game_options.ui
