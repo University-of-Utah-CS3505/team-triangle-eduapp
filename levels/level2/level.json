@@ -38,11 +38,11 @@
         },
 	{
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
-            "type": "grass"
+            "type": "road"
         },
 	{
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
-            "type": "grass"
+            "type": "road"
         },
         {
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
