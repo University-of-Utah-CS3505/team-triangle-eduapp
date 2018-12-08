@@ -161,16 +161,14 @@ std::unique_ptr<game_state> gameplay::update() {
                                     _objects[i]->get_size().y >
                             _tank->get_position().y) {
                             if (_objects[i]->get_type() == "goal") {
-                                _to_state = std::make_unique<win_menu>(_engine);
+
+                                _to_state = std::make_unique<win_menu>(
+                                        _engine, _current_level);
+                                return NULL;
                                 qDebug() << "Goal reached";
                             } else {
-                                if (_tank->done_exploding()) {
-                                    _load_level(_current_level);
-                                    return nullptr;
-                                } else {
-                                    _tank->run_state(
-                                            std::make_unique<tank::explode>());
-                                }
+                                _tank->run_state(
+                                        std::make_unique<tank::explode>());
                             }
                         }
                     }
@@ -229,10 +227,13 @@ std::unique_ptr<game_state> gameplay::update() {
     auto font = sf::Font();
     font.loadFromFile(
             "../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
+    auto level_font = sf::Font();
+    level_font.loadFromFile(
+            "../team-triangle-eduapp/assets/fonts/Minecraft.ttf");
     level_name.setString(_level._level_name);
     level_name.setPosition(0.1665 * _engine.window().getSize().x, 10);
-    level_name.setCharacterSize(30);
-    level_name.setFont(font);
+    level_name.setCharacterSize(50);
+    level_name.setFont(level_font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
 
