@@ -88,10 +88,13 @@ public:
         scrollArea = new QScrollArea(centralWidget);
         scrollArea->setObjectName(QStringLiteral("scrollArea"));
         scrollArea->setGeometry(QRect(30, 20, 401, 281));
+        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 399, 279));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 385, 265));
         gridLayoutWidget = new QWidget(scrollAreaWidgetContents);
         gridLayoutWidget->setObjectName(QStringLiteral("gridLayoutWidget"));
         gridLayoutWidget->setGeometry(QRect(9, 9, 381, 261));
