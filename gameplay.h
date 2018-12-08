@@ -42,7 +42,7 @@ private:
     TextView _text_view;
     TextDocument _text_doc;
     InputController _input_con;
-
+    std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
 
     std::vector<std::thread> _threads;

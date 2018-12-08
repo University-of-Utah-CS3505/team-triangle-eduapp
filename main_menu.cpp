@@ -42,7 +42,15 @@ main_menu::main_menu(engine& eng)
     : _engine(eng), _world(b2Vec2(0.f, 10.f)),
       _click_handle(_engine.add_event_listener(
               sf::Event::MouseButtonPressed,
-              [this](auto e) { return _handle_click(e); })) {
+              [this](auto e) { return _handle_click(e); })),
+      _quit_close(_engine.add_event_listener(
+                      sf::Event::KeyPressed,
+                      [this](auto e){
+    if(e.key.code == sf::Keyboard::Escape){
+        _engine.window().close();
+        return true;
+    }
+})){
     // TODO this is a bad global
     if (_engine.window().getSize().x <= 1280) {
         scale = 82.0;

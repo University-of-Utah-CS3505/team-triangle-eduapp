@@ -7,6 +7,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include "main_menu.h"
 
 gameplay::gameplay(engine& eng, int level)
 
@@ -14,9 +15,15 @@ gameplay::gameplay(engine& eng, int level)
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
+    if(e.key.code == sf::Keyboard::Escape){
+            _to_state = std::make_unique<main_menu>(_engine);
+            return true;
+        }else{
                   _input_con.handleEvents(
                           _text_doc, _text_view, _engine.window(), e);
                   return true;
+    }
+    return false;
               })),
 
       _pressed_handle(_engine.add_event_listener(
@@ -24,19 +31,29 @@ gameplay::gameplay(engine& eng, int level)
               [this](auto e) {
                   if (_handle_keyboard(e)) {
                       return true;
-                  } else {
+                  } else if(e.key.code == sf::Keyboard::Escape){
+                      _to_state = std::make_unique<main_menu>(_engine);
+                      return true;
+                  }else{
                       _input_con.handleEvents(
                               _text_doc, _text_view, _engine.window(), e);
                       return true;
                   }
+                  return false;
               })),
 
       _released_handle(_engine.add_event_listener(
               sf::Event::KeyReleased,
               [this](auto e) {
+    if(e.key.code == sf::Keyboard::Escape){
+            _to_state = std::make_unique<main_menu>(_engine);
+            return true;
+        }else{
                   _input_con.handleEvents(
                           _text_doc, _text_view, _engine.window(), e);
                   return true;
+    }
+    return false;
               })),
 
       _mouse_click(_engine.add_event_listener(
@@ -166,7 +183,7 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFont(font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
-    return nullptr;
+    return std::move(_to_state);
 }
 
 bool gameplay::_handle_text(sf::Event event) {
@@ -403,7 +420,10 @@ bool gameplay::_handle_keyboard(sf::Event event) {
     } else if (event.key.code == sf::Keyboard::End) {
         _editor.scroll_right();
         return true;
-    } else {
+    } else if(event.key.code == sf::Keyboard::Escape){
+        _to_state = std::make_unique<main_menu>(_engine);
+          return true;
+    }else{
         return false;
     }
 }
