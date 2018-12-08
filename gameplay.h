@@ -12,11 +12,14 @@
 #include "tile.h"
 #include <SFML/Graphics.hpp>
 #include <atomic>
+#include <boost/circular_buffer.hpp>
+#include <queue>
 #include <thread>
 
 class gameplay : public game_state {
 public:
     gameplay(engine& window, int level);
+    ~gameplay() override;
     std::unique_ptr<game_state> update() override;
 
 private:
@@ -48,13 +51,11 @@ private:
     std::vector<std::thread> _threads;
     std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
     std::vector<std::unique_ptr<std::atomic<bool>>> _kill_sig;
-    // TODO some structure to handle the tile (boost::multi_array or something,
-    // maybe have a definition mapping ints to tiles and their properties
-    // elsewhere - something close to the flyweight pattern)
-    // do we want to split this between a 'simulate' and an 'edit' state?
-    // gameplay can have sub-states instead - nothing prevents that
-    // might be better because the tile map needs to persist and it's probably
-    // better than passing it around a bunch
+
+    std::streambuf* _stdoutbuf;
+    std::stringstream _stdout;
+
+    boost::circular_buffer<std::string> _stdout_lines;
 };
 
 #endif // GAMEPLAY_H
