@@ -30,7 +30,7 @@ sf::Vector2f bullet::get_location() { return _sprite.getPosition(); }
 bool bullet::show_explosion() {
     _show_explosion = true;
     _progress++;
-    if(_progress == 49){
+    if(_progress == 39){
         //_show_explosion = false;
         _progress = 0;
         return true;
@@ -69,8 +69,8 @@ void bullet::set_rotation(float angle) { _sprite.setRotation(180+angle); }
 
 void bullet::draw(sf::RenderTarget& target, sf::RenderStates) const {
     if(_show_explosion){
-        _explosion[_progress/10]->setPosition(_sprite.getPosition());
-        target.draw(*_explosion[(_progress/10)]);
+        _explosion[_progress/8]->setPosition(_sprite.getPosition());
+        target.draw(*_explosion[(_progress/8)]);
     } else {
         target.draw(_sprite);
     }

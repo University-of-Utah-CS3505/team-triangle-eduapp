@@ -10,7 +10,7 @@
 
 gameplay::gameplay(engine& eng, int level)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(1),
+    : _editor{15, 800, 650}, _engine{eng}, _level(level), _current_level(level),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -52,8 +52,8 @@ gameplay::gameplay(engine& eng, int level)
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
-    _load_level(level);
     _text_doc.addTextToPos(_level._level_instructions, 0,0);
+    _load_level(_current_level);
 }
 
 std::unique_ptr<game_state> gameplay::update() {
@@ -146,7 +146,7 @@ bool gameplay::handle_mouse(sf::Event event) {
     return true;
 }
 bool gameplay::_run_tanks() {
-    _load_level(1);
+    _load_level(_current_level);
     auto user_source = std::string();
     for (auto i = 0; i < _text_doc.getLineCount(); i++) {
         user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
@@ -265,6 +265,7 @@ bool gameplay::_run_tanks() {
 
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
+    _current_level = level;
     _objects.clear();
     _tanks.clear();
 
