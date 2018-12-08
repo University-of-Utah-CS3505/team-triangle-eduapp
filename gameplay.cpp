@@ -332,9 +332,16 @@ bool gameplay::_run_tanks() {
                 PyErr_Fetch(&ptype, &pvalue, &ptraceback);
                 // pvalue contains error message
                 // ptraceback contains stack snapshot and many other information
-                std::cout //<< py::extract<std::string>(ptype)() << "\n"
-                        << py::extract<std::string>(pvalue)() << std::endl;
-                // << py::extract<std::string>(ptraceback)() << std::endl;
+                if (ptype) {
+                    std::cout << py::extract<std::string>(ptype)() << "\n";
+                }
+                if (pvalue) {
+                    std::cout << py::extract<std::string>(pvalue)() << "\n";
+                }
+                if (ptraceback) {
+                    std::cout << py::extract<std::string>(ptraceback)() << "\n";
+                }
+                std::cout << std::flush;
             }
             *_executing_line[i] = 0;
         });
