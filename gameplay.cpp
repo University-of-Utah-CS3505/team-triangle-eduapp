@@ -3,11 +3,8 @@
 #include "object_def.h"
 #include "pyinqt.h"
 #include "tile.h"
-<<<<<<< HEAD
 #include "win_menu.h"
-=======
 #include <QDebug>
->>>>>>> 4d9ddcb313edf9b6ac3967781a128f006dd669f3
 #include <QTextDocument>
 #include <SFML/Graphics.hpp>
 #include <cstdio>
