@@ -1,4 +1,5 @@
 #include "gameplay.h"
+#include "main_menu.h"
 #include "object_def.h"
 #include "pyinqt.h"
 #include "tile.h"
@@ -15,9 +16,15 @@ gameplay::gameplay(engine& eng, int level)
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
-                  _input_con.handleEvents(
-                          _text_doc, _text_view, _engine.window(), e);
-                  return true;
+                  if (e.key.code == sf::Keyboard::Escape) {
+                      _to_state = std::make_unique<main_menu>(_engine);
+                      return true;
+                  } else {
+                      _input_con.handleEvents(
+                              _text_doc, _text_view, _engine.window(), e);
+                      return true;
+                  }
+                  return false;
               })),
 
       _pressed_handle(_engine.add_event_listener(
@@ -25,19 +32,29 @@ gameplay::gameplay(engine& eng, int level)
               [this](auto e) {
                   if (_handle_keyboard(e)) {
                       return true;
+                  } else if (e.key.code == sf::Keyboard::Escape) {
+                      _to_state = std::make_unique<main_menu>(_engine);
+                      return true;
                   } else {
                       _input_con.handleEvents(
                               _text_doc, _text_view, _engine.window(), e);
                       return true;
                   }
+                  return false;
               })),
 
       _released_handle(_engine.add_event_listener(
               sf::Event::KeyReleased,
               [this](auto e) {
-                  _input_con.handleEvents(
-                          _text_doc, _text_view, _engine.window(), e);
-                  return true;
+                  if (e.key.code == sf::Keyboard::Escape) {
+                      _to_state = std::make_unique<main_menu>(_engine);
+                      return true;
+                  } else {
+                      _input_con.handleEvents(
+                              _text_doc, _text_view, _engine.window(), e);
+                      return true;
+                  }
+                  return false;
               })),
 
       _mouse_click(_engine.add_event_listener(
@@ -191,7 +208,7 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFont(font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
-    return nullptr;
+    return std::move(_to_state);
 }
 
 bool gameplay::_handle_text(sf::Event event) {
@@ -221,10 +238,9 @@ bool gameplay::_run_tanks() {
     for (auto i = 0; i < _text_doc.getLineCount(); i++) {
         user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
     }
-    _threads = std::vector<std::thread>();
-    _executing_line = std::vector<std::unique_ptr<std::atomic<int>>>();
     for (auto i = 0; i < _tanks.size(); i++) {
         _executing_line.emplace_back(std::make_unique<std::atomic<int>>(0));
+        _kill_sig.emplace_back(std::make_unique<std::atomic<bool>>(false));
         _threads.emplace_back([i, this, user_source]() {
             namespace py = boost::python;
             // Retrieve the main module.
@@ -237,6 +253,9 @@ bool gameplay::_run_tanks() {
                 traceit = [i, this, &traceit](py::object frame,
                                               py::object event,
                                               py::object args) {
+                    if (*_kill_sig[i]) {
+                        throw std::runtime_error("done");
+                    }
                     if (py::extract<std::string>(event)() == "line") {
                         *_executing_line[i] =
                                 py::extract<int>(frame.attr("f_lineno"))();
@@ -351,15 +370,26 @@ bool gameplay::_run_tanks() {
                 // https://stackoverflow.com/a/1418703
                 // TODO give user the exception somehow (maybe print and
                 // redirect stdout to something we print on screen)
-                auto ptype = static_cast<PyObject*>(nullptr),
-                     pvalue = static_cast<PyObject*>(nullptr),
-                     ptraceback = static_cast<PyObject*>(nullptr);
-                PyErr_Fetch(&ptype, &pvalue, &ptraceback);
-                // pvalue contains error message
-                // ptraceback contains stack snapshot and many other information
-                std::cout //<< py::extract<std::string>(ptype)() << "\n"
-                        << py::extract<std::string>(pvalue)() << std::endl;
-                // << py::extract<std::string>(ptraceback)() << std::endl;
+                // PyErr_Print();
+                /*                auto ptype = static_cast<PyObject*>(nullptr),
+                                     pvalue = static_cast<PyObject*>(nullptr),
+                                     ptraceback =
+                   static_cast<PyObject*>(nullptr); PyErr_Fetch(&ptype, &pvalue,
+                   &ptraceback);
+                                // pvalue contains error message
+                                // ptraceback contains stack snapshot and many
+                   other information if (ptype) { std::cout <<
+                   py::extract<std::string>(ptype)() << "\n";
+                                }
+                                if (pvalue) {
+                                    std::cout <<
+                   py::extract<std::string>(pvalue)() << "\n";
+                                }
+                                if (ptraceback) {
+                                    std::cout <<
+                   py::extract<std::string>(ptraceback)() << "\n";
+                                }
+                                std::cout << std::flush;*/
             }
             *_executing_line[i] = 0;
         });
@@ -369,7 +399,19 @@ bool gameplay::_run_tanks() {
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
     _current_level = level;
+    for (auto& c_tank : _tanks) {
+        c_tank->run_state(nullptr);
+    }
+    for (auto& sig : _kill_sig) {
+        *sig = true;
+    }
+    for (auto& thread : _threads) {
+        thread.join();
+    }
+    _threads.clear();
+    _kill_sig.clear();
     _objects.clear();
+    _executing_line.clear();
     _tanks.clear();
 
     for (auto& obj : _level.get_objects()) {
@@ -420,6 +462,18 @@ bool gameplay::_handle_keyboard(sf::Event event) {
         return true;
     } else if (event.key.code == sf::Keyboard::End) {
         _editor.scroll_right();
+        return true;
+    } else if (event.key.code == sf::Keyboard::Escape) {
+        for (auto& c_tank : _tanks) {
+            c_tank->run_state(nullptr);
+        }
+        for (auto& sig : _kill_sig) {
+            *sig = true;
+        }
+        for (auto& thread : _threads) {
+            thread.join();
+        }
+        _to_state = std::make_unique<main_menu>(_engine);
         return true;
     } else {
         return false;

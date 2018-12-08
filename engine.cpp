@@ -17,17 +17,17 @@ engine::engine(launch_options options)
                                        _window.close();
                                        return true;
                                    })),
-      _close_quit(add_event_listener(sf::Event::KeyPressed,
-                                     [this](sf::Event e) {
-                                         if (e.key.code ==
-                                             sf::Keyboard::Escape) {
-                                             _state = std::make_unique<main_menu>(*this);
-                                             return true;
-                                         } else {
+//      _close_quit(add_event_listener(sf::Event::KeyPressed,
+//                                     [this](sf::Event e) {
+//                                         if (e.key.code ==
+//                                             sf::Keyboard::Escape) {
+//                                             _window.close();
+//                                             return true;
+//                                         } else {
 
-                                             return false;
-                                         }
-                                     })),
+//                                             return false;
+//                                         }
+//                                     })),
       _state(std::make_unique<main_menu>(*this)), _options(options) {}
 
 event_handle engine::add_event_listener(

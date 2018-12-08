@@ -42,11 +42,12 @@ private:
     TextView _text_view;
     TextDocument _text_doc;
     InputController _input_con;
-
+    std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
 
     std::vector<std::thread> _threads;
     std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
+    std::vector<std::unique_ptr<std::atomic<bool>>> _kill_sig;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)

@@ -4,6 +4,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include "gameplay.h"
+#include "main_menu.h"
 
 namespace pt = boost::property_tree;
 
@@ -40,7 +41,15 @@ level_menu::menu_item::menu_item(b2World& world,
 level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)),
     _click_handle(_engine.add_event_listener(
             sf::Event::MouseButtonPressed,
-            [this](auto e) { return _handle_click(e); })){
+            [this](auto e) { return _handle_click(e); })),
+    _esc_menu(_engine.add_event_listener(
+                  sf::Event::KeyPressed,
+                  [this](auto e){
+    if(e.key.code == sf::Keyboard::Escape){
+        _to_state = std::make_unique<main_menu>(_engine);
+        return true;
+    }
+})){
 
    auto root = pt::ptree();
     pt::read_json("../team-triangle-eduapp/levels/levels.json", root);
