@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSpinBox>
 #include <QLabel>
+#include <QDir>
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,8 @@ private slots:
 
     void on_target_button_clicked();
 
+    void update_images();
+
 private:
     Ui::MainWindow *ui;
     //const model m();
@@ -44,6 +47,9 @@ private:
     std::vector<QSpinBox*> list_of_boxes;
     std::vector<std::tuple<QLabel*,QSpinBox*,QSpinBox*>> object_layout_map;
     void add_object(std::string s);
+    std::vector<QLabel*> list_of_images;
+    QMap<QLabel*, std::vector<int>> map;
+    std::vector<QString> image_paths;
 };
 
 #endif // MAINWINDOW_H
