@@ -257,10 +257,12 @@ std::unique_ptr<game_state> gameplay::update() {
     auto font = sf::Font();
     font.loadFromFile(
             "../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
+    auto level_font = sf::Font();
+    level_font.loadFromFile("../team-triangle-eduapp/assets/fonts/Minecraft.ttf");
     level_name.setString(_level._level_name);
     level_name.setPosition(0.1665 * _engine.window().getSize().x, 10);
-    level_name.setCharacterSize(30);
-    level_name.setFont(font);
+    level_name.setCharacterSize(50);
+    level_name.setFont(level_font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
 
