@@ -122,9 +122,9 @@ std::unique_ptr<game_state> gameplay::update() {
 
             //Tank out of bounds check
             if(c_tank->get_position().x < .1655 * _engine.window().getSize().x ||
-               c_tank->get_position().x > (_level.get_location_matrix().shape()[0] * 64) ||
+               c_tank->get_position().x > (.1655 * _engine.window().getSize().x +_level.get_location_matrix().shape()[0] * 64) ||
                c_tank->get_position().y < .1655 * _engine.window().getSize().y ||
-               c_tank->get_position().y > (_level.get_location_matrix().shape()[1] * 64)){
+               c_tank->get_position().y > (.1655 * _engine.window().getSize().y + _level.get_location_matrix().shape()[1] * 64)){
                 //Explode tank
                 if(c_tank->done_exploding()){
                         _load_level(_current_level);
