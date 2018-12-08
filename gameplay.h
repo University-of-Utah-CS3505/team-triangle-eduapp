@@ -48,6 +48,9 @@ private:
     std::vector<std::thread> _threads;
     std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
     std::vector<std::unique_ptr<std::atomic<bool>>> _kill_sig;
+
+    sf::Font _error_font;
+    sf::Text _error_text;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)

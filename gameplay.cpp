@@ -78,6 +78,11 @@ gameplay::gameplay(engine& eng, int level)
         _text_view.moveCursorDown(_text_doc, false);
     }
     _text_view.moveCursorToEnd(_text_doc, false);
+
+    auto _error_console = sf::RectangleShape();
+    _error_console.setSize(sf::Vector2f(200,200));
+    _error_console.setFillColor(sf::Color::White);
+    _error_console.setOrigin(0,0);
 }
 
 std::unique_ptr<game_state> gameplay::update() {
@@ -421,12 +426,13 @@ bool gameplay::_run_tanks() {
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
     _current_level = level;
-    for (auto& c_tank : _tanks) {
-        c_tank->run_state(nullptr);
-    }
     for (auto& sig : _kill_sig) {
         *sig = true;
     }
+    for (auto& c_tank : _tanks) {
+        c_tank->run_state(nullptr);
+    }
+
     for (auto& thread : _threads) {
         thread.join();
     }
@@ -491,12 +497,13 @@ bool gameplay::_handle_keyboard(sf::Event event) {
         _editor.scroll_right();
         return true;
     } else if (event.key.code == sf::Keyboard::Escape) {
-        for (auto& c_tank : _tanks) {
-            c_tank->run_state(nullptr);
-        }
         for (auto& sig : _kill_sig) {
             *sig = true;
         }
+        for (auto& c_tank : _tanks) {
+            c_tank->run_state(nullptr);
+        }
+
         for (auto& thread : _threads) {
             thread.join();
         }
