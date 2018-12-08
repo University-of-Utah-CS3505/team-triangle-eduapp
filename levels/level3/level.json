@@ -1,0 +1,80 @@
+{
+    "name":"For Loops",
+    "tiles":[
+	[0, 0, 1, 0, 0, 0, 0, 0],
+	[2, 2, 3, 2, 2, 2, 5, 0],
+	[0, 0, 1, 0, 0, 0, 1, 0],
+	[0, 0, 1, 0, 0, 0, 1, 0],
+	[0, 0, 1, 0, 0, 0, 1, 0],
+	[0, 0, 4, 2, 2, 2, 6, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    "objects":[
+	{
+	    "type":"spawn",
+	    "pos":[2, 0],
+	    "size":[16, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
+	},
+	{
+	    "type":"goal",
+	    "pos":[0, 1],
+	    "size":[32, 32],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
+	},
+	{
+	    "type":"destroyable",
+	    "pos":[2, 6],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	},
+	{
+	    "type":"destroyable",
+	    "pos":[7, 5],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	},
+	{
+	    "type":"destroyable",
+	    "pos":[6, 0],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	},
+	{
+	    "type":"destroyable",
+	    "pos":[1, 1],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	}
+    ],
+    "tiledefs":[
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png",
+	    "type":"water"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCrossing.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUL.png",
+	    "type":"road"
+	}
+    ]
+}
