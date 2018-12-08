@@ -49,7 +49,7 @@ std::unique_ptr<game_state> win_menu::update() {
         _engine.window().draw(item.sprite);
     }
 
-    you_win.setPosition((_engine.window().getSize().x / 2), 20.f);
+    you_win.setPosition((_engine.window().getSize().x / 2), 100.f);
     _engine.window().draw(you_win);
 
     return std::move(_to_state);
