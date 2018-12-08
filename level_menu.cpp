@@ -98,7 +98,20 @@ std::unique_ptr<game_state> level_menu::update() {
         item.sprite.setRotation(item.body->GetAngle() * deg_radian_conv_factor);
         _engine.window().draw(item.sprite);
     }
+
+    auto levels_text = sf::Text();
+    auto levels_font = sf::Font();
+    levels_font.loadFromFile("../team-triangle-eduapp/assets/fonts/Minecraft.ttf");
+    levels_text.setString("LEVELS");
+    levels_text.setFont(levels_font);
+    levels_text.setCharacterSize(100);
+    levels_text.setFillColor(sf::Color(90,90,90));
+    levels_text.setOrigin(levels_text.getLocalBounds().width/2, 0);
+    levels_text.setPosition(_engine.window().getSize().x/2, 20);
+    _engine.window().draw(levels_text);
+
     _engine.window().display();
+
     return std::move(_to_state);
 }
 

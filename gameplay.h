@@ -19,7 +19,6 @@
 class gameplay : public game_state {
 public:
     gameplay(engine& window, int level);
-    ~gameplay() override;
     std::unique_ptr<game_state> update() override;
 
 private:
@@ -32,9 +31,9 @@ private:
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
-    std::vector<std::unique_ptr<tank>> _tanks;
     level _level;
     int _current_level;
+    bool _level_won;
     event_handle _text_handle;
     std::vector<object_def*> _objects;
     event_handle _pressed_handle;
@@ -48,10 +47,14 @@ private:
     std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
 
-    std::vector<std::thread> _threads;
-    std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
-    std::vector<std::unique_ptr<std::atomic<bool>>> _kill_sig;
 
+    std::unique_ptr<tank> _tank;
+    std::unique_ptr<std::thread> _tank_controller;
+    std::atomic<int> _executing_line;
+    std::atomic<bool> _kill_sig;
+
+    std::mutex _pyout_mutex;
+    std::stringstream _pyout;
     sf::RectangleShape _error_console;
     sf::Font _error_font;
     sf::Text _error_text;
@@ -67,7 +70,6 @@ private:
     std::stringstream _stdout;
 
     boost::circular_buffer<std::string> _stdout_lines;
-
 };
 
 #endif // GAMEPLAY_H
