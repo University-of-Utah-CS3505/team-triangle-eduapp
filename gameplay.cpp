@@ -3,12 +3,13 @@
 #include "object_def.h"
 #include "pyinqt.h"
 #include "tile.h"
+#include <QDebug>
 #include <QTextDocument>
 #include <SFML/Graphics.hpp>
+#include <cstdio>
 #include <iostream>
 #include <thread>
 #include <vector>
-#include <QDebug>
 
 gameplay::gameplay(engine& eng, int level)
 
@@ -70,7 +71,8 @@ gameplay::gameplay(engine& eng, int level)
 
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
-                 "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
+                 "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf"),
+      _stdout_lines(6) {
     _load_level(_current_level);
     _text_doc.addTextToPos(_level._level_instructions, 0, 0);
     int lines = _text_doc.getLineCount();
@@ -79,11 +81,17 @@ gameplay::gameplay(engine& eng, int level)
     }
     _text_view.moveCursorToEnd(_text_doc, false);
 
+
     auto _error_console = sf::RectangleShape();
     _error_console.setSize(sf::Vector2f(200,200));
     _error_console.setFillColor(sf::Color::White);
     _error_console.setOrigin(0,0);
+
+    _stdoutbuf = std::cout.rdbuf();
+    std::cout.rdbuf(_stdout.rdbuf());
 }
+
+gameplay::~gameplay() { std::cout.rdbuf(_stdoutbuf); }
 
 std::unique_ptr<game_state> gameplay::update() {
     _engine.window().clear();
@@ -97,21 +105,25 @@ std::unique_ptr<game_state> gameplay::update() {
                     i * 64 + (.1665 * _engine.window().getSize().y));
             _engine.window().draw((tile_to_draw.get_sprite()));
 
-            //Check for tank off of road
-            if(tile_to_draw.get_type() != "road"){
+            // Check for tank off of road
+            if (tile_to_draw.get_type() != "road") {
                 for (auto& c_tank : _tanks) {
-                    if(((c_tank->get_position().x)-32+2 >= tile_to_draw.get_sprite().getPosition().x &&
-                        (c_tank->get_position().x)-32-2 <= tile_to_draw.get_sprite().getPosition().x)&&
-                       ((c_tank->get_position().y)-32+2 >= tile_to_draw.get_sprite().getPosition().y &&
-                        (c_tank->get_position().y)-32-2 <= tile_to_draw.get_sprite().getPosition().y)) {
+                    if (((c_tank->get_position().x) - 32 + 2 >=
+                                 tile_to_draw.get_sprite().getPosition().x &&
+                         (c_tank->get_position().x) - 32 - 2 <=
+                                 tile_to_draw.get_sprite().getPosition().x) &&
+                        ((c_tank->get_position().y) - 32 + 2 >=
+                                 tile_to_draw.get_sprite().getPosition().y &&
+                         (c_tank->get_position().y) - 32 - 2 <=
+                                 tile_to_draw.get_sprite().getPosition().y)) {
 
-                        //Explode tank
-                        if(c_tank->done_exploding()){
-                                _load_level(_current_level);
-                                return nullptr;
-                        }else{
-                                c_tank->run_state(
-                                        std::make_unique<tank::explode>());
+                        // Explode tank
+                        if (c_tank->done_exploding()) {
+                            _load_level(_current_level);
+                            return nullptr;
+                        } else {
+                            c_tank->run_state(
+                                    std::make_unique<tank::explode>());
                         }
                     }
                 }
@@ -125,18 +137,23 @@ std::unique_ptr<game_state> gameplay::update() {
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
 
-            //Tank out of bounds check
-            if(c_tank->get_position().x < .1655 * _engine.window().getSize().x ||
-               c_tank->get_position().x > (.1655 * _engine.window().getSize().x +_level.get_location_matrix().shape()[1] * 64) ||
-               c_tank->get_position().y < .1655 * _engine.window().getSize().y ||
-               c_tank->get_position().y > (.1655 * _engine.window().getSize().y + _level.get_location_matrix().shape()[0] * 64)){
-                //Explode tank
-                if(c_tank->done_exploding()){
-                        _load_level(_current_level);
-                        return nullptr;
-                }else{
-                        c_tank->run_state(
-                                std::make_unique<tank::explode>());
+            // Tank out of bounds check
+            if (c_tank->get_position().x <
+                        .1655 * _engine.window().getSize().x ||
+                c_tank->get_position().x >
+                        (.1655 * _engine.window().getSize().x +
+                         _level.get_location_matrix().shape()[1] * 64) ||
+                c_tank->get_position().y <
+                        .1655 * _engine.window().getSize().y ||
+                c_tank->get_position().y >
+                        (.1655 * _engine.window().getSize().y +
+                         _level.get_location_matrix().shape()[0] * 64)) {
+                // Explode tank
+                if (c_tank->done_exploding()) {
+                    _load_level(_current_level);
+                    return nullptr;
+                } else {
+                    c_tank->run_state(std::make_unique<tank::explode>());
                 }
             }
 
@@ -154,15 +171,15 @@ std::unique_ptr<game_state> gameplay::update() {
                                         _objects[i]->get_size().y >
                                 c_tank->get_position().y) {
 
-                                if(_objects[i]->get_type() == "goal"){
+                                if (_objects[i]->get_type() == "goal") {
                                     qDebug() << "Goal reached";
-                                }else {
-                                    if(c_tank->done_exploding()){
-                                            _load_level(_current_level);
-                                            return nullptr;
-                                    }else{
-                                        c_tank->run_state(
-                                                std::make_unique<tank::explode>());
+                                } else {
+                                    if (c_tank->done_exploding()) {
+                                        _load_level(_current_level);
+                                        return nullptr;
+                                    } else {
+                                        c_tank->run_state(std::make_unique<
+                                                          tank::explode>());
                                     }
                                 }
                             }
@@ -170,7 +187,6 @@ std::unique_ptr<game_state> gameplay::update() {
                     }
                 }
             }
-
 
             // Hit detection for objects and bullet
             if (c_tank->is_shooting()) {
@@ -223,6 +239,13 @@ std::unique_ptr<game_state> gameplay::update() {
     _editor_subtarget.display();
     editor.setTexture(_editor_subtarget.getTexture());
     _engine.window().draw(editor);
+    static int x = 0;
+    std::cout << x++ << "\n";
+    auto s = std::string();
+    while (std::getline(_stdout, s)) {
+        _stdout_lines.push_back(s);
+    }
+    _stdout.clear();
 
     // draw level name
     auto level_name = sf::Text();
@@ -235,6 +258,19 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFont(font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
+
+    auto stdout_str = std::string();
+    for (const auto& s : _stdout_lines) {
+        stdout_str += s + "\n";
+    }
+    auto stdout_text = sf::Text();
+    stdout_text.setFont(font);
+    stdout_text.setString(stdout_str);
+    stdout_text.setFillColor(sf::Color::White);
+    stdout_text.setPosition(0, 0);
+    stdout_text.setCharacterSize(15);
+    _engine.window().draw(stdout_text);
+
     return std::move(_to_state);
 }
 
@@ -456,13 +492,12 @@ bool gameplay::_load_level(int level) {
                     "../team-triangle-eduapp/assets/Tanks/PNG/"
                     "DefaultSize/bulletBlue1_outline.png"))));
 
-
     for (auto& obj : _level.get_objects()) {
         obj->set_offset(.1655 * _engine.window().getSize().x,
                         .1655 * _engine.window().getSize().y);
         _objects.emplace_back(obj);
-        if(obj->get_type() == "spawn"){
-            for (auto& tank : _tanks){
+        if (obj->get_type() == "spawn") {
+            for (auto& tank : _tanks) {
                 tank->set_position(obj->get_position());
             }
         }
