@@ -43,5 +43,3 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 INCLUDEPATH += $$PWD/../libs/boost_1_67_0/stage
 INCLUDEPATH += /usr/include/python3.7m
 DEPENDPATH += $$PWD/../libs/boost_1_67_0/stage
-
-RESOURCES +=
