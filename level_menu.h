@@ -37,6 +37,7 @@ private:
     std::unique_ptr<game_state> _to_state;
     event_handle _click_handle;
     bool _handle_click(sf::Event);
+    event_handle _esc_menu;
 
 };
 
