@@ -213,9 +213,6 @@ bool gameplay::_run_tanks() {
     for (auto i = 0; i < _text_doc.getLineCount(); i++) {
         user_source.append(_text_doc.getLine(i).toAnsiString() + "\n");
     }
-    _threads = std::vector<std::thread>();
-    _executing_line = std::vector<std::unique_ptr<std::atomic<int>>>();
-    _kill_sig = std::vector<std::unique_ptr<std::atomic<bool>>>();
     for (auto i = 0; i < _tanks.size(); i++) {
         _executing_line.emplace_back(std::make_unique<std::atomic<int>>(0));
         _kill_sig.emplace_back(std::make_unique<std::atomic<bool>>(false));
@@ -231,7 +228,7 @@ bool gameplay::_run_tanks() {
                 traceit = [i, this, &traceit](py::object frame,
                                               py::object event,
                                               py::object args) {
-                    if (_kill_sig[i]) {
+                    if (*_kill_sig[i]) {
                         throw std::runtime_error("done");
                     }
                     if (py::extract<std::string>(event)() == "line") {
@@ -348,22 +345,26 @@ bool gameplay::_run_tanks() {
                 // https://stackoverflow.com/a/1418703
                 // TODO give user the exception somehow (maybe print and
                 // redirect stdout to something we print on screen)
-                auto ptype = static_cast<PyObject*>(nullptr),
-                     pvalue = static_cast<PyObject*>(nullptr),
-                     ptraceback = static_cast<PyObject*>(nullptr);
-                PyErr_Fetch(&ptype, &pvalue, &ptraceback);
-                // pvalue contains error message
-                // ptraceback contains stack snapshot and many other information
-                if (ptype) {
-                    std::cout << py::extract<std::string>(ptype)() << "\n";
-                }
-                if (pvalue) {
-                    std::cout << py::extract<std::string>(pvalue)() << "\n";
-                }
-                if (ptraceback) {
-                    std::cout << py::extract<std::string>(ptraceback)() << "\n";
-                }
-                std::cout << std::flush;
+                PyErr_Print();
+                /*                auto ptype = static_cast<PyObject*>(nullptr),
+                                     pvalue = static_cast<PyObject*>(nullptr),
+                                     ptraceback =
+                   static_cast<PyObject*>(nullptr); PyErr_Fetch(&ptype, &pvalue,
+                   &ptraceback);
+                                // pvalue contains error message
+                                // ptraceback contains stack snapshot and many
+                   other information if (ptype) { std::cout <<
+                   py::extract<std::string>(ptype)() << "\n";
+                                }
+                                if (pvalue) {
+                                    std::cout <<
+                   py::extract<std::string>(pvalue)() << "\n";
+                                }
+                                if (ptraceback) {
+                                    std::cout <<
+                   py::extract<std::string>(ptraceback)() << "\n";
+                                }
+                                std::cout << std::flush;*/
             }
             *_executing_line[i] = 0;
         });
@@ -373,7 +374,16 @@ bool gameplay::_run_tanks() {
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
     _current_level = level;
+    for (auto& k : _kill_sig) {
+        *k = false;
+    }
+    for (auto& t : _threads) {
+        t.join();
+    }
+    _threads.clear();
+    _kill_sig.clear();
     _objects.clear();
+    _executing_line.clear();
     _tanks.clear();
 
     for (auto& obj : _level.get_objects()) {
