@@ -11,6 +11,21 @@ tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret, sf::Sprite bullet)
     _sprite.setPosition(32,32);
     _turret.setPosition(32,32);
     _bullet.set_location(sf::Vector2f(32,32));
+    _explosion.emplace_back(new sf::Sprite(eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                                      "DefaultSize/explosion1.png")));
+    _explosion[0]->setOrigin(30,30);
+    _explosion.emplace_back(new sf::Sprite(eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                                      "DefaultSize/explosion2.png")));
+    _explosion[1]->setOrigin(28,28);
+    _explosion.emplace_back(new sf::Sprite(eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                                      "DefaultSize/explosion3.png")));
+    _explosion[2]->setOrigin(32,32);
+    _explosion.emplace_back(new sf::Sprite(eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                                      "DefaultSize/explosion4.png")));
+    _explosion[3]->setOrigin(23,23);
+    _explosion.emplace_back(new sf::Sprite(eng.load_texture("../team-triangle-eduapp/assets/Tanks/PNG/"
+                                                     "DefaultSize/explosion5.png")));
+    _explosion[4]->setOrigin(26,26);
 }
 
 tank::~tank() = default;
@@ -154,6 +169,8 @@ sf::Vector2f tank::get_bullet_pos()
     return sf::Vector2f(_bullet.get_location());
 }
 
+sf::Vector2f tank::get_position() { return _sprite.getPosition(); }
+
 void tank::bullet_hit()
 {
     _to_run = std::make_unique<tank::shoot>();
@@ -173,8 +190,26 @@ void tank::set_bullet_bounds(int low_x, int low_y, int high_x, int high_y)
 
 bool tank::is_shooting() { return _shooting; }
 
+bool tank::explode()
+{
+    _explode = true;
+    if(_progress < 39){
+        _progress++;
+        return false;
+    }else{
+        _explode = false;
+        _progress = 0;
+        return true;
+    }
+}
+
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
-    target.draw(_bullet);
-    target.draw(_sprite);
-    target.draw(_turret);
+
+    if(!_explode){
+        target.draw(_bullet);
+        target.draw(_sprite);
+        target.draw(_turret);
+    }else{
+        target.draw(*_explosion[_progress/8]);
+    }
 }

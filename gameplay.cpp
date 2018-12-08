@@ -74,9 +74,27 @@ std::unique_ptr<game_state> gameplay::update() {
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
 
-
-
-
+            //Tank hitting objects
+            if(_objects[i]->get_type() == "destroyable" ||
+                    _objects[i]->get_type() == "solid") {
+                if (_objects[i]->get_position().x - _objects[i]->get_size().x <
+                    c_tank->get_position().x) {
+                    if (_objects[i]->get_position().x + _objects[i]->get_size().x >
+                        c_tank->get_position().x) {
+                        if (_objects[i]->get_position().y -
+                                    _objects[i]->get_size().y <
+                            c_tank->get_position().y) {
+                            if (_objects[i]->get_position().y +
+                                        _objects[i]->get_size().y >
+                                c_tank->get_position().y) {
+                               // if(c_tank->explode()){
+                                    //_load_level(_current_level);
+                                //}
+                            }
+                        }
+                    }
+                }
+            }
             // Hit detection for objects and bullet
             if(c_tank->is_shooting()){
                 if(_objects[i]->get_type() == "destroyable" ||
