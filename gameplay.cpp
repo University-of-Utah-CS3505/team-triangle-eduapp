@@ -174,7 +174,9 @@ std::unique_ptr<game_state> gameplay::update() {
                                         _objects[i]->get_size().y >
                                 c_tank->get_position().y) {
                                 if (_objects[i]->get_type() == "goal") {
-                                    _to_state = std::make_unique<win_menu>(_engine);
+
+                                    _to_state = std::make_unique<win_menu>(_engine, _current_level);
+                                    return NULL;
                                     qDebug() << "Goal reached";
                                 } else {
                                     if (c_tank->done_exploding()) {

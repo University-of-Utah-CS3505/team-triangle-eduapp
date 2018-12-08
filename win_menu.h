@@ -9,7 +9,7 @@
 
 class win_menu : public game_state {
 public:
-    win_menu(engine&);
+    win_menu(engine&, int level);
     ~win_menu() override;
     std::unique_ptr<game_state> update() override;
 
@@ -30,6 +30,7 @@ private:
     engine& _engine;
     std::unique_ptr<game_state> _to_state;
     event_handle _click_handle;
+    int _level_won;
 };
 
 #endif // WIN_MENU_H
