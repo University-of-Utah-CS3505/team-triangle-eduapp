@@ -11,14 +11,8 @@
 #include "texteditor/TextView.h"
 #include "tile.h"
 #include <SFML/Graphics.hpp>
-
-#define RETURN_KEY 13
-#define BACKSPACE_KEY 8
-// Arrow keys are not heard by handle_keyboard
-#define ARROW_L_KEY 1
-#define ARROW_R_KEY 2
-#define ARROW_D_KEY 3
-#define ARROW_U_KEY 4
+#include <atomic>
+#include <thread>
 
 class gameplay : public game_state {
 public:
@@ -26,11 +20,12 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
-    bool handle_mouse(sf::Event);
+    bool _handle_mouse(sf::Event);
     bool _handle_text(sf::Event);
     bool _handle_keyboard(sf::Event);
     bool _run_tanks();
     bool _load_level(int);
+    void _draw_current_lines(sf::RenderTarget& target);
     textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
@@ -49,6 +44,9 @@ private:
     InputController _input_con;
     std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
+
+    std::vector<std::thread> _threads;
+    std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
     // TODO some structure to handle the tile (boost::multi_array or something,
     // maybe have a definition mapping ints to tiles and their properties
     // elsewhere - something close to the flyweight pattern)
