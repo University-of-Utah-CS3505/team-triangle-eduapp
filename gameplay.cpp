@@ -1,4 +1,5 @@
 #include "gameplay.h"
+#include "main_menu.h"
 #include "object_def.h"
 #include "pyinqt.h"
 #include "tile.h"
@@ -7,7 +8,6 @@
 #include <iostream>
 #include <thread>
 #include <vector>
-#include "main_menu.h"
 
 gameplay::gameplay(engine& eng, int level)
 
@@ -15,15 +15,15 @@ gameplay::gameplay(engine& eng, int level)
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
-    if(e.key.code == sf::Keyboard::Escape){
-            _to_state = std::make_unique<main_menu>(_engine);
-            return true;
-        }else{
-                  _input_con.handleEvents(
-                          _text_doc, _text_view, _engine.window(), e);
-                  return true;
-    }
-    return false;
+                  if (e.key.code == sf::Keyboard::Escape) {
+                      _to_state = std::make_unique<main_menu>(_engine);
+                      return true;
+                  } else {
+                      _input_con.handleEvents(
+                              _text_doc, _text_view, _engine.window(), e);
+                      return true;
+                  }
+                  return false;
               })),
 
       _pressed_handle(_engine.add_event_listener(
@@ -31,10 +31,10 @@ gameplay::gameplay(engine& eng, int level)
               [this](auto e) {
                   if (_handle_keyboard(e)) {
                       return true;
-                  } else if(e.key.code == sf::Keyboard::Escape){
+                  } else if (e.key.code == sf::Keyboard::Escape) {
                       _to_state = std::make_unique<main_menu>(_engine);
                       return true;
-                  }else{
+                  } else {
                       _input_con.handleEvents(
                               _text_doc, _text_view, _engine.window(), e);
                       return true;
@@ -45,15 +45,15 @@ gameplay::gameplay(engine& eng, int level)
       _released_handle(_engine.add_event_listener(
               sf::Event::KeyReleased,
               [this](auto e) {
-    if(e.key.code == sf::Keyboard::Escape){
-            _to_state = std::make_unique<main_menu>(_engine);
-            return true;
-        }else{
-                  _input_con.handleEvents(
-                          _text_doc, _text_view, _engine.window(), e);
-                  return true;
-    }
-    return false;
+                  if (e.key.code == sf::Keyboard::Escape) {
+                      _to_state = std::make_unique<main_menu>(_engine);
+                      return true;
+                  } else {
+                      _input_con.handleEvents(
+                              _text_doc, _text_view, _engine.window(), e);
+                      return true;
+                  }
+                  return false;
               })),
 
       _mouse_click(_engine.add_event_listener(
@@ -215,8 +215,10 @@ bool gameplay::_run_tanks() {
     }
     _threads = std::vector<std::thread>();
     _executing_line = std::vector<std::unique_ptr<std::atomic<int>>>();
+    _kill_sig = std::vector<std::unique_ptr<std::atomic<bool>>>();
     for (auto i = 0; i < _tanks.size(); i++) {
         _executing_line.emplace_back(std::make_unique<std::atomic<int>>(0));
+        _kill_sig.emplace_back(std::make_unique<std::atomic<bool>>(false));
         _threads.emplace_back([i, this, user_source]() {
             namespace py = boost::python;
             // Retrieve the main module.
@@ -229,6 +231,9 @@ bool gameplay::_run_tanks() {
                 traceit = [i, this, &traceit](py::object frame,
                                               py::object event,
                                               py::object args) {
+                    if (_kill_sig[i]) {
+                        throw std::runtime_error("done");
+                    }
                     if (py::extract<std::string>(event)() == "line") {
                         *_executing_line[i] =
                                 py::extract<int>(frame.attr("f_lineno"))();
@@ -420,10 +425,10 @@ bool gameplay::_handle_keyboard(sf::Event event) {
     } else if (event.key.code == sf::Keyboard::End) {
         _editor.scroll_right();
         return true;
-    } else if(event.key.code == sf::Keyboard::Escape){
+    } else if (event.key.code == sf::Keyboard::Escape) {
         _to_state = std::make_unique<main_menu>(_engine);
-          return true;
-    }else{
+        return true;
+    } else {
         return false;
     }
 }
