@@ -3,6 +3,7 @@
 #include "object_def.h"
 #include "pyinqt.h"
 #include "tile.h"
+#include "win_menu.h"
 #include <QDebug>
 #include <QTextDocument>
 #include <SFML/Graphics.hpp>
@@ -170,8 +171,8 @@ std::unique_ptr<game_state> gameplay::update() {
                             if (_objects[i]->get_position().y +
                                         _objects[i]->get_size().y >
                                 c_tank->get_position().y) {
-
                                 if (_objects[i]->get_type() == "goal") {
+                                    _to_state = std::make_unique<win_menu>(_engine);
                                     qDebug() << "Goal reached";
                                 } else {
                                     if (c_tank->done_exploding()) {
