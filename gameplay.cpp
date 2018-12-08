@@ -136,8 +136,7 @@ std::unique_ptr<game_state> gameplay::update() {
             }
 
             // Tank hitting objects check
-            if (_objects[i]->get_type() == "destroyable" ||
-                _objects[i]->get_type() == "solid") {
+            if (_objects[i]->get_type() != "spawn") {
                 if (_objects[i]->get_position().x - _objects[i]->get_size().x <
                     c_tank->get_position().x) {
                     if (_objects[i]->get_position().x +
@@ -150,13 +149,16 @@ std::unique_ptr<game_state> gameplay::update() {
                                         _objects[i]->get_size().y >
                                 c_tank->get_position().y) {
 
-                                if(c_tank->done_exploding()){
-                                        _load_level(_current_level);
-                                        return nullptr;
-                                }else{
+                                if(_objects[i]->get_type() == "goal"){
+                                    qDebug() << "Goal reached";
+                                }else {
+                                    if(c_tank->done_exploding()){
+                                            _load_level(_current_level);
+                                            return nullptr;
+                                    }else{
                                         c_tank->run_state(
                                                 std::make_unique<tank::explode>());
-
+                                    }
                                 }
                             }
                         }
