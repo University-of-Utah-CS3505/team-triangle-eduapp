@@ -5,7 +5,7 @@
 
 tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret, sf::Sprite bullet)
     : _engine(eng), _sprite(sprite), _turret(turret), _shooting(false), _progress(0),
-      _bullet(eng, bullet), _done_exploding(false) {
+      _explode(false), _bullet(eng, bullet), _done_exploding(false) {
     _sprite.setOrigin(19,19);
     _turret.setOrigin(6, 5);
     _sprite.setPosition(32, 32);
@@ -212,10 +212,7 @@ void tank::set_bullet_bounds(int low_x, int low_y, int high_x, int high_y) {
 
 bool tank::is_shooting() { return _shooting; }
 
-bool tank::done_exploding()
-{
-    return _done_exploding;
-}
+bool tank::done_exploding() { return _done_exploding; }
 
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
 
@@ -224,6 +221,7 @@ void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
         target.draw(_sprite);
         target.draw(_turret);
     } else {
+        _explosion[_progress/8]->setPosition(_sprite.getPosition());
         target.draw(*_explosion[_progress / 8]);
     }
 }

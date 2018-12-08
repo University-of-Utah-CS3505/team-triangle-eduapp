@@ -95,11 +95,19 @@ std::unique_ptr<game_state> gameplay::update() {
             //Check for tank off of road
             if(tile_to_draw.get_type() != "road"){
                 for (auto& c_tank : _tanks) {
-                    if(((c_tank->get_position().x)-32+2 >= tile_to_draw.get_sprite().getPosition().x ||
+                    if(((c_tank->get_position().x)-32+2 >= tile_to_draw.get_sprite().getPosition().x &&
                         (c_tank->get_position().x)-32-2 <= tile_to_draw.get_sprite().getPosition().x)&&
-                       ((c_tank->get_position().y)-32+2 >= tile_to_draw.get_sprite().getPosition().y ||
-                        (c_tank->get_position().y)-32-2 <= tile_to_draw.get_sprite().getPosition().y)){
-                        qDebug() << "Tank off of road";
+                       ((c_tank->get_position().y)-32+2 >= tile_to_draw.get_sprite().getPosition().y &&
+                        (c_tank->get_position().y)-32-2 <= tile_to_draw.get_sprite().getPosition().y)) {
+
+                        //Explode tank
+                        if(c_tank->done_exploding()){
+                                _load_level(_current_level);
+                                return nullptr;
+                        }else{
+                                c_tank->run_state(
+                                        std::make_unique<tank::explode>());
+                        }
                     }
                 }
             }
@@ -111,7 +119,23 @@ std::unique_ptr<game_state> gameplay::update() {
         c_tank->update();
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
-            // Tank hitting objects
+
+            //Tank out of bounds check
+            if(c_tank->get_position().x < .1655 * _engine.window().getSize().x ||
+               c_tank->get_position().x > (_level.get_location_matrix().shape()[0] * 64) ||
+               c_tank->get_position().y < .1655 * _engine.window().getSize().y ||
+               c_tank->get_position().y > (_level.get_location_matrix().shape()[1] * 64)){
+                //Explode tank
+                if(c_tank->done_exploding()){
+                        _load_level(_current_level);
+                        return nullptr;
+                }else{
+                        c_tank->run_state(
+                                std::make_unique<tank::explode>());
+                }
+            }
+
+            // Tank hitting objects check
             if (_objects[i]->get_type() == "destroyable" ||
                 _objects[i]->get_type() == "solid") {
                 if (_objects[i]->get_position().x - _objects[i]->get_size().x <
@@ -126,18 +150,14 @@ std::unique_ptr<game_state> gameplay::update() {
                                         _objects[i]->get_size().y >
                                 c_tank->get_position().y) {
 
-                                /*
                                 if(c_tank->done_exploding()){
                                         _load_level(_current_level);
                                         return nullptr;
-                                    }else{
+                                }else{
                                         c_tank->run_state(
                                                 std::make_unique<tank::explode>());
 
-                                    }
                                 }
-                                */
-                                qDebug() << "Explode tank";
                             }
                         }
                     }
@@ -408,6 +428,8 @@ bool gameplay::_load_level(int level) {
     for (auto& thread : _threads) {
         thread.join();
     }
+    //_to_state = std::make_unique<main_menu>(_engine);
+
     _threads.clear();
     _kill_sig.clear();
     _objects.clear();
