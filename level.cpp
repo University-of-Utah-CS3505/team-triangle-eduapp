@@ -90,15 +90,29 @@ void level::load_new_level(int level) {
         type_defs.push_back(std::make_pair(img, type));
     }
 
-    //Get name
+    // Get name
     _level_name = root.get<std::string>("name");
 
-    // Get tile values
+    // Get size of map
+    auto size_x = 0, size_y = 0;
     auto x = 0;
     for (pt::ptree::value_type& row : root.get_child("tiles")) {
         auto y = 0;
         for (pt::ptree::value_type& tile : row.second) {
-            location_matrix.resize(boost::extents[x+1][y+1]);
+            tile.second.get_value<int>();
+            y++;
+        }
+        size_y = y;
+        x++;
+    }
+    size_x = x;
+    location_matrix.resize(boost::extents[size_x][size_y]);
+
+    // Get tile values
+    x = 0;
+    for (pt::ptree::value_type& row : root.get_child("tiles")) {
+        auto y = 0;
+        for (pt::ptree::value_type& tile : row.second) {
             location_matrix[x][y] = tile.second.get_value<int>();
             y++;
         }

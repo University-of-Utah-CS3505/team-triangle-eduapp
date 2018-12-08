@@ -82,6 +82,7 @@ public:
     void set_offset(int, int);\
     void set_bullet_bounds(int,int,int,int);
     bool is_shooting();
+    bool done_exploding();
 
 private:
     engine& _engine;
@@ -90,6 +91,7 @@ private:
     std::vector<sf::Sprite*> _explosion;
     bool _explode;
     int _progress;
+    bool _done_exploding;
 
     bullet _bullet;
     bool _shooting;

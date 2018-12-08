@@ -406,3 +406,7 @@ void TextView::setCameraBounds(int width, int height) {
 }
 
 sf::View TextView::getCameraView() { return this->camera; }
+
+int TextView::getLineHeight() { return this->fontSize; }
+
+int TextView::lineY(int line) { return fontSize * (line - 1); }

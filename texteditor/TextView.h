@@ -65,6 +65,9 @@ public:
     void setDeltaScroll(float delta);
     void setDeltaRotation(float delta);
 
+    int getLineHeight();
+    int lineY(int line);
+
 private:
     void handleSelectionOnCursorMovement(bool updateActiveSelections);
 
