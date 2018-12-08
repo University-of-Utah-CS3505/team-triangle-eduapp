@@ -449,7 +449,6 @@ bool gameplay::_load_level(int level) {
     _kill_sig = true;
     if (_tank) {
         _tank->run_state(nullptr);
-        _tank = nullptr;
     }
     if (_tank_controller) {
         _tank_controller->join();
@@ -510,7 +509,9 @@ bool gameplay::_handle_keyboard(sf::Event event) {
     } else if (event.key.code == sf::Keyboard::Escape) {
         _kill_sig = true;
         _tank->run_state(nullptr);
-        _tank_controller->join();
+        if (_tank_controller) {
+            _tank_controller->join();
+        }
         _to_state = std::make_unique<main_menu>(_engine);
         return true;
     } else {
