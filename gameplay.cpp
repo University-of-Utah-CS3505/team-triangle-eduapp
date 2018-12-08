@@ -219,6 +219,8 @@ std::unique_ptr<game_state> gameplay::update() {
                 }
             }
         }
+    }
+    for (auto& c_tank : _tanks) {
         _engine.window().draw(*c_tank);
     }
     _editor_subtarget.clear(sf::Color(21, 29, 45));
@@ -480,27 +482,25 @@ bool gameplay::_load_level(int level) {
     _executing_line.clear();
     _tanks.clear();
 
-    // Load Tank
-    _tanks.emplace_back(std::make_unique<tank>(
-            _engine,
-            sf::Sprite(_engine.load_texture(
-                    "../team-triangle-eduapp/assets/Tanks/PNG/"
-                    "DefaultSize/tankBody_blue.png")),
-            sf::Sprite(_engine.load_texture(
-                    "../team-triangle-eduapp/assets/Tanks/PNG/"
-                    "DefaultSize/tankBlue_barrel2_outline.png")),
-            sf::Sprite(_engine.load_texture(
-                    "../team-triangle-eduapp/assets/Tanks/PNG/"
-                    "DefaultSize/bulletBlue1_outline.png"))));
 
     for (auto& obj : _level.get_objects()) {
         obj->set_offset(.1655 * _engine.window().getSize().x,
                         .1655 * _engine.window().getSize().y);
         _objects.emplace_back(obj);
         if (obj->get_type() == "spawn") {
-            for (auto& tank : _tanks) {
-                tank->set_position(obj->get_position());
-            }
+            // Load Tank
+            _tanks.emplace_back(std::make_unique<tank>(
+                    _engine,
+                    sf::Sprite(_engine.load_texture(
+                            "../team-triangle-eduapp/assets/Tanks/PNG/"
+                            "DefaultSize/tankBody_blue.png")),
+                    sf::Sprite(_engine.load_texture(
+                            "../team-triangle-eduapp/assets/Tanks/PNG/"
+                            "DefaultSize/tankBlue_barrel2_outline.png")),
+                    sf::Sprite(_engine.load_texture(
+                            "../team-triangle-eduapp/assets/Tanks/PNG/"
+                            "DefaultSize/bulletBlue1_outline.png"))));
+            _tanks[_tanks.size()-1]->set_position(obj->get_position());
         }
     }
 
