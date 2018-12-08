@@ -80,11 +80,7 @@ gameplay::gameplay(engine& eng, int level)
         _text_view.moveCursorDown(_text_doc, false);
     }
     _text_view.moveCursorToEnd(_text_doc, false);
-    _stdoutbuf = std::cout.rdbuf();
-    std::cout.rdbuf(_stdout.rdbuf());
 }
-
-gameplay::~gameplay() { std::cout.rdbuf(_stdoutbuf); }
 
 std::unique_ptr<game_state> gameplay::update() {
     _engine.window().clear();
@@ -232,13 +228,6 @@ std::unique_ptr<game_state> gameplay::update() {
     _editor_subtarget.display();
     editor.setTexture(_editor_subtarget.getTexture());
     _engine.window().draw(editor);
-    static int x = 0;
-    std::cout << x++ << "\n";
-    auto s = std::string();
-    while (std::getline(_stdout, s)) {
-        _stdout_lines.push_back(s);
-    }
-    _stdout.clear();
 
     // draw level name
     auto level_name = sf::Text();
@@ -252,6 +241,16 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
 
+    // draw stdout
+
+    auto s = std::string();
+    {
+        auto lock = std::lock_guard(_pyout_mutex);
+        while (std::getline(_pyout, s)) {
+            _stdout_lines.push_back(s);
+        }
+        _pyout.clear();
+    }
     auto stdout_str = std::string();
     for (const auto& s : _stdout_lines) {
         stdout_str += s + "\n";
@@ -334,9 +333,11 @@ bool gameplay::_run_tanks() {
                 // Retrieve the main module's namespace
                 auto global = main.attr("__dict__");
                 global["d_print"] = py::make_function(
-                        std::function([](py::object x) {
-                            std::cout << py::extract<std::string>(x)()
-                                      << std::endl;
+                        std::function([this](py::object x) {
+                            auto l = std::lock_guard(_pyout_mutex);
+                            _pyout << py::extract<std::string>(
+                                              x.attr("__str__")())()
+                                   << std::endl;
                         }),
                         py::default_call_policies(),
                         boost::mpl::vector<void, py::object>());
@@ -524,11 +525,11 @@ bool gameplay::_handle_keyboard(sf::Event event) {
         _editor.scroll_right();
         return true;
     } else if (event.key.code == sf::Keyboard::Escape) {
-        for (auto& c_tank : _tanks) {
-            c_tank->run_state(nullptr);
-        }
         for (auto& sig : _kill_sig) {
             *sig = true;
+        }
+        for (auto& c_tank : _tanks) {
+            c_tank->run_state(nullptr);
         }
         for (auto& thread : _threads) {
             thread.join();

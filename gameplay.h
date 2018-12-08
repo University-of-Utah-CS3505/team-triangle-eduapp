@@ -19,7 +19,6 @@
 class gameplay : public game_state {
 public:
     gameplay(engine& window, int level);
-    ~gameplay() override;
     std::unique_ptr<game_state> update() override;
 
 private:
@@ -52,8 +51,8 @@ private:
     std::vector<std::unique_ptr<std::atomic<int>>> _executing_line;
     std::vector<std::unique_ptr<std::atomic<bool>>> _kill_sig;
 
-    std::streambuf* _stdoutbuf;
-    std::stringstream _stdout;
+    std::mutex _pyout_mutex;
+    std::stringstream _pyout;
 
     boost::circular_buffer<std::string> _stdout_lines;
 };
