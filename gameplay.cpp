@@ -75,13 +75,13 @@ std::unique_ptr<game_state> gameplay::update() {
                     i * 64 + (.1665 * _engine.window().getSize().y));
             _engine.window().draw((tile_to_draw.get_sprite()));
 
+            //Check for tank off of road
             if(tile_to_draw.get_type() != "road"){
                 for (auto& c_tank : _tanks) {
-                    qDebug() << "tank: " << (c_tank->get_position().x)-32 << "," << (c_tank->get_position().y)-32;
-                    qDebug() << "tile: " << tile_to_draw.get_sprite().getPosition().x << "," << tile_to_draw.get_sprite().getPosition().y;
-
-
-                    if(c_tank->get_position() == tile_to_draw.get_sprite().getPosition()){
+                    if(((c_tank->get_position().x)-32+2 >= tile_to_draw.get_sprite().getPosition().x ||
+                        (c_tank->get_position().x)-32-2 <= tile_to_draw.get_sprite().getPosition().x)&&
+                       ((c_tank->get_position().y)-32+2 >= tile_to_draw.get_sprite().getPosition().y ||
+                        (c_tank->get_position().y)-32-2 <= tile_to_draw.get_sprite().getPosition().y)){
                         qDebug() << "Tank off of road";
                     }
                 }
@@ -89,18 +89,9 @@ std::unique_ptr<game_state> gameplay::update() {
         }
     }
 
-
-
-
-
-
-
-
-
     // Draw objects
     for (auto& c_tank : _tanks) {
         c_tank->update();
-
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
             // Tank hitting objects
