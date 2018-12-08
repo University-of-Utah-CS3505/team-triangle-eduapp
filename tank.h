@@ -65,16 +65,12 @@ public:
     };
 
     void run_state(std::unique_ptr<state>);
-
     void update();
-
     void wait_until_idle();
-
     sf::Vector2f get_bullet_pos();
-
     void bullet_hit();
-
-    void set_offset(int x, int y);
+    void set_offset(int, int);\
+    void set_bullet_bounds(int,int,int,int);
 
 private:
     engine& _engine;

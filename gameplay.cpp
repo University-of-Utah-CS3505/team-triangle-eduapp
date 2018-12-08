@@ -10,7 +10,7 @@
 
 gameplay::gameplay(engine& eng, int level)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(level), _current_level(level),
+    : _editor{15, 800, 650}, _engine{eng}, _level(0), _current_level(level),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -71,7 +71,6 @@ std::unique_ptr<game_state> gameplay::update() {
     // Draw objects
     for (auto& c_tank : _tanks) {
         c_tank->update();
-
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
             // Hit detection
@@ -120,8 +119,6 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setFont(font);
     level_name.setFillColor(sf::Color::White);
     _engine.window().draw(level_name);
-
-
     return nullptr;
 }
 
@@ -145,6 +142,7 @@ bool gameplay::handle_mouse(sf::Event event) {
 
     return true;
 }
+
 bool gameplay::_run_tanks() {
     _load_level(_current_level);
     auto user_source = std::string();
@@ -288,6 +286,11 @@ bool gameplay::_load_level(int level) {
                     "DefaultSize/bulletBlue1_outline.png"))));
     for(auto &tank : _tanks){
         tank->set_offset(.1655*_engine.window().getSize().x, .1655*_engine.window().getSize().y);
+
+        tank->set_bullet_bounds(.1655*_engine.window().getSize().x,
+                                .1655*_engine.window().getSize().y,
+                                .1655*_engine.window().getSize().x + (_level.get_location_matrix().shape()[0] * 64),
+                                .1655*_engine.window().getSize().y + (_level.get_location_matrix().shape()[1] * 64));
     }
     return true;
 }
