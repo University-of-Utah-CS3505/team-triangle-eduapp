@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "iostream"
+#include "QDir"
+#include "QDebug"
+#include <QPixmap>
+#include <QPair>
+#include <QMap>
 
 MainWindow::MainWindow(QWidget *parent) : m(0),
     QMainWindow(parent),
@@ -8,6 +13,48 @@ MainWindow::MainWindow(QWidget *parent) : m(0),
 {
     ui->setupUi(this);
 
+
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater1.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUL.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLR.png");
+
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadCrossing.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadSplitE.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadSplitN.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadSplitS.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileWater_roadSplitW.png");
+
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand1.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand2.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadEast.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadNorth.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadCornerUR.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadCornerLL.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadCornerLR.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadCornerUL.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadCrossing.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadSplitE.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadSplitN.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadSplitS.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileSand_roadSplitW.png");
+
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass1.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass2.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadEast.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadNorth.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerUR.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerLL.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerLR.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadCornerUL.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadCrossing.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitE.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitN.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitS.png");
+    image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitW.png");
 
 }
 
@@ -25,17 +72,41 @@ void MainWindow::on_spinButton_clicked()
         item->deleteLater();
     }
     list_of_boxes.clear();
-
+    list_of_images.clear();
+    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
     QSpinBox * box = new QSpinBox();
+
+    qDebug() << QDir::currentPath();
     box->setRange(0,5);
+    int count = 0;
     for(int i =0; i < ui->spinBox->value(); i++){
         for(int j =0; j < ui->spinBox->value(); j++){
+
+            std::vector<int> _current_pos;
+            _current_pos.emplace_back(count);
+            _current_pos.emplace_back(j);
+
+            QLabel* image = new QLabel();
+            QPixmap pix("../assets/Tanks/PNG/DefaultSize/tileWater1.png");
+            //bool f =pix.load();
+
+            image->setPixmap(pix);
+            image->setObjectName(QString::number(i) + QString("+") + QString::number(j));
+
+            ui->gridLayout->addWidget(image,count,j);
+
+            map.insert(image, _current_pos);
+            list_of_images.emplace_back(image);
+
             QSpinBox *box = new QSpinBox();
+            box->setRange(0,37);
             box->setObjectName(QString::number(i) + QString("#") + QString::number(j));
             connect(box,SIGNAL(valueChanged(int)), this, SLOT(update_color(int)));
-            ui->gridLayout->addWidget(box,i,j);
+            connect(box,SIGNAL(valueChanged(int)), this, SLOT(update_images()));
+            ui->gridLayout->addWidget(box,count+3,j);
             list_of_boxes.emplace_back(box);
         }
+        count+=4;
     }
 }
 
@@ -61,6 +132,28 @@ void MainWindow::update_color(int col){
         box->setStyleSheet("QSpinBox {background-color: black;}");
     }
     box->setPalette(pal);
+}
+
+void MainWindow::update_images()
+{
+    QSpinBox* box = qobject_cast<QSpinBox *>(sender());
+    int i = box->objectName().split('#').first().toInt();
+    int j = box->objectName().split('#').last().toInt();
+    QString name = QString::number(i) + "+" + QString::number(j);
+    int value = box->value();
+    for (QLabel* items : list_of_images)
+    {
+        if(items->objectName() == name)
+        {
+            int x = map.value(items).front();
+            int y = map.value(items).back();
+
+
+            QPixmap pix(image_paths.at(value));
+            items->setPixmap(pix);
+            ui->gridLayout->addWidget(items, x, y);
+        }
+    }
 }
 
 void MainWindow::on_actionsave_triggered()
