@@ -345,7 +345,7 @@ bool gameplay::_run_tanks() {
                 // https://stackoverflow.com/a/1418703
                 // TODO give user the exception somehow (maybe print and
                 // redirect stdout to something we print on screen)
-                PyErr_Print();
+                // PyErr_Print();
                 /*                auto ptype = static_cast<PyObject*>(nullptr),
                                      pvalue = static_cast<PyObject*>(nullptr),
                                      ptraceback =
@@ -374,11 +374,14 @@ bool gameplay::_run_tanks() {
 bool gameplay::_load_level(int level) {
     _level.load_new_level(level);
     _current_level = level;
-    for (auto& k : _kill_sig) {
-        *k = false;
+    for (auto& c_tank : _tanks) {
+        c_tank->run_state(nullptr);
     }
-    for (auto& t : _threads) {
-        t.join();
+    for (auto& sig : _kill_sig) {
+        *sig = true;
+    }
+    for (auto& thread : _threads) {
+        thread.join();
     }
     _threads.clear();
     _kill_sig.clear();
