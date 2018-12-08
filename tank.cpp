@@ -4,7 +4,7 @@
 #include <QDebug>
 
 tank::tank(engine& eng, sf::Sprite sprite, sf::Sprite turret, sf::Sprite bullet)
-    : _engine(eng), _sprite(sprite), _turret(turret),
+    : _engine(eng), _sprite(sprite), _turret(turret), _shooting(false),
       _bullet(eng, bullet) {
     _sprite.setOrigin(19,19);
     _turret.setOrigin(6, 5);
@@ -122,8 +122,10 @@ bool tank::shoot::update(tank& t) {
     t._bullet.set_direction(std::cos((t._turret.getRotation()+90) * M_PI / 180.0), std::sin((t._turret.getRotation()+90)* M_PI / 180.0));
     if(t._bullet.update()){
         t._bullet.set_location(sf::Vector2f(t._sprite.getPosition()));
+        t._shooting = false;
         return true;
     }
+    t._shooting = true;
     return false;
 }
 
@@ -168,6 +170,8 @@ void tank::set_bullet_bounds(int low_x, int low_y, int high_x, int high_y)
 {
     _bullet.set_bounds(low_x, low_y, high_x, high_y);
 }
+
+bool tank::is_shooting() { return _shooting; }
 
 void tank::draw(sf::RenderTarget& target, sf::RenderStates) const {
     target.draw(_bullet);

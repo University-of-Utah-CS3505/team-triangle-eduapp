@@ -71,6 +71,7 @@ public:
     void bullet_hit();
     void set_offset(int, int);\
     void set_bullet_bounds(int,int,int,int);
+    bool is_shooting();
 
 private:
     engine& _engine;
@@ -78,6 +79,7 @@ private:
     sf::Sprite _turret;
 
     bullet _bullet;
+    bool _shooting;
 
     std::mutex _mutex;
     std::unique_lock<std::mutex> _lock;

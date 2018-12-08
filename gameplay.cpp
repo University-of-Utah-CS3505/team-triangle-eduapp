@@ -73,23 +73,29 @@ std::unique_ptr<game_state> gameplay::update() {
         c_tank->update();
         for (int i = 0; i < _objects.size(); i++) {
             _engine.window().draw(_objects[i]->get_sprite());
-            // Hit detection
-            if(_objects[i]->get_type() == "destroyable" ||
-                    _objects[i]->get_type() == "solid") {
-                if (_objects[i]->get_position().x - _objects[i]->get_size().x <
-                    c_tank->get_bullet_pos().x) {
-                    if (_objects[i]->get_position().x + _objects[i]->get_size().x >
+
+
+
+
+            // Hit detection for objects and bullet
+            if(c_tank->is_shooting()){
+                if(_objects[i]->get_type() == "destroyable" ||
+                        _objects[i]->get_type() == "solid") {
+                    if (_objects[i]->get_position().x - _objects[i]->get_size().x <
                         c_tank->get_bullet_pos().x) {
-                        if (_objects[i]->get_position().y -
-                                    _objects[i]->get_size().y <
-                            c_tank->get_bullet_pos().y) {
-                            if (_objects[i]->get_position().y +
-                                        _objects[i]->get_size().y >
+                        if (_objects[i]->get_position().x + _objects[i]->get_size().x >
+                            c_tank->get_bullet_pos().x) {
+                            if (_objects[i]->get_position().y -
+                                        _objects[i]->get_size().y <
                                 c_tank->get_bullet_pos().y) {
-                                c_tank->bullet_hit();
-                                if(_objects[i]->get_type() == "destroyable"){
-                                    _objects.erase(_objects.begin() + i);
-                                    i = 0;
+                                if (_objects[i]->get_position().y +
+                                            _objects[i]->get_size().y >
+                                    c_tank->get_bullet_pos().y) {
+                                    c_tank->bullet_hit();
+                                    if(_objects[i]->get_type() == "destroyable"){
+                                        _objects.erase(_objects.begin() + i);
+                                        i = 0;
+                                    }
                                 }
                             }
                         }

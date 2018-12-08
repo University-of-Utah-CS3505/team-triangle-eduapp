@@ -17,11 +17,13 @@ level::level(int level_index) {
     }
     load_new_level(level_index);
 }
+
 sf::Texture level::get_preview() {
     // TODO
     sf::Texture texture;
     return texture;
 }
+
 sf::Texture level::get_full_texture() {
     // TODO
     sf::Texture texture;
@@ -32,6 +34,7 @@ sf::Sprite level::get_tile_sprite() {
     sf::Sprite texture;
     return texture;
 }
+
 tile level::get_location_tile_def(int x, int y) {
     int tile_loc = location_matrix[x][y];
     return tile(tile_loc,
@@ -42,6 +45,7 @@ tile level::get_location_tile_def(int x, int y) {
 void level::save_level() {
     // TODO, find out if nessesary
 }
+
 void level::load_new_level(int level) {
     location_matrix.resize(boost::extents[0][0]); // Clear matrix, valid
                                                   // according to documentation.
@@ -102,7 +106,6 @@ void level::load_new_level(int level) {
         x++;
     }
 }
-
 
 boost::multi_array<int,2> level::get_location_matrix(){return location_matrix;};
 
