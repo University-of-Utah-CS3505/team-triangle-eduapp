@@ -38,7 +38,7 @@ win_menu::win_menu(engine& eng, int level)
 win_menu::~win_menu() {}
 
 std::unique_ptr<game_state> win_menu::update() {
-    _engine.window().clear(sf::Color::Cyan);
+    _engine.window().clear(sf::Color(252, 252, 210));
 
     // Menu items
     auto v_top = _engine.window().getSize().y / 3;
