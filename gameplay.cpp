@@ -439,6 +439,15 @@ bool gameplay::_handle_keyboard(sf::Event event) {
         _editor.scroll_right();
         return true;
     } else if (event.key.code == sf::Keyboard::Escape) {
+        for (auto& c_tank : _tanks) {
+            c_tank->run_state(nullptr);
+        }
+        for (auto& sig : _kill_sig) {
+            *sig = true;
+        }
+        for (auto& thread : _threads) {
+            thread.join();
+        }
         _to_state = std::make_unique<main_menu>(_engine);
         return true;
     } else {
