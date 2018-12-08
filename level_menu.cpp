@@ -51,7 +51,7 @@ level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)),
        std::string s = v.second.data();
         _items.emplace_back(_world,
                             "../team-triangle-eduapp/assets/level.png",
-                            [this, level_id]() { _to_state = std::make_unique<gameplay>(_engine, level_id); return false; },
+                            [this, level_id]() { _to_state = std::make_unique<gameplay>(_engine, level_id); return true; },
                             x,
                             2,
                             0);

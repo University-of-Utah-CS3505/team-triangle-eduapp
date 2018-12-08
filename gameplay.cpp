@@ -52,13 +52,14 @@ gameplay::gameplay(engine& eng, int level)
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf") {
+    _load_level(_current_level);
     _text_doc.addTextToPos(_level._level_instructions, 0,0);
     int lines = _text_doc.getLineCount();
     for(int i = 0; i< lines; i++){
         _text_view.moveCursorDown(_text_doc, false);
     }
     _text_view.moveCursorToEnd(_text_doc, false);
-    _load_level(_current_level);
+
 }
 
 std::unique_ptr<game_state> gameplay::update() {
