@@ -440,6 +440,13 @@ bool gameplay::_run_tanks() {
                         py::default_call_policies(),
                         boost::mpl::vector<void>());
 
+                global["object_ahead"] = py::make_function(
+                        std::function([this]() -> py::object {
+                            return py::object(true);
+                        }),
+                        py::default_call_policies(),
+                        boost::mpl::vector<py::object>());
+
                 global["rotate_turret"] = py::make_function(
                         std::function([this](py::object py_angle) {
                             auto angle = py::extract<float>(py_angle);
