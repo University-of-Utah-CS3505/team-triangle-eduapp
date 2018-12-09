@@ -106,3 +106,6 @@ DEPENDPATH += $$PWD/libs/boost_1_67_0/stage
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/boost_python37.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/libs/boost_1_67_0/stage/lib/libboost_python37.a
+
+RESOURCES += \
+    resources.qrc
