@@ -64,7 +64,7 @@ level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)),
                             x,
                             2,
                             0);
-        x+=2;
+        x+=3;
         level_id++;
     }
 
