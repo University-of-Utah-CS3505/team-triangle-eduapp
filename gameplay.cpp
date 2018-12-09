@@ -83,7 +83,7 @@ gameplay::gameplay(engine& eng, int level)
     _text_view.moveCursorToEnd(_text_doc, false);
 
     _error_console.setSize(sf::Vector2f(600, 250));
-    _error_console.setFillColor(sf::Color(95, 95, 95));
+    _error_console.setFillColor(sf::Color(95, 95, 95)); // Error console output
     _error_console.setOrigin(_error_console.getSize().x,
                              _error_console.getSize().y);
     _error_console.setPosition(.666 * _engine.window().getSize().x,
@@ -91,7 +91,7 @@ gameplay::gameplay(engine& eng, int level)
 }
 
 std::unique_ptr<game_state> gameplay::update() {
-    _engine.window().clear();
+    _engine.window().clear(sf::Color(252, 252, 210)); // Background to map
 
     // Draw tiles
     for (int i = 0; i < _level.get_location_matrix().shape()[0]; i++) {
@@ -162,10 +162,15 @@ std::unique_ptr<game_state> gameplay::update() {
                             _tank->get_position().y) {
                             if (_objects[i]->get_type() == "goal") {
                                 _level_won = true;
-                                qDebug() << "Goal reached";
                             } else {
-                                _tank->run_state(
-                                        std::make_unique<tank::explode>());
+                                if(_tank->done_exploding()){
+                                    _load_level(_current_level);
+                                    return nullptr;
+                                }else{
+                                    _tank->run_state(
+                                          std::make_unique<tank::explode>());
+                                }
+
                             }
                         }
                     }
@@ -203,13 +208,13 @@ std::unique_ptr<game_state> gameplay::update() {
     }
 
     _engine.window().draw(*_tank);
-    _editor_subtarget.clear(sf::Color(21, 29, 45));
+    _editor_subtarget.clear(sf::Color(238, 228, 196)); // Editor background
     _editor_subtarget.setView(_text_view.getCameraView());
     if (auto l = _executing_line.load(); l > 0) {
         auto to_highlight = sf::RectangleShape(sf::Vector2f(
                 _editor_subtarget.getSize().x, _text_view.getLineHeight()));
         to_highlight.setPosition(0, _text_view.lineY(l));
-        to_highlight.setFillColor(sf::Color(255, 255, 0, 70)); // yellow
+        to_highlight.setFillColor(sf::Color(201, 187, 143)); // Editor step through highlight
         _editor_subtarget.draw(to_highlight);
     }
     _text_view.draw(_editor_subtarget, _text_doc);
@@ -231,7 +236,7 @@ std::unique_ptr<game_state> gameplay::update() {
     level_name.setPosition(0.1665 * _engine.window().getSize().x, 10);
     level_name.setCharacterSize(50);
     level_name.setFont(level_font);
-    level_name.setFillColor(sf::Color::White);
+    level_name.setFillColor(sf::Color(36, 156, 11));
     _engine.window().draw(level_name);
 
     // draw stdout
@@ -253,7 +258,7 @@ std::unique_ptr<game_state> gameplay::update() {
     error_title.setPosition(.666 * _engine.window().getSize().x,
                             _engine.window().getSize().y -
                                     _error_console.getSize().y);
-    error_title.setFillColor(sf::Color(80, 80, 80));
+    error_title.setFillColor(sf::Color(80, 80, 80)); // Error title
     _engine.window().draw(error_title);
 
     auto error_title_text = sf::Text();
@@ -342,6 +347,7 @@ bool gameplay::_run_tanks() {
     _kill_sig = false;
     _tank_controller = std::make_unique<std::thread>([this, user_source]() {
         namespace py = boost::python;
+        auto killed = false;
         // Retrieve the main module.
         try {
             auto main = py::import("__main__");
@@ -349,10 +355,11 @@ bool gameplay::_run_tanks() {
 
             auto traceit = std::function<py::object(
                     py::object, py::object, py::object)>();
-            traceit = [this, &traceit](py::object frame,
-                                       py::object event,
-                                       py::object args) {
+            traceit = [this, &traceit, &killed](py::object frame,
+                                                py::object event,
+                                                py::object args) {
                 if (_kill_sig) {
+                    killed = true;
                     throw std::runtime_error("done");
                 }
                 if (py::extract<std::string>(event)() == "line") {
@@ -462,7 +469,9 @@ bool gameplay::_run_tanks() {
 
             auto result = py::exec(py::str(user_source), global, global);
         } catch (py::error_already_set const&) {
-            _pyout << extract_exception();
+            if (!killed) {
+                _pyout << extract_exception();
+            }
         }
         _executing_line = 0;
     });
