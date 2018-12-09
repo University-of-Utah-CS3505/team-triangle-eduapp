@@ -6,8 +6,8 @@ TextViewContent::TextViewContent(const sf::String& fontPath) {
 
     this->font.loadFromFile(fontPath.toAnsiString());
     this->setFontSize(18); // Important to call
-    this->colorChar = sf::Color::White;
-    this->colorSelection = sf::Color(106, 154, 232);
+    this->colorChar = sf::Color(75, 61, 16); // Font color
+    this->colorSelection = sf::Color(162, 146, 99);
 }
 
 // TODO: Reemplazar fontSize por fontHeight especifica para cada tipo de font.

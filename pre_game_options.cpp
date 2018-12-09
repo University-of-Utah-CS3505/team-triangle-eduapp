@@ -5,7 +5,7 @@
 const std::pair<int, int> resolutions[] = {{1920, 1080}, {1280, 720}};
 
 pre_game_options::pre_game_options(QWidget* parent)
-    : QDialog(parent, Qt::Dialog), _ui(new Ui::pre_game_options) {
+    : QDialog(parent, Qt::WindowSystemMenuHint), _ui(new Ui::pre_game_options) {
     setWindowModality(Qt::WindowModality::ApplicationModal);
     _ui->setupUi(this);
     // options are default constructed to null so no need to handle reject case

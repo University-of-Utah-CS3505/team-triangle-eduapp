@@ -83,7 +83,7 @@ bool model::save_model(){
 
     ob.append(obj);
     }
-    json["objects"] = ob;
+    json.insert("objects", ob);
     std::cout << "FINISHED OB" << std::endl;
     QJsonArray tiledefsjson;
     tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png", "water"));
@@ -97,14 +97,14 @@ bool model::save_model(){
         QJsonObject* tile  = new QJsonObject;
         auto tilederef = *tile;
         auto item2 = std::get<0>(item);
-        tilederef["img"] = item2.c_str() ;
-        tilederef["type"] = std::get<1>(item).c_str() ;
+        tilederef.insert("img", item2.c_str()) ;
+        tilederef.insert("type",  std::get<1>(item).c_str()) ;
         tiledefsjson.append(*tile);
 
     }
     std::cout << "FINISHED TILEDEF" << std::endl;
     json["tiledefs"] = tiledefsjson;
-    std::string str("../.. /levels");
+    std::string str("../../levels");
     str+= lvlname;
     std::cout << str.c_str() << std::endl;
     QDir().mkdir(str.c_str());
@@ -115,7 +115,6 @@ bool model::save_model(){
     writeFile.write(docs.toJson());
     writeFile.close();
     return true; //TODO!
-
 }
 
 void model::resize_array(int size){
@@ -123,7 +122,7 @@ void model::resize_array(int size){
 }
 
 std::string model::findNextLevel(){
-    QFile file(":../../levels/levels.json");
+    QFile file("../../levels/levels.json");
     file.open(QIODevice::ReadWrite);
     QByteArray barray = file.readAll();
     QJsonDocument doc;

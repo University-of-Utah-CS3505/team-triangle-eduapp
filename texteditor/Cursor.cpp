@@ -10,7 +10,7 @@ Cursor::Cursor(int height, int charWidth, int lineN, int charN) {
     this->offsetY = 2;
     this->maxCharNReached = 0;
     this->rect = sf::RectangleShape(sf::Vector2f(2, height));
-    this->rect.setFillColor(sf::Color::White);
+    this->rect.setFillColor(sf::Color(75, 61, 16));
     this->updatePos(lineN, charN);
 }
 

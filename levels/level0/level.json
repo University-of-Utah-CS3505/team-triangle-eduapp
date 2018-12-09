@@ -1,0 +1,68 @@
+{
+    "name": "custom levelname",
+    "objects": [
+        {
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png",
+            "pos": [
+                1,
+                1
+            ],
+            "size": [
+                16,
+                28
+            ],
+            "type": "spawn"
+        }
+    ],
+    "tiledefs": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+    ],
+    "tiles": [
+        [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
+    ]
+}
