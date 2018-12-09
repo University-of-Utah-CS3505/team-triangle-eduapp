@@ -86,16 +86,10 @@ bool model::save_model(){
     json.insert("objects", ob);
     std::cout << "FINISHED OB" << std::endl;
     QJsonArray tiledefsjson;
-    tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png", "water"));
-    tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png", "road"));
-    tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png", "road"));
-    tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png", "road"));
-    tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png", "road"));
-    tiledefs.emplace_back(std::make_tuple("../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png", "road"));   //HARDCODED!
 
     for(auto item : tiledefs){
         QJsonObject* tile  = new QJsonObject;
-        auto tilederef = *tile;
+        QJsonObject tilederef = *tile;
         auto item2 = std::get<0>(item);
         tilederef.insert("img", item2.c_str()) ;
         tilederef.insert("type",  std::get<1>(item).c_str()) ;
@@ -103,7 +97,7 @@ bool model::save_model(){
 
     }
     std::cout << "FINISHED TILEDEF" << std::endl;
-    json["tiledefs"] = tiledefsjson;
+    json.insert("tiledefs", tiledefsjson);
     std::string str("../../levels");
     str+= lvlname;
     std::cout << str.c_str() << std::endl;
@@ -123,12 +117,13 @@ void model::resize_array(int size){
 
 std::string model::findNextLevel(){
     QFile file("../../levels/levels.json");
-    file.open(QIODevice::ReadWrite);
+    file.open(QIODevice::ReadOnly);
     QByteArray barray = file.readAll();
-    QJsonDocument doc;
-    doc.fromJson(barray);
-    QJsonObject json = doc.object();
-    QJsonArray lev = json["levels"].toArray();
+    QJsonDocument doc(QJsonDocument::fromJson(barray));
+    QJsonObject json_levels = doc.object();
+
+    std::cout << json_levels.value("levels").isObject() <<std::endl;
+    QJsonArray lev = json_levels["levels"].toArray();
     QString q = QString::number(lev.size());
     q.prepend("/level");
     //q.append("");
@@ -148,6 +143,18 @@ void model::update_loc1(int obj, int loc1){
 }
 void model::update_loc2(int obj, int loc2){
     std::get<1>(objects[obj])=loc2;
+}
+void model::bring_in_tiledefs(std::vector<QString> i){
+    bool first = false;
+    for(auto item : i){
+        if(!first ){
+            first = true;
+            tiledefs.emplace_back(std::make_tuple(item.toUtf8().toStdString(),"water"));
+        }
+        else{
+            tiledefs.emplace_back(std::make_tuple(item.toStdString(),"road"));
+        }
+    }
 }
 
 /*
