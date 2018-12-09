@@ -90,7 +90,7 @@ level_menu::level_menu(engine& eng) : _engine(eng), _world(b2Vec2(0.f, 10.f)),
 level_menu::~level_menu() {}
 
 std::unique_ptr<game_state> level_menu::update() {
-    _engine.window().clear(sf::Color::Yellow);
+    _engine.window().clear(sf::Color(238, 246, 136));
     _world.Step(1 / 60.0f, 1, 1);
     for (auto& item : _items) {
         auto pos = item.body->GetPosition();
