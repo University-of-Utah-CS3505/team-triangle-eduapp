@@ -18,7 +18,7 @@
 	},
 	{
 	    "type":"goal",
-	    "pos":[0, 1],
+	    "pos":[6, 5],
 	    "size":[32, 32],
 	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
 	},
