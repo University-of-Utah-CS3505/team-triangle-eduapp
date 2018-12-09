@@ -342,6 +342,7 @@ bool gameplay::_run_tanks() {
     _kill_sig = false;
     _tank_controller = std::make_unique<std::thread>([this, user_source]() {
         namespace py = boost::python;
+        auto killed = false;
         // Retrieve the main module.
         try {
             auto main = py::import("__main__");
@@ -349,10 +350,11 @@ bool gameplay::_run_tanks() {
 
             auto traceit = std::function<py::object(
                     py::object, py::object, py::object)>();
-            traceit = [this, &traceit](py::object frame,
-                                       py::object event,
-                                       py::object args) {
+            traceit = [this, &traceit, &killed](py::object frame,
+                                                py::object event,
+                                                py::object args) {
                 if (_kill_sig) {
+                    killed = true;
                     throw std::runtime_error("done");
                 }
                 if (py::extract<std::string>(event)() == "line") {
@@ -462,7 +464,9 @@ bool gameplay::_run_tanks() {
 
             auto result = py::exec(py::str(user_source), global, global);
         } catch (py::error_already_set const&) {
-            _pyout << extract_exception();
+            if (!killed) {
+                _pyout << extract_exception();
+            }
         }
         _executing_line = 0;
     });
