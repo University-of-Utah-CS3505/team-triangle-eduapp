@@ -5,7 +5,6 @@
 #include "game_state.h"
 #include "level.h"
 #include "tank.h"
-#include "textedit.h"
 #include "texteditor/InputController.h"
 #include "texteditor/TextDocument.h"
 #include "texteditor/TextView.h"
@@ -22,13 +21,10 @@ public:
     std::unique_ptr<game_state> update() override;
 
 private:
-    bool _handle_mouse(sf::Event);
-    bool _handle_text(sf::Event);
     bool _handle_keyboard(sf::Event);
     bool _run_tanks();
     bool _load_level(int);
     void _draw_current_lines(sf::RenderTarget& target);
-    textedit _editor;
     engine& _engine;
     std::vector<tile*> _tiles;
     level _level;
@@ -46,7 +42,6 @@ private:
     InputController _input_con;
     std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
-
 
     std::unique_ptr<tank> _tank;
     std::unique_ptr<std::thread> _tank_controller;

@@ -15,8 +15,7 @@
 
 gameplay::gameplay(engine& eng, int level)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(0), _current_level(level),
-      _level_won(false),
+    : _engine{eng}, _level(0), _current_level(level), _level_won(false),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -62,12 +61,9 @@ gameplay::gameplay(engine& eng, int level)
       _mouse_click(_engine.add_event_listener(
               sf::Event::MouseButtonPressed,
               [this](auto e) {
-                  if (_handle_mouse(e)) {
-                      return true;
-                  } else {
-                      _input_con.handleEvents(
-                              _text_doc, _text_view, _engine.window(), e);
-                  }
+                  _input_con.handleEvents(
+                          _text_doc, _text_view, _engine.window(), e);
+                  return true;
               })),
 
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
@@ -163,14 +159,13 @@ std::unique_ptr<game_state> gameplay::update() {
                             if (_objects[i]->get_type() == "goal") {
                                 _level_won = true;
                             } else {
-                                if(_tank->done_exploding()){
+                                if (_tank->done_exploding()) {
                                     _load_level(_current_level);
                                     return nullptr;
-                                }else{
+                                } else {
                                     _tank->run_state(
-                                          std::make_unique<tank::explode>());
+                                            std::make_unique<tank::explode>());
                                 }
-
                             }
                         }
                     }
@@ -214,7 +209,8 @@ std::unique_ptr<game_state> gameplay::update() {
         auto to_highlight = sf::RectangleShape(sf::Vector2f(
                 _editor_subtarget.getSize().x, _text_view.getLineHeight()));
         to_highlight.setPosition(0, _text_view.lineY(l));
-        to_highlight.setFillColor(sf::Color(201, 187, 143)); // Editor step through highlight
+        to_highlight.setFillColor(
+                sf::Color(201, 187, 143)); // Editor step through highlight
         _editor_subtarget.draw(to_highlight);
     }
     _text_view.draw(_editor_subtarget, _text_doc);
@@ -295,27 +291,6 @@ std::unique_ptr<game_state> gameplay::update() {
     }
 
     return std::move(_to_state);
-}
-
-bool gameplay::_handle_text(sf::Event event) {
-    // qDebug() << sf::Keyboard::BackSpace;
-    // for whatever reason, we get return carriage for the return key rather
-    // than a newline
-    if (event.text.unicode == '\r') {
-        _editor.insert_char('\n');
-        // _editor.new_line();
-    } else if (event.text.unicode == '\b') {
-        _editor.backspace();
-    } else {
-        _editor.insert_char(event.text.unicode);
-    }
-    return false;
-}
-
-bool gameplay::_handle_mouse(sf::Event event) {
-    _editor.move_cursor(event.mouseButton.x, event.mouseButton.y - 10);
-
-    return true;
 }
 
 // https://wiki.python.org/moin/boost.python/EmbeddingPython
@@ -527,18 +502,6 @@ bool gameplay::_load_level(int level) {
 bool gameplay::_handle_keyboard(sf::Event event) {
     if (event.key.code == sf::Keyboard::F5) {
         _run_tanks();
-        return true;
-    } else if (event.key.code == sf::Keyboard::PageDown) {
-        _editor.scroll_down();
-        return true;
-    } else if (event.key.code == sf::Keyboard::PageUp) {
-        _editor.scroll_up();
-        return true;
-    } else if (event.key.code == sf::Keyboard::Home) {
-        _editor.scroll_left();
-        return true;
-    } else if (event.key.code == sf::Keyboard::End) {
-        _editor.scroll_right();
         return true;
     } else if (event.key.code == sf::Keyboard::O && event.key.control) {
         _text_doc.loadFile(QFileDialog::getOpenFileName().toStdString());
