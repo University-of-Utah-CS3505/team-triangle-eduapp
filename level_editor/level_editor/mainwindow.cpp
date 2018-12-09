@@ -225,7 +225,7 @@ void MainWindow::on_loc2_changed(int a){
 
 void MainWindow::on_tree_button_clicked()
 {
-    add_object("solid");
+    add_object("destroyable");
 }
 
 void MainWindow::on_target_button_clicked()
