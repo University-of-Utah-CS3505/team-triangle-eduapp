@@ -2,7 +2,7 @@
     "name": "Bringing it together",
     "tiles": [
         [1, 1, 1, 1, 4],
-        [2, 0, 0, 0, 2],
+        [0, 0, 0, 0, 2],
         [2, 0, 0, 0, 2],
 	    [2, 0, 0, 0, 2],
         [3, 1, 1, 1, 5]],
@@ -15,7 +15,7 @@
         },
 	{
             "type": "goal",
-            "pos": [0,1],
+            "pos": [0,2],
 	    "size": [32,32],
 	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
         },
