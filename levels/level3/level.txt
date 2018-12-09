@@ -17,5 +17,14 @@ for r in range(5):
         shoot()
     forward()
 
+Here, the if statement will only execute its
+block if its the condition (object_ahead()) is
+True. Otherwise, the block will be skipped.
+
+Another thing to note is that this code
+block is nested. Code blocks can be put
+inside other code blocks just by increasing
+the indentation of its parent by four spaces.
+
 """
 

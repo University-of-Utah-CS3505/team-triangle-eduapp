@@ -9,5 +9,12 @@ Here's some syntax for Python:
 for r in range(10):
     forward()
     backward()
+
+The indentation (tab or four spaces) after
+the `for` line creates a code block which
+continues to the next code line without
+indentation. Any code in this block is
+executed as part of the loop 10 times -
+once for each number 0, 1, ..., 9
 """
 
