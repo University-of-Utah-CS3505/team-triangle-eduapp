@@ -312,6 +312,31 @@ std::string extract_exception() {
     }
 }
 
+boost::python::object traceit(const std::atomic<bool>& kill_sig,
+                              std::atomic<int>& executing_line,
+                              bool& killed,
+                              boost::python::object f,
+                              boost::python::object e,
+                              boost::python::object a) {
+    namespace py = boost::python;
+    if (kill_sig) {
+        killed = true;
+        throw std::runtime_error("ExplosionError");
+    }
+    if (py::extract<std::string>(e)() == "line") {
+        executing_line = py::extract<int>(f.attr("f_lineno"))();
+    }
+    return py::make_function(
+            [&](boost::python::object f,
+                boost::python::object e,
+                boost::python::object a) {
+                return traceit(kill_sig, executing_line, killed, f, e, a);
+            },
+            py::default_call_policies(),
+            boost::mpl::
+                    vector<py::object, py::object, py::object, py::object>());
+}
+
 bool gameplay::_run_tanks() {
     _load_level(_current_level);
     auto user_source = std::string();
@@ -323,37 +348,27 @@ bool gameplay::_run_tanks() {
     _tank_controller = std::make_unique<std::thread>([this, user_source]() {
         namespace py = boost::python;
         // Retrieve the main module.
+        auto killed = false;
         try {
             auto main = py::import("__main__");
             auto sys = py::import("sys");
 
-            auto traceit = std::function<py::object(
-                    py::object, py::object, py::object)>();
-            traceit = [this, &traceit](py::object frame,
-                                       py::object event,
-                                       py::object args) {
-                if (_kill_sig) {
-                    throw std::runtime_error("ExplosionError");
-                }
-                if (py::extract<std::string>(event)() == "line") {
-                    _executing_line =
-                            py::extract<int>(frame.attr("f_lineno"))();
-                }
-                return py::make_function(traceit,
-                                         py::default_call_policies(),
-                                         boost::mpl::vector<py::object,
-                                                            py::object,
-                                                            py::object,
-                                                            py::object>());
-            };
-
-            sys.attr("settrace")(
-                    py::make_function(traceit,
-                                      py::default_call_policies(),
-                                      boost::mpl::vector<py::object,
-                                                         py::object,
-                                                         py::object,
-                                                         py::object>()));
+            sys.attr("settrace")(py::make_function(
+                    [this, &killed](py::object frame,
+                                    py::object event,
+                                    py::object args) {
+                        return traceit(_kill_sig,
+                                       _executing_line,
+                                       killed,
+                                       frame,
+                                       event,
+                                       args);
+                    },
+                    py::default_call_policies(),
+                    boost::mpl::vector<py::object,
+                                       py::object,
+                                       py::object,
+                                       py::object>()));
             // Retrieve the main module's namespace
             auto global = main.attr("__dict__");
             global["d_print"] = py::make_function(
@@ -442,7 +457,9 @@ bool gameplay::_run_tanks() {
 
             auto result = py::exec(py::str(user_source), global, global);
         } catch (py::error_already_set const&) {
-            _pyout << extract_exception();
+            if (!killed) {
+                _pyout << extract_exception();
+            }
         }
         _executing_line = 0;
     });
