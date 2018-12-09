@@ -1,4 +1,13 @@
-#this is level 2
-#here are the instructions
-#shoot the tank 
-#yadda yadda
+"""
+For Loops
+
+Loops help accomplish work that needs
+to be repeated, like covering the same
+large distance with the tank.
+
+Here's some syntax for Python:
+for r in range(10):
+    forward()
+    backward()
+"""
+
