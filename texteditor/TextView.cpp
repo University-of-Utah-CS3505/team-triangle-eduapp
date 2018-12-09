@@ -12,7 +12,7 @@ TextView::TextView(const sf::RenderTarget& target, const sf::String& fontPath)
 
     // TODO: Cambiarlo en relacion a la fontsize
     this->marginXOffset = 45;
-    this->colorMargin = sf::Color(32, 44, 68);
+    this->colorMargin = sf::Color(201, 187, 143); // line number color background
 }
 
 void TextView::draw(sf::RenderTarget& window, TextDocument& document) {
@@ -30,7 +30,7 @@ void TextView::draw(sf::RenderTarget& window, TextDocument& document) {
         int blockHeight = lineHeight * this->fontSize;
 
         sf::Text lineNumberText;
-        lineNumberText.setFillColor(sf::Color::White);
+        lineNumberText.setFillColor(sf::Color(75, 61, 16)); // line number color
         lineNumberText.setFont(this->font);
         lineNumberText.setString(std::to_string(lineNumber));
         lineNumberText.setCharacterSize(this->fontSize - 1);
