@@ -30,7 +30,6 @@ SOURCES += \
     main_menu.cpp \
     boost_test.cpp \
     gameplay.cpp \
-    textedit.cpp \
     engine.cpp \
     level_menu.cpp \
     tile.cpp \
@@ -39,7 +38,6 @@ SOURCES += \
     level.cpp \
     bullet.cpp \
     object_def.cpp \
-    gap_buffer.cpp \
     texteditor/Cursor.cpp \
     texteditor/InputController.cpp \
     texteditor/SelectionData.cpp \
@@ -54,7 +52,6 @@ HEADERS += \
     game_state.h \
     main_menu.h \
     gameplay.h \
-    textedit.h \
     engine.h \
     level_menu.h \
     tile.h \
@@ -64,7 +61,6 @@ HEADERS += \
     bullet.h \
     pyinqt.h \
     object_def.h \
-    gap_buffer.h \
     texteditor/Cursor.h \
     texteditor/InputController.h \
     texteditor/SelectionData.h \
