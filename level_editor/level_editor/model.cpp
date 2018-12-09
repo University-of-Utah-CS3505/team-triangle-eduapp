@@ -39,7 +39,7 @@ bool model::save_model(){
     }
     json["name"] = "custom levelname";
     json["tiles"] = *bigarray;
-    std::cout << "FINISHED ARRA" << std::endl;
+    //std::cout << "FINISHED ARRA" << std::endl;
 
 
     //Objects
@@ -84,19 +84,20 @@ bool model::save_model(){
     ob.append(obj);
     }
     json.insert("objects", ob);
-    std::cout << "FINISHED OB" << std::endl;
+    //std::cout << "FINISHED OB" << std::endl;
     QJsonArray tiledefsjson;
 
     for(auto item : tiledefs){
         QJsonObject* tile  = new QJsonObject;
         QJsonObject tilederef = *tile;
-        auto item2 = std::get<0>(item);
-        tilederef.insert("img", item2.c_str()) ;
-        tilederef.insert("type",  std::get<1>(item).c_str()) ;
-        tiledefsjson.append(*tile);
+        QString item2 = std::get<0>(item).c_str();
+        tilederef.insert("img", item2) ;
+        QString item3 = std::get<0>(item).c_str();
+        tilederef.insert("type",  item3) ;
+        tiledefsjson.append(tilederef);
 
     }
-    std::cout << "FINISHED TILEDEF" << std::endl;
+    //std::cout << "FINISHED TILEDEF" << std::endl;
     json.insert("tiledefs", tiledefsjson);
     std::string str("../../levels");
     str+= lvlname;
@@ -122,9 +123,9 @@ std::string model::findNextLevel(){
     QJsonDocument doc(QJsonDocument::fromJson(barray));
     QJsonObject json_levels = doc.object();
 
-    std::cout << json_levels.value("levels").isObject() <<std::endl;
+    //std::cout << json_levels.value("levels").isObject() <<std::endl;
     QJsonArray lev = json_levels["levels"].toArray();
-    QString q = QString::number(lev.size());
+    QString q = QString::number(lev.size()+1);
     q.prepend("/level");
     //q.append("");
     file.close();
