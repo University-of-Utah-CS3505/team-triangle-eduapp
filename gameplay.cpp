@@ -74,7 +74,7 @@ gameplay::gameplay(engine& eng, int level)
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf"),
-      _stdout_lines(6) {
+      _stdout_lines(12) {
     _load_level(_current_level);
     _text_doc.addTextToPos(_level._level_instructions, 0, 0);
     int lines = _text_doc.getLineCount();
@@ -436,11 +436,36 @@ bool gameplay::_run_tanks() {
                     }),
                     py::default_call_policies(),
                     boost::mpl::vector<void, py::object>());
+            global["object_ahead"] = py::make_function(
+                    std::function([this]() -> py::object {
+                        int x = ((_tank->get_position().x - 32) -
+                                 (int)(.1655 * _engine.window().getSize().x)) /
+                                64;
+                        int y = ((_tank->get_position().y - 32) -
+                                 (int)(.1655 * _engine.window().getSize().y)) /
+                                64;
+
+                        for (int i = 0; i < _objects.size(); i++) {
+                            if (_objects[i]->get_type() == "destroyable" ||
+                                _objects[i]->get_type() == "static") {
+                                if (x + _tank->get_rotation_vector().x ==
+                                            _objects[i]->get_location().x &&
+                                    y + _tank->get_rotation_vector().y ==
+                                            _objects[i]->get_location().y) {
+                                    return py::object(true);
+                                }
+                            }
+                        }
+                        return py::object(false);
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<py::object>());
+
             auto result = py::exec(py::str(user_source), global, global);
         } catch (py::error_already_set const&) {
             _pyout << extract_exception();
-            _executing_line = 0;
         }
+        _executing_line = 0;
     });
 }
 

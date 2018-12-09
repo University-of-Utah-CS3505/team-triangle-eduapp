@@ -38,7 +38,7 @@ win_menu::win_menu(engine& eng, int level)
 win_menu::~win_menu() {}
 
 std::unique_ptr<game_state> win_menu::update() {
-    _engine.window().clear(sf::Color(22, 48, 90, 255));
+    _engine.window().clear(sf::Color(252, 252, 210));
 
     // Menu items
     auto v_top = _engine.window().getSize().y / 3;
@@ -49,7 +49,7 @@ std::unique_ptr<game_state> win_menu::update() {
         _engine.window().draw(item.sprite);
     }
 
-    you_win.setPosition((_engine.window().getSize().x / 2), 20.f);
+    you_win.setPosition((_engine.window().getSize().x / 2), 100.f);
     _engine.window().draw(you_win);
 
     return std::move(_to_state);

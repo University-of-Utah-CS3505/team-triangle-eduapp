@@ -47,6 +47,7 @@ private:
     std::unique_ptr<game_state> _to_state;
     event_handle _released_handle;
 
+
     std::unique_ptr<tank> _tank;
     std::unique_ptr<std::thread> _tank_controller;
     std::atomic<int> _executing_line;

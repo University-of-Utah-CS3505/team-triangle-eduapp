@@ -78,6 +78,7 @@ public:
     void wait_until_idle();
     sf::Vector2f get_bullet_pos();
     sf::Vector2f get_position();
+    sf::Vector2i get_rotation_vector();
     void bullet_hit();
     void set_offset(int, int);\
     void set_position(sf::Vector2f);

@@ -14,12 +14,6 @@
 	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
         },
 	{
-            "type": "spawn",
-            "pos": [0, 2],
-	    "size": [16,28],
-	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
-        },
-	{
             "type": "goal",
             "pos": [3, 4],
 	    "size": [32,32],
