@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) : m(0),
     image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitN.png");
     image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitS.png");
     image_paths.emplace_back("../assets/Tanks/PNG/DefaultSize/tileGrass_roadSplitW.png");
-
+    m.bring_in_tiledefs(image_paths);
 }
 
 MainWindow::~MainWindow()
