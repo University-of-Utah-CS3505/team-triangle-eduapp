@@ -29,6 +29,7 @@ Ctrl+v       // Paste copied text
 Ctrl+s       // Save progress - dialog
 Ctrl+o       // Open previous save
 Shft+arrows  // Select text
+Esc	     // Open main menu
 
 Press F5 to run your code
 """
