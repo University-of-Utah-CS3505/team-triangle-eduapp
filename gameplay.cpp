@@ -5,6 +5,7 @@
 #include "tile.h"
 #include "win_menu.h"
 #include <QDebug>
+#include <QFileDialog>
 #include <QTextDocument>
 #include <SFML/Graphics.hpp>
 #include <cstdio>
@@ -19,15 +20,13 @@ gameplay::gameplay(engine& eng, int level)
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
-                  if (e.key.code == sf::Keyboard::Escape) {
-                      _to_state = std::make_unique<main_menu>(_engine);
-                      return true;
-                  } else {
-                      _input_con.handleEvents(
-                              _text_doc, _text_view, _engine.window(), e);
-                      return true;
+                  // for some reason saving/loading sends these events
+                  if (e.text.unicode == 19 || e.text.unicode == 15) {
+                      return false;
                   }
-                  return false;
+                  _input_con.handleEvents(
+                          _text_doc, _text_view, _engine.window(), e);
+                  return true;
               })),
 
       _pressed_handle(_engine.add_event_listener(
@@ -531,6 +530,15 @@ bool gameplay::_handle_keyboard(sf::Event event) {
         return true;
     } else if (event.key.code == sf::Keyboard::End) {
         _editor.scroll_right();
+        return true;
+    } else if (event.key.code == sf::Keyboard::O && event.key.control) {
+        _text_doc.loadFile(QFileDialog::getOpenFileName().toStdString());
+        _text_view = TextView(
+                _editor_subtarget,
+                "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf");
+        return true;
+    } else if (event.key.code == sf::Keyboard::S && event.key.control) {
+        _text_doc.saveFile(QFileDialog::getSaveFileName().toStdString());
         return true;
     } else if (event.key.code == sf::Keyboard::Escape) {
         _kill_sig = true;

@@ -3,11 +3,9 @@
 // La idea es leer el file y guardarlo en buffer (quiero cargarlo en la memoria)
 // Para esto uso std::ifstream para levantar el archivo
 
-TextDocument::TextDocument() {
-    lineBuffer.push_back(0);
-}
+TextDocument::TextDocument() { lineBuffer.push_back(0); }
 
-/*bool TextDocument::init(string &filename) {
+bool TextDocument::loadFile(const string& filename) {
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {
         std::cerr << "Error opening file: " << filename << std::endl;
@@ -17,21 +15,21 @@ TextDocument::TextDocument() {
     inputStringStream << inputFile.rdbuf();
 
     this->buffer = this->toUtf32(inputStringStream.str());
-    this->length = buffer.getSize();  // Posiblemente no sea necesario
+    this->length = buffer.getSize(); // Posiblemente no sea necesario
 
     inputFile.close();
     this->initLinebuffer();
     return true;
-}*/
+}
 
-bool TextDocument::saveFile(string &filename) {
+bool TextDocument::saveFile(const string& filename) {
     std::ofstream outputFile(filename);
     if (!outputFile.is_open()) {
         std::cerr << "Error opening file: " << filename << std::endl;
         return false;
     }
 
-    //It looks more straight-forward to me (Luca Errani)
+    // It looks more straight-forward to me (Luca Errani)
     std::stringstream toBeSaved;
     for (sf::Uint32 ch : this->buffer) {
         toBeSaved << SpecialChars::convertSpecialChar(ch, outputFile);
@@ -44,9 +42,7 @@ bool TextDocument::saveFile(string &filename) {
     return true;
 }
 
-bool TextDocument::hasChanged() {
-    return this->documentHasChanged;
-}
+bool TextDocument::hasChanged() { return this->documentHasChanged; }
 
 // TODO: Contar newlines mientras leo el archivo en el init
 // TODO: Otros sistemas operativos manejan newlines de otras formas (ej \r)
@@ -71,7 +67,8 @@ sf::String TextDocument::getLine(int lineNumber) {
     int lastLine = this->lineBuffer.size() - 1;
 
     if (lineNumber < 0 || lineNumber > lastLine) {
-        std::cerr << "lineNumber " << lineNumber << " is not a valid number line. "
+        std::cerr << "lineNumber " << lineNumber
+                  << " is not a valid number line. "
                   << "Max is: " << this->lineBuffer.size() - 1 << std::endl;
         return "";
     }
@@ -81,14 +78,15 @@ sf::String TextDocument::getLine(int lineNumber) {
 
     } else {
         int bufferStart = this->lineBuffer[lineNumber];
-        int nextBufferStart = this->lineBuffer[lineNumber + 1];  // Final no inclusive
+        int nextBufferStart =
+                this->lineBuffer[lineNumber + 1]; // Final no inclusive
         int cantidad = nextBufferStart - bufferStart - 1;
 
         return this->buffer.substring(bufferStart, cantidad);
     }
 }
 
-sf::String TextDocument::toUtf32(const std::string &inString) {
+sf::String TextDocument::toUtf32(const std::string& inString) {
     sf::String outString = "";
     auto iterEnd = inString.cend();
 
@@ -115,13 +113,16 @@ void TextDocument::addTextToPos(sf::String text, int line, int charN) {
     }
 
     for (int i = 0; i < (int)text.getSize(); i++) {
-        if (text[i] == '\n' || text[i] == 13) {          // text[i] == \n
-            int newLineStart = bufferInsertPos + i + 1;  // Nueva linea comienza despues del nuevo \n
+        if (text[i] == '\n' || text[i] == 13) { // text[i] == \n
+            int newLineStart = bufferInsertPos + i +
+                               1; // Nueva linea comienza despues del nuevo \n
 
-            // Inserto O(#lineas) y uso busqueda binaria pues los inicios de lineas son crecientes
-            this->lineBuffer.insert(
-                std::lower_bound(this->lineBuffer.begin(), this->lineBuffer.end(), newLineStart),
-                newLineStart);
+            // Inserto O(#lineas) y uso busqueda binaria pues los inicios de
+            // lineas son crecientes
+            this->lineBuffer.insert(std::lower_bound(this->lineBuffer.begin(),
+                                                     this->lineBuffer.end(),
+                                                     newLineStart),
+                                    newLineStart);
         }
     }
 }
@@ -134,7 +135,8 @@ void TextDocument::removeTextFromPos(int amount, int lineN, int charN) {
     this->buffer.erase(bufferStartPos, amount);
 
     // TODO: SUPER OVERKILL. Esto es O(#buffer) y podria ser O(#lineas)
-    // Revisitar idea de correr los lineBuffers en amount, teniendo en cuenta la cantidad de newlines borradas
+    // Revisitar idea de correr los lineBuffers en amount, teniendo en cuenta la
+    // cantidad de newlines borradas
     this->initLinebuffer();
 }
 
@@ -143,8 +145,12 @@ sf::String TextDocument::getTextFromPos(int amount, int line, int charN) {
     return this->buffer.substring(bufferPos, amount);
 }
 
-int TextDocument::charAmountContained(int startLineN, int startCharN, int endLineN, int endCharN) {
-    return this->getBufferPos(endLineN, endCharN) - this->getBufferPos(startLineN, startCharN) + 1;
+int TextDocument::charAmountContained(int startLineN,
+                                      int startCharN,
+                                      int endLineN,
+                                      int endCharN) {
+    return this->getBufferPos(endLineN, endCharN) -
+           this->getBufferPos(startLineN, startCharN) + 1;
 }
 
 void TextDocument::swapLines(int lineA, int lineB) {
@@ -200,22 +206,23 @@ void TextDocument::swapWithNextLine(int line) {
 int TextDocument::getBufferPos(int line, int charN) {
     if (line >= (int)this->lineBuffer.size()) {
         std::cerr << "\nCan't get buffer pos of: " << line << "\n";
-        std::cerr << "Buffer last line is: " << this->lineBuffer.size() - 1 << "\n\n";
+        std::cerr << "Buffer last line is: " << this->lineBuffer.size() - 1
+                  << "\n\n";
     }
     return this->lineBuffer[line] + charN;
 }
 
 int TextDocument::charsInLine(int line) const {
-    // Si es ultima linea, no puedo compararla con inicio de siguiente pues no hay siguiente
+    // Si es ultima linea, no puedo compararla con inicio de siguiente pues no
+    // hay siguiente
     int bufferSize = this->lineBuffer.size();
 
     if (line == bufferSize - 1) {
-        return this->buffer.getSize() - this->lineBuffer[this->lineBuffer.size() - 1];
+        return this->buffer.getSize() -
+               this->lineBuffer[this->lineBuffer.size() - 1];
     } else {
         return this->lineBuffer[line + 1] - this->lineBuffer[line] - 1;
     }
 }
 
-int TextDocument::getLineCount() const {
-    return (int)this->lineBuffer.size();
-}
+int TextDocument::getLineCount() const { return (int)this->lineBuffer.size(); }

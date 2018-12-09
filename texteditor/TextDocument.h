@@ -17,10 +17,10 @@ using std::string;
 using std::vector;
 
 class TextDocument {
-   public:
+public:
     TextDocument();
-//    bool init(string &filename);
-    bool saveFile(string &filename);
+    bool loadFile(const string& filename);
+    bool saveFile(const string& filename);
     bool hasChanged();
 
     sf::String getLine(int lineNumber);
@@ -33,9 +33,12 @@ class TextDocument {
 
     void swapLines(int lineA, int lineB);
 
-    int charAmountContained(int startLineN, int startCharN, int endLineN, int endCharN);
+    int charAmountContained(int startLineN,
+                            int startCharN,
+                            int endLineN,
+                            int endCharN);
 
-   private:
+private:
     bool initLinebuffer();
     sf::String buffer;
     int length;
@@ -46,7 +49,7 @@ class TextDocument {
 
     void swapWithNextLine(int line);
 
-    sf::String toUtf32(const std::string &inString);
+    sf::String toUtf32(const std::string& inString);
 };
 
 #endif

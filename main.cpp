@@ -14,10 +14,7 @@
 #include <thread>
 #include <vector>
 
-std::optional<launch_options> launch_dialog(int argc, char** argv) {
-    // take that qt
-    // you're not polluting my whole program today
-    auto qapp = QApplication(argc, argv);
+std::optional<launch_options> launch_dialog() {
     auto option_dialog = pre_game_options();
     option_dialog.exec();
     return option_dialog.get_options();
@@ -25,7 +22,8 @@ std::optional<launch_options> launch_dialog(int argc, char** argv) {
 
 int main(int argc, char** argv) {
     Py_Initialize();
-    const auto options = launch_dialog(argc, argv);
+    auto qapp = QApplication(argc, argv);
+    const auto options = launch_dialog();
     // do we set a global config here?
     if (!options) {
         return 0;
