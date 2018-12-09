@@ -109,7 +109,7 @@ main_menu::main_menu(engine& eng)
 main_menu::~main_menu() {}
 
 std::unique_ptr<game_state> main_menu::update() {
-    _engine.window().clear(sf::Color::Cyan);
+    _engine.window().clear(sf::Color(252, 252, 210));
     _world.Step(1 / 60.0f, 1, 1);
     for (auto& item : _items) {
         auto pos = item.body->GetPosition();
