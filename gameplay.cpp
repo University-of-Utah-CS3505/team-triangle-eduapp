@@ -162,10 +162,15 @@ std::unique_ptr<game_state> gameplay::update() {
                             _tank->get_position().y) {
                             if (_objects[i]->get_type() == "goal") {
                                 _level_won = true;
-                                qDebug() << "Goal reached";
                             } else {
-                                _tank->run_state(
-                                        std::make_unique<tank::explode>());
+                                if(_tank->done_exploding()){
+                                    _load_level(_current_level);
+                                    return nullptr;
+                                }else{
+                                    _tank->run_state(
+                                          std::make_unique<tank::explode>());
+                                }
+
                             }
                         }
                     }
