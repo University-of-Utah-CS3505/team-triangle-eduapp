@@ -30,8 +30,6 @@ Ctrl+s       // Save progress - dialog
 Ctrl+o       // Open previous save
 Shft+arrows  // Select text
 
-
-
 Press F5 to run your code
 """
 
