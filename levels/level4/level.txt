@@ -1,0 +1,7 @@
+#It's up to you to 
+#complete this level
+#Use all the things that
+#you have learned,
+#Sequential statements, loops
+#conditionals
+

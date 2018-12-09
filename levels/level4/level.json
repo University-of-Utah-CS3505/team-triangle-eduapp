@@ -1,11 +1,11 @@
 {
-    "name": "Sequential Statements",
+    "name": "Bringing it together",
     "tiles": [
-
-        [2, 0, 0, 0],
-        [2, 0, 0, 0],
-        [3, 1, 1, 4],
-        [0, 0, 0, 2]],
+        [1, 1, 1, 1, 4],
+        [2, 0, 0, 0, 2],
+        [2, 0, 0, 0, 2],
+	    [2, 0, 0, 0, 2],
+        [3, 1, 1, 1, 5]],
     "objects": [
         {
             "type": "spawn",
@@ -15,44 +15,48 @@
         },
 	{
             "type": "goal",
-            "pos": [3, 3],
+            "pos": [0,1],
 	    "size": [32,32],
 	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
         },
 	{
             "type": "destroyable",
-            "pos": [1, 2],
+            "pos": [2, 4],
 	    "size": [28,28],
 	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
         },
         {
             "type": "solid",
-            "pos": [3, 1],
+            "pos": [2, 2],
 	    "size": [36,36],
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeBrown_small.png"
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeGreen_small.png"
         }],
     "tiledefs": [
         {
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png",
             "type": "grass"
         },
-        {
+	{
             "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
             "type": "road"
         },
+	{
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
+            "type": "road"
+        },
         {
-            "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
-            "type":"road"
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
+            "type": "road"
+        },
+	{
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
+            "type": "road"
+        },
+    {
+            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUL.png",
+            "type": "road"
         }
-        ,
-        {
-            "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
-            "type":"road"
-        }
-        ,
-        {
-            "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
-            "type":"road"
-        }
+
+
     ]
 }

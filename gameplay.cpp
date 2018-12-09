@@ -14,8 +14,8 @@
 
 gameplay::gameplay(engine& eng, int level)
 
-    : _editor{15, 800, 650}, _engine{eng}, _level(0),
-      _current_level(level), _level_won(false),
+    : _editor{15, 800, 650}, _engine{eng}, _level(0), _current_level(level),
+      _level_won(false),
       _text_handle(_engine.add_event_listener(
               sf::Event::TextEntered,
               [this](auto e) {
@@ -74,7 +74,7 @@ gameplay::gameplay(engine& eng, int level)
       _text_view((_editor_subtarget.create(1920 * 0.333333, 1080),
                   _editor_subtarget),
                  "./../team-triangle-eduapp/assets/fonts/droid_sans_mono.ttf"),
-      _stdout_lines(6) {
+      _stdout_lines(12) {
     _load_level(_current_level);
     _text_doc.addTextToPos(_level._level_instructions, 0, 0);
     int lines = _text_doc.getLineCount();
@@ -314,6 +314,25 @@ bool gameplay::_handle_mouse(sf::Event event) {
     return true;
 }
 
+// https://wiki.python.org/moin/boost.python/EmbeddingPython
+std::string extract_exception() {
+    using namespace boost::python;
+
+    PyObject *exc, *val, *tb;
+    PyErr_Fetch(&exc, &val, &tb);
+    PyErr_NormalizeException(&exc, &val, &tb);
+    handle<> hexc(exc), hval(allow_null(val)), htb(allow_null(tb));
+    if (!hval) {
+        return extract<std::string>(str(hexc));
+    } else {
+        object traceback(import("traceback"));
+        object format_exception(traceback.attr("format_exception"));
+        object formatted_list(format_exception(hexc, hval, htb));
+        object formatted(str("").join(formatted_list));
+        return extract<std::string>(formatted);
+    }
+}
+
 bool gameplay::_run_tanks() {
     _load_level(_current_level);
     auto user_source = std::string();
@@ -417,32 +436,34 @@ bool gameplay::_run_tanks() {
                     }),
                     py::default_call_policies(),
                     boost::mpl::vector<void, py::object>());
+            global["object_ahead"] = py::make_function(
+                    std::function([this]() -> py::object {
+                        int x = ((_tank->get_position().x - 32) -
+                                 (int)(.1655 * _engine.window().getSize().x)) /
+                                64;
+                        int y = ((_tank->get_position().y - 32) -
+                                 (int)(.1655 * _engine.window().getSize().y)) /
+                                64;
+
+                        for (int i = 0; i < _objects.size(); i++) {
+                            if (_objects[i]->get_type() == "destroyable" ||
+                                _objects[i]->get_type() == "static") {
+                                if (x + _tank->get_rotation_vector().x ==
+                                            _objects[i]->get_location().x &&
+                                    y + _tank->get_rotation_vector().y ==
+                                            _objects[i]->get_location().y) {
+                                    return py::object(true);
+                                }
+                            }
+                        }
+                        return py::object(false);
+                    }),
+                    py::default_call_policies(),
+                    boost::mpl::vector<py::object>());
 
             auto result = py::exec(py::str(user_source), global, global);
         } catch (py::error_already_set const&) {
-            // https://stackoverflow.com/a/1418703
-            // TODO give user the exception somehow (maybe print and
-            // redirect stdout to something we print on screen)
-            // PyErr_Print();
-            /*                auto ptype = static_cast<PyObject*>(nullptr),
-                                 pvalue = static_cast<PyObject*>(nullptr),
-                                 ptraceback =
-               static_cast<PyObject*>(nullptr); PyErr_Fetch(&ptype, &pvalue,
-               &ptraceback);
-                            // pvalue contains error message
-                            // ptraceback contains stack snapshot and many
-               other information if (ptype) { std::cout <<
-               py::extract<std::string>(ptype)() << "\n";
-                            }
-                            if (pvalue) {
-                                std::cout <<
-               py::extract<std::string>(pvalue)() << "\n";
-                            }
-                            if (ptraceback) {
-                                std::cout <<
-               py::extract<std::string>(ptraceback)() << "\n";
-                            }
-                            std::cout << std::flush;*/
+            _pyout << extract_exception();
         }
         _executing_line = 0;
     });

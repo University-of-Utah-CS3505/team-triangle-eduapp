@@ -195,6 +195,12 @@ sf::Vector2f tank::get_bullet_pos() {
 
 sf::Vector2f tank::get_position() { return _sprite.getPosition(); }
 
+sf::Vector2i tank::get_rotation_vector()
+{
+    return sf::Vector2i(std::cos((_sprite.getRotation()+90) * M_PI / 180.0),
+                        std::sin((_sprite.getRotation()+90) * M_PI / 180.0));
+}
+
 void tank::bullet_hit() {
     _to_run = std::make_unique<tank::shoot>();
     _bullet.show_explosion();

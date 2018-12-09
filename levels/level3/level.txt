@@ -1,13 +1,21 @@
 """
-For Loops
+Conditionals
 
-Loops help accomplish work that needs
-to be repeated, like covering the same
-large distance with the tank.
+Loops can help with simple levels,
+but sometimes there are obstacles in 
+the way! Using conditions, loops can
+still be used to solve the level.
 
-Here's some syntax for Python:
-for r in range(10):
+Using object_ahead(), which returns true if
+there is an object in the way, write a
+solution that uses loops and conditions.
+
+Here is an example:
+
+for r in range(5):
+    if object_ahead():
+        shoot()
     forward()
-    backward()
+
 """
 

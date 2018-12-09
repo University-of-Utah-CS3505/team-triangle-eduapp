@@ -1,64 +1,80 @@
 {
-    "name": "Level 2",
-    "tiles": [
-        [2, 0, 0, 0, 0],
-        [2, 0, 0, 0, 0],
-        [3, 1, 1, 4, 0],
-	    [0, 0, 0, 2, 0],
-        [0, 0, 0, 2, 0]],
-    "objects": [
-        {
-            "type": "spawn",
-            "pos": [0, 0],
-	    "size": [16,28],
-	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
-        },
+    "name":"For Loops",
+    "tiles":[
+	[0, 0, 1, 0, 0, 0, 0, 0],
+	[2, 2, 3, 2, 2, 2, 5, 0],
+	[0, 0, 1, 0, 0, 0, 1, 0],
+	[0, 0, 1, 0, 0, 0, 1, 0],
+	[0, 0, 1, 0, 0, 0, 1, 0],
+	[0, 0, 4, 2, 2, 2, 6, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    "objects":[
 	{
-            "type": "spawn",
-            "pos": [0, 2],
-	    "size": [16,28],
-	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
-        },
+	    "type":"spawn",
+	    "pos":[2, 0],
+	    "size":[16, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/shotOrange.png"
+	},
 	{
-            "type": "goal",
-            "pos": [3, 4],
-	    "size": [32,32],
-	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
-        },
+	    "type":"goal",
+	    "pos":[0, 1],
+	    "size":[32, 32],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/flag.png"
+	},
 	{
-            "type": "destroyable",
-            "pos": [1, 1],
-	    "size": [28,28],
-	    "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
-        },
-        {
-            "type": "solid",
-            "pos": [4, 3],
-	    "size": [36,36],
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/treeGreen_small.png"
-        }],
-    "tiledefs": [
-        {
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png",
-            "type": "grass"
-        },
+	    "type":"destroyable",
+	    "pos":[2, 6],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	},
 	{
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
-            "type": "road"
-        },
+	    "type":"destroyable",
+	    "pos":[7, 5],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	},
 	{
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
-            "type": "road"
-        },
-        {
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
-            "type": "road"
-        },
+	    "type":"destroyable",
+	    "pos":[6, 0],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	},
 	{
-            "img": "../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
-            "type": "road"
-        }
-
-
+	    "type":"destroyable",
+	    "pos":[1, 1],
+	    "size":[28, 28],
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/crateWood.png"
+	}
+    ],
+    "tiledefs":[
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater1.png",
+	    "type":"water"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadNorth.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadEast.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCrossing.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUR.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerLL.png",
+	    "type":"road"
+	},
+	{
+	    "img":"../team-triangle-eduapp/assets/Tanks/PNG/DefaultSize/tileWater_roadCornerUL.png",
+	    "type":"road"
+	}
     ]
 }

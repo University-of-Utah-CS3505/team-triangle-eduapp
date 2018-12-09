@@ -16,9 +16,8 @@ sf::Sprite object_def::get_sprite() { return _sprite; }
 
 sf::Vector2i object_def::get_size(){ return _size; }
 
-sf::Vector2f object_def::get_position()
-{
-    return _sprite.getPosition();
-}
+sf::Vector2f object_def::get_position() { return _sprite.getPosition(); }
+
+sf::Vector2i object_def::get_location() { return _position; }
 
 void object_def::set_offset(int x, int y) { _sprite.move(x,y); }
